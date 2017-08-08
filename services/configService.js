@@ -20,7 +20,7 @@ module.exports = () => {
         webserver: {
             protocol: "http",
             host: "localhost",
-            port: 2000
+            port: config.get("app.webserver.port")
         },
         cache: {
             expire: config.get('cache.expire')

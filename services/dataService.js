@@ -28,6 +28,25 @@ module.exports = (cache, logger, config) => {
         });
     }
 
+    let checkUserName = function(collection, whereFilter) {
+        return new Promise(function(resolve, reject) {
+            connect().then(function(db) {
+                db.collection(collection)
+                    .find(whereFilter, {}).count((err, results) => {
+                        if (!err) {
+                            resolve(results);
+                        } else {
+                            reject(err);
+                        }
+                    });
+            }).catch(function(err) {
+                var error = { "status": "Failed , Connection error", "error": err };
+                console.log(JSON.stringify(error));
+                reject(error);
+            });
+        });
+    }
+
     let findOne = function(collection, whereFilter, dataFilter) {
         return new Promise(function(resolve, reject) {
             connect().then(function(db) {
@@ -103,13 +122,37 @@ module.exports = (cache, logger, config) => {
                         findAll(collection, whereFilter, dataFilter).then(function(results) {
                             console.log("In getAllData method");
                             var data = { "result": results, "count": results.length };
-                            //console.log("data:" + JSON.stringify(data));
                             cache.set(key, JSON.stringify(data));
                             cache.expire(key, redisKeyExpire);
                             console.log("data store in key:" + key);
                             resolve(data);
                         }).catch(function(err) {
                             console.log("error in getAllData " + err);
+                            var error = { "status": "failed", "error": err };
+                            reject(error);
+                        });
+                    }
+                });
+
+            });
+        },
+
+        checkUserName: (collection, whereFilter, key) => {
+            return new Promise(function(resolve, reject) {
+                cache.get(key).then(results => {
+                    if (results != null) {
+                        console.log("result found in cache ");
+                        resolve(results);
+                    } else {
+                        checkUserName(collection, whereFilter).then(function(results) {
+                            console.log("In checkUserName method");
+                            var data = { "result": results, "count": results.length };
+                            cache.set(key, JSON.stringify(data));
+                            cache.expire(key, redisKeyExpire);
+                            console.log("data store in key:" + key);
+                            resolve(data);
+                        }).catch(function(err) {
+                            console.log("error in checkUserName " + err);
                             var error = { "status": "failed", "error": err };
                             reject(error);
                         });

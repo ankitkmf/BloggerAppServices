@@ -32,6 +32,26 @@ module.exports = (dir, services) => {
 
     });
 
+    router.get("/checkUserName/:username", function(req, res) {
+        try {
+            //http://localhost:3000/checkUserName/rohit
+            //http://localhost:3000/checkUserName/ankit
+            var key = "users_username_" + req.params.username
+            console.log("get key:" + key);
+            var whereFilter = { "username": req.params.username };
+            var collection = "users";
+            services.data.checkUserName(collection, whereFilter, key).then(function(result) {
+                res.json(result);
+            }).catch(function(error) {
+                res.json("data for key error: " + JSON.stringify(error));
+            });
+        } catch (err) {
+            var error = { "status": "failed", "error": err.message };
+            res.json(error);
+        }
+
+    });
+
 
     router.get("/findall/:collection/:type/:value?", function(req, res) {
         // http://localhost:2000/findall/users/all/
