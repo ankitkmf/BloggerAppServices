@@ -1,0 +1,21 @@
+{
+    "app": {
+        "restAPIEndpoint": {
+            "v1ContractPath": "v1/contract/production",
+            "v2ContractPath": "v2/contract/production"
+        },
+        "webserver": {
+            "protocol": "http",
+            "host": "localhost",
+            "port": 2000
+        }
+    },
+    "mongoDB": {
+        "connectString": "mongodb://vaskar:12345678@ds161001.mlab.com:61001/mytest_mongodb"
+    },
+    "nodeMailer": {
+        "service": "gmail",
+        "user": "nodegitapp@gmail.com",
+        "pass": "Node@123"
+    }
+}

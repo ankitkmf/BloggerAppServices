@@ -1,0 +1,22 @@
+{
+  "name": "bloggermeetappservices",
+  "version": "1.0.0",
+  "description": "blogger meet app services",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "bunyan": "^1.8.10",
+    "config": "^1.26.1",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30",
+    "nodemon": "^1.11.0",
+    "redis": "^2.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Ankit Goel",
+  "license": "ISC"
+}
