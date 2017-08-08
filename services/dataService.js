@@ -77,10 +77,11 @@ module.exports = (cache, logger, config) => {
                     } else {
                         findOne(collection, whereFilter, dataFilter).then(function(results) {
                             console.log("In find one method");
-                            cache.set(key, JSON.stringify(results));
+                            var data = { "result": results, "count": results.length };
+                            cache.set(key, JSON.stringify(data));
                             cache.expire(key, redisKeyExpire);
                             console.log("data store in key:" + key);
-                            resolve(results);
+                            resolve(data);
                         }).catch(function(err) {
                             console.log("error in getOneRecord " + err);
                             var error = { "status": "failed", "error": err };
@@ -101,10 +102,12 @@ module.exports = (cache, logger, config) => {
                     } else {
                         findAll(collection, whereFilter, dataFilter).then(function(results) {
                             console.log("In getAllData method");
-                            cache.set(key, JSON.stringify(results));
+                            var data = { "result": results, "count": results.length };
+                            //console.log("data:" + JSON.stringify(data));
+                            cache.set(key, JSON.stringify(data));
                             cache.expire(key, redisKeyExpire);
                             console.log("data store in key:" + key);
-                            resolve(results);
+                            resolve(data);
                         }).catch(function(err) {
                             console.log("error in getAllData " + err);
                             var error = { "status": "failed", "error": err };

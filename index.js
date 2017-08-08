@@ -12,7 +12,7 @@ const log = services.logger.log;
 //     console.log("uncaughtException:" + err);
 // });
 const server = app.listen(services.config.webserver.port, () => {
-    console.log("text");
+    console.log("text2");
 
     console.log(services.config.webserver.port);
 
