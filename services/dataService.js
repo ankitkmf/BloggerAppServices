@@ -142,11 +142,13 @@ module.exports = (cache, logger, config) => {
                 cache.get(key).then(results => {
                     if (results != null) {
                         console.log("result found in cache ");
-                        resolve(results);
+                        resolve(JSON.parse(results));
                     } else {
                         checkUserName(collection, whereFilter).then(function(results) {
                             console.log("In checkUserName method");
-                            var data = { "result": results, "count": results.length };
+                            // results = results >= 0 ? true : false;
+                            console.log("results:" + results);
+                            var data = { "result": (results > 0 ? true : false) };
                             cache.set(key, JSON.stringify(data));
                             cache.expire(key, redisKeyExpire);
                             console.log("data store in key:" + key);

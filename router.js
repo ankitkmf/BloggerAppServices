@@ -13,7 +13,8 @@ module.exports = (dir, services) => {
         // http://localhost:2000/findone/users/595cde84f8ce4a2250f38820
 
         try {
-            var key = req.params.collection + "_id_" + req.params.id
+            res.header("Access-Control-Allow-Origin", "*");
+            var key = "findone_" + req.params.collection + "_id_" + req.params.id
             console.log("get key:" + key);
 
             var whereFilter = { "_id": ObjectId(req.params.id) };
@@ -36,7 +37,9 @@ module.exports = (dir, services) => {
         try {
             //http://localhost:3000/checkUserName/rohit
             //http://localhost:3000/checkUserName/ankit
-            var key = "users_username_" + req.params.username
+            res.header("Access-Control-Allow-Origin", "*");
+            // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+            var key = "checkUserName_users_username_" + req.params.username
             console.log("get key:" + key);
             var whereFilter = { "username": req.params.username };
             var collection = "users";
@@ -63,7 +66,7 @@ module.exports = (dir, services) => {
         //http://localhost:2000/findall/users/email/true
 
         try {
-
+            res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
             var value = req.params.value != null && type != "all" ? req.params.value.toLowerCase() : "";
@@ -87,7 +90,7 @@ module.exports = (dir, services) => {
                 default:
                     break;
             }
-            var key = req.params.collection + "_" + type + "_" + value;
+            var key = "findall_" + req.params.collection + "_" + type + "_" + value;
             console.log("get key:" + key);
 
             // var whereFilter = { "_id": ObjectId(req.params.id) };
