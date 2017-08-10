@@ -1,10 +1,16 @@
 'use strict';
-var promise = require("bluebird");
+var promise = require('bluebird');
 const express = require('express');
 const services = require('./servicelayer')('./services');
-const router = require('./router.js')("./routes/", services);
+const router = require('./router.js')('./routes/', services);
 const app = express();
 app.use(router);
+var bodyparser = require("body-parser");
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
+app.use(bodyparser());
+
+
 const log = services.logger.log;
 
 // process.on('uncaughtException', function(err) {
@@ -12,7 +18,7 @@ const log = services.logger.log;
 //     console.log("uncaughtException:" + err);
 // });
 const server = app.listen(services.config.webserver.port, () => {
-    console.log("text2");
+    console.log('text2');
 
     console.log(services.config.webserver.port);
 
