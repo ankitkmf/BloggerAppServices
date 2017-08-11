@@ -6,14 +6,15 @@ const app = express();
 var router = express.Router();
 
 module.exports = (dir, services) => {
+    var infoMsg = services.config.messageList.infoList;
+    var errorMsg = services.config.messageList.exceptionList;
+
     router.get("/findone/:collection/:id", function(req, res) {
         try {
             // http://localhost:3000/findone/users/5945424df36d28265550c8ea
             // http://localhost:3000/findone/users/595cde84f8ce4a2250f38820
             res.header("Access-Control-Allow-Origin", "*");
             var key = "findone_" + req.params.collection + "_id_" + req.params.id;
-            console.log("get key:" + key);
-
             var whereFilter = { _id: ObjectId(req.params.id) };
             var dataFilter = { usernamehash: false, password: false };
             var collection = req.params.collection;
@@ -24,11 +25,12 @@ module.exports = (dir, services) => {
                     res.json(result);
                 })
                 .catch(function(error) {
-                    res.json("data for key error: " + JSON.stringify(error));
+                    var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + error;
+                    res.json(_errorMsg);
                 });
         } catch (err) {
-            var error = { status: "failed", error: err.message };
-            res.json(error);
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 
@@ -41,18 +43,18 @@ module.exports = (dir, services) => {
             console.log("get key:" + key);
             var whereFilter = { username: req.params.username };
             var collection = "users";
-            console.log("step 1");
             services.data
                 .checkUserName(collection, whereFilter, key)
                 .then(function(result) {
                     res.json(result);
                 })
                 .catch(function(error) {
-                    res.json("data for key error: " + JSON.stringify(error));
+                    var _errorMsg = "error_code :" + errorMsg.msg_105.code + " , error_msg:" + errorMsg.msg_105.msg + " ,error:" + error;
+                    res.json(_errorMsg);
                 });
         } catch (err) {
-            var error = { status: "failed", error: err.message };
-            res.json(error);
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 
@@ -92,39 +94,38 @@ module.exports = (dir, services) => {
                     break;
             }
             var key = "findall_" + req.params.collection + "_" + type + "_" + value;
-            console.log("get key:" + key);
-
-            // var whereFilter = { "_id": ObjectId(req.params.id) };
             var dataFilter = { usernamehash: false, password: false, _id: false };
             var collection = req.params.collection;
-            // var key = "text";
-            console.log("dataFilter:" + JSON.stringify(dataFilter));
-            console.log("whereFilter:" + JSON.stringify(whereFilter));
+
             services.data
                 .findAll(collection, whereFilter, dataFilter, key)
                 .then(function(result) {
                     res.json(result);
                 })
                 .catch(function(error) {
-                    res.json("data for key error: " + JSON.stringify(error));
+                    var _errorMsg = "error_code :" + errorMsg.msg_107.code + " , error_msg:" + errorMsg.msg_107.msg + " ,error:" + error;
+                    res.json(_errorMsg);
                 });
         } catch (err) {
-            var error = { status: "failed", error: err.message };
-            res.json(error);
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 
     router.get("/clear", function(req, res) {
-        //http:localhost:3000/clear
-        services.cache.clear();
-        res.send("clear all cache");
+        try {
+            //http:localhost:3000/clear
+            services.cache.clear();
+            res.json("clear all cache");
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
     });
 
     router.post("/saveSignUp", (req, res) => {
         try {
-            console.log("post sign-up data " + JSON.stringify(req.body));
             var dataCollection = {
-                // "usernamehash": bcrypt.hashSync(username, 10),
                 "username": req.body.username,
                 "name": req.body.name,
                 "password": req.body.password, // bcrypt.hashSync(password, 10),
@@ -138,28 +139,22 @@ module.exports = (dir, services) => {
             var collection = "users";
             services.data.saveSignUP(collection, dataCollection)
                 .then(function(result) {
-                    console.log("signup done successfully");
                     res.json(result);
                 })
                 .catch(function(error) {
-                    console.log("sign-up 1:" + error);
-                    res.json("Error in signup1: " + JSON.stringify(error));
+                    var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
+                    res.json(_errorMsg);
                 });
-            // res.json(req.body);
         } catch (err) {
-            console.log("sign-up 2:" + err);
-            var error = { status: "Error in signup2", error: err.message };
-            res.json(error);
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
         }
     });
 
     router.get("/getblogs/:si/:ct", (req, res) => {
         try {
-            console.log("get blog data " + JSON.stringify(req.params));
-
             res.header("Access-Control-Allow-Origin", "*");
             var key = "getblogs_" + req.params.si + "_" + req.params.ct;
-            console.log("get key:" + key);
 
             var whereFilter = {};
             var sortfilter = { "creationdate": 1 }; //--- 1 for asc and -1 for desc
@@ -182,9 +177,8 @@ module.exports = (dir, services) => {
                 });
 
         } catch (err) {
-            console.log("Get Blogs 2 : " + err);
-            var error = { status: "Error in retrieveing blogs", error: err.message };
-            res.json(error);
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 
