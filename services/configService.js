@@ -1,7 +1,9 @@
 'use strict';
 var config = require("config");
 module.exports = () => {
-    console.log("config");
+    //console.log("config");
+    console.log(config.messageList.infolist.msg_202.msg);
+
     return {
         getLog: {
             getErrorFolderPath: () => {
@@ -132,6 +134,10 @@ module.exports = () => {
                 msg_2013: {
                     code: config.get('messageList.infolist.msg_2013.code'),
                     msg: config.get('messageList.infolist.msg_2013.msg')
+                },
+                msg_2014: {
+                    code: config.get('messageList.infolist.msg_2014.code'),
+                    msg: config.get('messageList.infolist.msg_2014.msg')
                 }
             }
         }

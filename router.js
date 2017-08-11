@@ -41,6 +41,7 @@ module.exports = (dir, services) => {
             console.log("get key:" + key);
             var whereFilter = { username: req.params.username };
             var collection = "users";
+            console.log("step 1");
             services.data
                 .checkUserName(collection, whereFilter, key)
                 .then(function(result) {
@@ -151,5 +152,6 @@ module.exports = (dir, services) => {
             res.json(error);
         }
     });
+
     return router;
 };
