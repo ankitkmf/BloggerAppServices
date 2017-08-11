@@ -17,9 +17,7 @@ const log = services.logger.log;
 //     console.log("uncaughtException:" + err);
 // });
 const server = app.listen(services.config.webserver.port, () => {
-    console.log('text2');
-
-    console.log(services.config.webserver.port);
+    console.log("Services connected at " + services.config.webserver.port);
 
     // services.data.getOneRecord(collection, filter, key).then(function(result) {
     //     console.log("Index page result:" + JSON.stringify(result));

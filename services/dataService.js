@@ -3,7 +3,7 @@ var mongoClient = require('mongodb').MongoClient;
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports = (cache, logger, config) => {
-
+    console.log('db');
     var state = { db: null }
     var redisKeyExpire = config.cache.expire;
 
@@ -65,7 +65,6 @@ module.exports = (cache, logger, config) => {
         });
     }
 
-
     let findAll = function(collection, whereFilter, dataFilter) {
         return new Promise(function(resolve, reject) {
             connect().then(function(db) {
@@ -85,6 +84,22 @@ module.exports = (cache, logger, config) => {
             console.log(JSON.stringify(error));
         });
     }
+
+    // let saveSignUP = (collection, dataCollection) => {
+    //     return new Promise((resolve, reject) => {
+    //         connect.then((db) => {
+    //             db.collection(collection).save(dataCollection, (err, results) => {
+    //                 if (!err)
+    //                     resolve(results);
+    //                 else
+    //                     reject(err);
+    //             });
+    //         }).catch(function(err) {
+    //             var error = { "status": "Failed , Connection error", "error": err };
+    //             console.log(JSON.stringify(error));
+    //         });
+    //     });
+    // };
 
     return {
         getDataByID: (collection, whereFilter, dataFilter, key) => {
@@ -162,8 +177,28 @@ module.exports = (cache, logger, config) => {
                 });
 
             });
+        },
+
+        saveSignUP: (collection, dataCollection) => {
+            console.log("inside signup dataCollection:" + JSON.stringify(dataCollection));
+            return new Promise((resolve, reject) => {
+                connect().then((db) => {
+                    db.collection(collection).save(dataCollection, (err, results) => {
+                        console.log("inside signup 1");
+                        if (!err) {
+                            console.log("inside signup2");
+                            resolve(results);
+                        } else {
+                            console.log("inside signup3");
+                            reject(err);
+                        }
+                    });
+                }).catch(function(err) {
+                    var error = { "saveSignUP status": "Failed , Connection error", "error": err };
+                    console.log(JSON.stringify(error));
+                    reject(err);
+                });
+            });
         }
-
-
     }
 }
