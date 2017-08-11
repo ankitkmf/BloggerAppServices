@@ -1,13 +1,11 @@
 "use strict";
-
 var express = require("express");
-var router = express.Router();
 var ObjectId = require("mongodb").ObjectID;
-//var app = express();
-//app.use(router);
-
-
-module.exports = router;
+var bodyparser = require("body-parser");
+const app = express();
+// app.use(bodyparser.urlencoded({ extended: true }));
+// app.use(bodyparser.json());
+var router = express.Router();
 
 module.exports = (dir, services) => {
     router.get("/findone/:collection/:id", function(req, res) {
@@ -127,12 +125,12 @@ module.exports = (dir, services) => {
     });
 
     router.post("/saveSignUp", (req, res) => {
-        //res.header("Access-Control-Allow-Origin", "*");
-        console.log("ankit0 " + req);
+        // res.header("Access-Control-Allow-Origin", "*");
+        console.log("ankit0 " + JSON.stringify(req.body));
         //console.log("ankit1 " + JSON.stringify(req.body));
-        //console.log("ankit2 " + JSON.stringify(req.params));
+        console.log("ankit2 " + JSON.stringify(req.params));
         //console.log("ankit3 " + JSON.stringify(req.params.key));
-        res.json("{true}");
+        res.json(req.body);
     });
     return router;
 };

@@ -4,11 +4,10 @@ const express = require('express');
 const services = require('./servicelayer')('./services');
 const router = require('./router.js')('./routes/', services);
 const app = express();
-app.use(router);
 var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
-app.use(bodyparser());
+app.use(router);
 
 
 const log = services.logger.log;
