@@ -5,14 +5,13 @@ var config = require("config");
 
 module.exports = (config) => {
 
-    console.log("logs");
-
-    const logDir = 'logs';
-    if (!fs.existsSync(logDir)) {
-        fs.mkdirSync(logDir);
-    }
-    return {
-        log: bunyan.createLogger({
+    try {
+        const logDir = 'logs';
+        if (!fs.existsSync(logDir)) {
+            fs.mkdirSync(logDir);
+        }
+        console.log(config.cache.expire);
+        var logging = bunyan.createLogger({
             name: 'BMS',
             streams: [{
                     level: 'info',
@@ -27,6 +26,13 @@ module.exports = (config) => {
                         // count: 3
                 }
             ]
-        })
+        });
+        console.log(config.messageList.infoList.msg_201.msg);
+    } catch (err) {
+        // var error = { error: "failed", error: err.message };
+        // res.json({"error_code":});
+    }
+    return {
+        log: logging
     }
 }

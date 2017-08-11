@@ -31,58 +31,61 @@ module.exports = (cache, logger, config) => {
     let checkUserName = function(collection, whereFilter) {
         return new Promise(function(resolve, reject) {
             connect().then(function(db) {
-                db.collection(collection)
-                    .find(whereFilter, {}).count((err, results) => {
-                        if (!err) {
-                            resolve(results);
-                        } else {
-                            reject(err);
-                        }
-                    });
-            }).catch(function(err) {
-                var error = { "status": "Failed , Connection error", "error": err };
-                console.log(JSON.stringify(error));
-                reject(error);
-            });
+                    db.collection(collection)
+                        .find(whereFilter, {}).count((err, results) => {
+                            if (!err) {
+                                resolve(results);
+                            } else {
+                                reject(err);
+                            }
+                        });
+                })
+                //     .catch(function(err) {
+                //     var error = { "status": "Failed , Connection error", "error": err };
+                //     console.log(JSON.stringify(error));
+                //     reject(error);
+                // });
         });
     }
 
     let findOne = function(collection, whereFilter, dataFilter) {
         return new Promise(function(resolve, reject) {
             connect().then(function(db) {
-                db.collection(collection)
-                    .findOne(whereFilter, dataFilter, (err, results) => {
-                        if (!err) {
-                            resolve(results);
-                        } else {
-                            reject(err);
-                        }
-                    });
-            }).catch(function(err) {
-                var error = { "status": "Failed , Connection error", "error": err };
-                console.log(JSON.stringify(error));
-            });
+                    db.collection(collection)
+                        .findOne(whereFilter, dataFilter, (err, results) => {
+                            if (!err) {
+                                resolve(results);
+                            } else {
+                                reject(err);
+                            }
+                        });
+                })
+                //     .catch(function(err) {
+                //     var error = { "status": "Failed , Connection error", "error": err };
+                //     console.log(JSON.stringify(error));
+                // });
         });
     }
 
     let findAll = function(collection, whereFilter, dataFilter) {
         return new Promise(function(resolve, reject) {
-            connect().then(function(db) {
-                console.log(JSON.stringify(whereFilter));
-                db.collection(collection)
-                    .find(whereFilter, dataFilter).toArray(function(err, results) {
-                        if (!err) {
-                            // console.log("results:" + results);
-                            resolve(results);
-                        } else {
-                            reject(err);
-                        }
-                    });
-            });
-        }).catch(function(err) {
-            var error = { "status": "Failed , Connection error", "error": err };
-            console.log(JSON.stringify(error));
-        });
+                connect().then(function(db) {
+                    console.log(JSON.stringify(whereFilter));
+                    db.collection(collection)
+                        .find(whereFilter, dataFilter).toArray(function(err, results) {
+                            if (!err) {
+                                // console.log("results:" + results);
+                                resolve(results);
+                            } else {
+                                reject(err);
+                            }
+                        });
+                });
+            })
+            // .catch(function(err) {
+            //     var error = { "status": "Failed , Connection error", "error": err };
+            //     console.log(JSON.stringify(error));
+            // });
     }
 
     let findblogs = function(collection, whereFilter, sortfilter) {
@@ -123,7 +126,7 @@ module.exports = (cache, logger, config) => {
     // };
 
     return {
-        getDataByID: (collection, whereFilter, dataFilter, key) => {
+        findOne: (collection, whereFilter, dataFilter, key) => {
             return new Promise(function(resolve, reject) {
                 cache.get(key).then(results => {
                     if (results != null) {
