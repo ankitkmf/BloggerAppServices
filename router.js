@@ -19,7 +19,7 @@ module.exports = (dir, services) => {
             var collection = req.params.collection;
 
             services.data
-                .getDataByID(collection, whereFilter, dataFilter, key)
+                .findOne(collection, whereFilter, dataFilter, key)
                 .then(function(result) {
                     res.json(result);
                 })
