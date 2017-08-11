@@ -88,6 +88,42 @@ module.exports = (cache, logger, config) => {
     //         res.json({ "error_code": _errorMsg.code, "error_msg": _errorMsg.msg });
     //     }
     // }
+    let findblogs = function(collection, whereFilter, sortfilter) {
+        return new Promise(function(resolve, reject) {
+            connect().then(function(db) {
+                console.log(JSON.stringify(whereFilter));
+                console.log(JSON.stringify(sortfilter));
+                db.collection(collection)
+                    .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
+                        if (!err) {
+                            // console.log("results:" + results);
+                            resolve(results);
+                        } else {
+                            reject(err);
+                        }
+                    });
+            });
+        }).catch(function(err) {
+            var error = { "status": "Failed , Connection error", "error": err };
+            console.log(JSON.stringify(error));
+        });
+    }
+
+    // let saveSignUP = (collection, dataCollection) => {
+    //     return new Promise((resolve, reject) => {
+    //         connect.then((db) => {
+    //             db.collection(collection).save(dataCollection, (err, results) => {
+    //                 if (!err)
+    //                     resolve(results);
+    //                 else
+    //                     reject(err);
+    //             });
+    //         }).catch(function(err) {
+    //             var error = { "status": "Failed , Connection error", "error": err };
+    //             console.log(JSON.stringify(error));
+    //         });
+    //     });
+    // };
 
     return {
         findOne: (collection, whereFilter, dataFilter, key) => {
@@ -186,8 +222,30 @@ module.exports = (cache, logger, config) => {
                 });
             });
         },
-        test: () => {
-            console.log("working");
+
+
+        getblogs: (collection, whereFilter, sortfilter, key) => {
+            return new Promise(function(resolve, reject) {
+                cache.get(key).then(results => {
+                    if (results != null) {
+                        console.log("result found in cache ");
+                        resolve(results);
+                    } else {
+                        findblogs(collection, whereFilter, sortfilter).then(function(results) {
+                            console.log("In getAllData method");
+                            var data = { "result": results, "count": results.length };
+                            cache.set(key, JSON.stringify(data));
+                            cache.expire(key, redisKeyExpire);
+                            console.log("data store in key:" + key);
+                            resolve(data);
+                        }).catch(function(err) {
+                            console.log("error in getAllData " + err);
+                            var error = { "status": "failed", "error": err };
+                            reject(error);
+                        });
+                    }
+                });
+            });
         }
     }
 }
