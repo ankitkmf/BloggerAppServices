@@ -151,5 +151,41 @@ module.exports = (dir, services) => {
             res.json(error);
         }
     });
+
+    router.get("/getblogs/:si/:ct", (req, res) => {
+        try {
+            console.log("get blog data " + JSON.stringify(req.params));
+
+            res.header("Access-Control-Allow-Origin", "*");
+            var key = "getblogs_" + req.params.si + "_" + req.params.ct;
+            console.log("get key:" + key);
+
+            var whereFilter = {};
+            var sortfilter = { "creationdate": 1 }; //--- 1 for asc and -1 for desc
+            var si = req.params.si;
+            var ct = req.params.ct;
+            var collection = "blogs";
+
+            if (ct == "all")
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si } };
+            else
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si }, categorykey: ct };
+
+            services.data
+                .getblogs(collection, whereFilter, sortfilter, key)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    res.json("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            console.log("Get Blogs 2 : " + err);
+            var error = { status: "Error in retrieveing blogs", error: err.message };
+            res.json(error);
+        }
+    });
+
     return router;
 };
