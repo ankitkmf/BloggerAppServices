@@ -90,7 +90,7 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection)
                         .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                // console.log("results:" + results);
+                                console.log("findblogs results:" + results);
                                 resolve(results);
                             } else {
                                 reject(err);

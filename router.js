@@ -170,15 +170,15 @@ module.exports = (dir, services) => {
             services.data
                 .getblogs(collection, whereFilter, sortfilter, key)
                 .then(function(result) {
-                    res.json(result);
+                    res.send(result);
                 })
                 .catch(function(error) {
-                    res.json("data for key error: " + JSON.stringify(error));
+                    res.send("data for key error: " + JSON.stringify(error));
                 });
 
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-            res.json({ _errorMsg });
+            res.send({ _errorMsg });
         }
     });
 
