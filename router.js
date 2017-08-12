@@ -182,5 +182,29 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.get("/validateUserEmail/:email", function(req, res) {
+        try {
+            //http://localhost:3000/validateUserEmail            
+            //res.header("Access-Control-Allow-Origin", "*");
+            // var key = "validateUserEmail_users_email_" + req.params.username;
+            //console.log("get key:" + key);
+            var whereFilter = { email: req.params.email };
+            var dataFilter = { password: true };
+            var collection = "users";
+            services.data
+                .validateUserEmail(collection, whereFilter, dataFilter)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1014.code + " , error_msg:" + errorMsg.msg_1014.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
     return router;
 };

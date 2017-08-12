@@ -82,12 +82,6 @@ module.exports = (cache, logger, config) => {
             })
         }
 
-        console.log(infoMsg.msg_204.msg);
-        //     } catch (err) {
-        //         var _errorMsg = errorMsg.msg_1013;
-        //         res.json({ "error_code": _errorMsg.code, "error_msg": _errorMsg.msg });
-        //     }
-        // }
         let findblogs = function(collection, whereFilter, sortfilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
@@ -108,6 +102,8 @@ module.exports = (cache, logger, config) => {
                 console.log(JSON.stringify(error));
             });
         }
+
+        console.log(infoMsg.msg_204.msg);
 
         return {
             findOne: (collection, whereFilter, dataFilter, key) => {
@@ -207,6 +203,29 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
+            validateUserEmail: (collection, whereFilter, dataCollection) => {
+                console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
+                            // console.log("inside validateUserEmail 1");
+                            if (!err) {
+                                console.log("inside validateUserEmail 1:" + JSON.stringify(results));
+                                var data = { "result": results, "count": results.length };
+                                resolve(data);
+                            } else {
+                                var _errorMsg = "error_code :" + errorMsg.msg_1015.code + " , error_msg:" + errorMsg.msg_1015.msg + " ,error:" + err;
+                                console.log("inside validateUserEmail 2" + _errorMsg);
+                                reject(_errorMsg);
+                            }
+                        });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
 
             getblogs: (collection, whereFilter, sortfilter, key) => {
                 return new Promise(function(resolve, reject) {

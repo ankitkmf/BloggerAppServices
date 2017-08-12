@@ -79,6 +79,14 @@
             "msg_1013": {
                 "code": "1013",
                 "msg": "Exception to initiate data layer"
+            },
+            "msg_1014": {
+                "code": "1014",
+                "msg": "Exception in validateUserEmail method at router layer"
+            },
+            "msg_1015": {
+                "code": "1015",
+                "msg": "Exception in validateUserEmail method at db layer"
             }
         },
         "infolist": {
@@ -137,6 +145,10 @@
             "msg_2014": {
                 "code": "2014",
                 "msg": "Cache key  expire set successfully"
+            },
+            "msg_2015": {
+                "code": "2015",
+                "msg": "validateUserEmail method run successfully"
             }
         }
     }

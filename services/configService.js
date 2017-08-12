@@ -80,6 +80,14 @@ module.exports = () => {
                 msg_1013: {
                     code: config.get('messageList.exceptionList.msg_1013.code'),
                     msg: config.get('messageList.exceptionList.msg_1013.msg')
+                },
+                msg_1014: {
+                    code: config.get('messageList.exceptionList.msg_1014.code'),
+                    msg: config.get('messageList.exceptionList.msg_1014.msg')
+                },
+                msg_1015: {
+                    code: config.get('messageList.exceptionList.msg_1015.code'),
+                    msg: config.get('messageList.exceptionList.msg_1015.msg')
                 }
             },
             infoList: {
@@ -138,6 +146,10 @@ module.exports = () => {
                 msg_2014: {
                     code: config.get('messageList.infolist.msg_2014.code'),
                     msg: config.get('messageList.infolist.msg_2014.msg')
+                },
+                msg_2015: {
+                    code: config.get('messageList.infolist.msg_2015.code'),
+                    msg: config.get('messageList.infolist.msg_2015.msg')
                 }
             }
         }
