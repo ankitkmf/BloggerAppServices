@@ -182,15 +182,13 @@ module.exports = (dir, services) => {
         }
     });
 
-    router.get("/validateUserEmail/:email", function(req, res) {
+    router.post("/validateUserEmail", function(req, res) {
         try {
-            //http://localhost:3000/validateUserEmail            
-            //res.header("Access-Control-Allow-Origin", "*");
-            // var key = "validateUserEmail_users_email_" + req.params.username;
-            //console.log("get key:" + key);
-            var whereFilter = { email: req.params.email };
+            //http://localhost:3000/validateUserEmail     
+            var whereFilter = { email: req.body.email };
             var dataFilter = { password: true };
             var collection = "users";
+            // console.log("1:" + JSON.stringify(req.body));
             services.data
                 .validateUserEmail(collection, whereFilter, dataFilter)
                 .then(function(result) {
