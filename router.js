@@ -153,6 +153,12 @@ module.exports = (dir, services) => {
 
     router.get("/getblogs/:si/:ct", (req, res) => {
         try {
+            //http://localhost:3000/getblogs/0/all
+            //http://localhost:3000/getblogs/4/all
+            //http://localhost:3000/getblogs/3/1
+            //http://localhost:3000/getblogs/5/2
+            //http://localhost:3000/getblogs/10/3
+            //http://localhost:3000/getblogs/90/4
             res.header("Access-Control-Allow-Origin", "*");
             var key = "getblogs_" + req.params.si + "_" + req.params.ct;
 
@@ -185,8 +191,9 @@ module.exports = (dir, services) => {
     router.post("/validateUserEmail", function(req, res) {
         try {
             //http://localhost:3000/validateUserEmail     
+            console.log("Email:" + req.body.email);
             var whereFilter = { email: req.body.email };
-            var dataFilter = { password: true };
+            var dataFilter = { password: true, username: true };
             var collection = "users";
             // console.log("1:" + JSON.stringify(req.body));
             services.data
