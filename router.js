@@ -211,5 +211,29 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.post("/updatesubscribe", function(req, res) {
+        try {
+            //http://localhost:3000/updatesubscribe     
+            var dataCollection = {
+                "name": req.body.name,
+                "emailID": req.body.emailID,
+                "dateTime": new Date().toDateString()
+            };
+
+            var collection = "subscribeUser";
+            services.data.insertsubscribeinfo(collection, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
     return router;
 };

@@ -1,7 +1,6 @@
 'use strict'
 var bunyan = require('bunyan');
 var fs = require("fs");
-var config = require("config");
 
 module.exports = (config) => {
 
@@ -14,15 +13,17 @@ module.exports = (config) => {
             name: 'BMS',
             streams: [{
                     level: 'info',
-                    path: config.getLog.getInfoFolderPath()
+                    path: config.getLog.getInfoFolderPath(),
+                    type: 'rotating-file',
+                    period: '1d', // daily rotation 
+                    count: 3
                 },
                 {
                     level: 'error',
-                    path: config.getLog.getErrorFolderPath()
-                        // type: 'rotating-file',
-                        // path: config.getLog.getErrorFolderPath(),
-                        // period: '1d', // daily rotation 
-                        // count: 3
+                    path: config.getLog.getErrorFolderPath(),
+                    type: 'rotating-file',
+                    period: '1d', // daily rotation 
+                    count: 3
                 }
             ]
         });

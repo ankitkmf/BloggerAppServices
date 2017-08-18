@@ -85,21 +85,39 @@ module.exports = (cache, logger, config) => {
         let findblogs = function(collection, whereFilter, sortfilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
-                    console.log(JSON.stringify(whereFilter));
-                    console.log(JSON.stringify(sortfilter));
                     db.collection(collection)
                         .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                console.log("findblogs results:" + results);
+                                logger.log.info("findblogs method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
+                                logger.log.error("findblogs method : error : " + err);
                                 reject(err);
                             }
                         });
+                }).catch(function(err) {
+                    logger.log.error("findblogs method : connection error : " + err);
                 });
-            }).catch(function(err) {
-                var error = { "status": "Failed , Connection error", "error": err };
-                console.log(JSON.stringify(error));
+            });
+        }
+
+        let insert = function(collection, dataCollection) {
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    console.log(JSON.stringify(dataCollection));
+                    db.collection(collection)
+                        .save(dataCollection, (err, result) => {
+                            if (!err) {
+                                logger.log.info("insert method : results count : " + result.length);
+                                resolve(result);
+                            } else {
+                                logger.log.error("insert method : error : " + err);
+                                reject(err);
+                            }
+                        });
+                }).catch(function(err) {
+                    logger.log.error("insert method : connection error : " + err);
+                });
             });
         }
 
@@ -231,22 +249,36 @@ module.exports = (cache, logger, config) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
-                            console.log("result found in cache ");
+                            logger.log.info("getblogs method : data retrieve from cache");
                             resolve(results);
                         } else {
                             findblogs(collection, whereFilter, sortfilter).then(function(results) {
-                                console.log("In getAllData method");
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
-                                console.log("data store in key:" + key);
+                                logger.log.info("getblogs method : data retrieve from cache : Cache Key " + key);
                                 resolve(data);
                             }).catch(function(err) {
-                                console.log("error in getAllData " + err);
-                                var error = { "status": "failed", "error": err };
-                                reject(error);
+                                logger.log.error("getblogs method : data retrieve error " + err);
+                                reject(err);
                             });
                         }
+                    });
+                });
+            },
+
+            insertsubscribeinfo: (collection, dataCollection) => {
+                return new Promise(function(resolve, reject) {
+                    insert(collection, dataCollection).then(function(result) {
+                        logger.log.info("insertsubscribeinfo method : data saved successfully : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));
+                        resolve(result);
+                    }).catch(function(err) {
+                        logger.log.error("insertsubscribeinfo method : data does not saved : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));;
+                        reject(err);
                     });
                 });
             }

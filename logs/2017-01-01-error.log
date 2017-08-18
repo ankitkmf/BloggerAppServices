@@ -1,0 +1,4 @@
+{"name":"BMS","hostname":"NB3051517587","pid":14612,"level":50,"msg":"findblogs method : error : MongoError: Topology was destroyed","time":"2017-08-18T12:13:03.731Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":14612,"level":50,"msg":"getblogs method : data retrieve error MongoError: Topology was destroyed","time":"2017-08-18T12:13:03.732Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":14612,"level":50,"msg":"findblogs method : error : MongoError: Topology was destroyed","time":"2017-08-18T12:13:12.246Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":14612,"level":50,"msg":"getblogs method : data retrieve error MongoError: Topology was destroyed","time":"2017-08-18T12:13:12.246Z","v":0}

@@ -87,6 +87,10 @@
             "msg_1015": {
                 "code": "1015",
                 "msg": "Exception in validateUserEmail method at db layer"
+            },
+            "msg_1016": {
+                "code": "1016",
+                "msg": "Exception in insertsubscribeinfo method at db layer"
             }
         },
         "infolist": {
