@@ -91,6 +91,10 @@
             "msg_1016": {
                 "code": "1016",
                 "msg": "Exception in insertsubscribeinfo method at db layer"
+            },
+            "msg_1017": {
+                "code": "1017",
+                "msg": "Exception in getaboutme method at db layer"
             }
         },
         "infolist": {

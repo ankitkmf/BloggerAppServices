@@ -54,8 +54,10 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection)
                         .findOne(whereFilter, dataFilter, (err, results) => {
                             if (!err) {
+                                //console.log("0");
                                 resolve(results);
                             } else {
+                                //console.log("01");
                                 var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
                                 reject(_errorMsg);
                             }
@@ -279,6 +281,32 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));;
                         reject(err);
+                    });
+                });
+            },
+
+            getaboutme: (collection, whereFilter, dataFilter, key) => {
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getaboutme method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            findOne(collection, whereFilter, dataFilter).then(function(results) {
+                                var data = { "result": [], "count": 0 };
+                                if (results != null)
+                                    data = { "result": results, "count": results.length };
+
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getaboutme method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
+                                console.log(_errorMsg);
+                                reject({ _errorMsg });
+                            });
+                        }
                     });
                 });
             }

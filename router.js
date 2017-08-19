@@ -235,5 +235,34 @@ module.exports = (dir, services) => {
         }
     });
 
+    // Get profile about me
+    router.get("/getaboutme/:_id", (req, res) => {
+        try {
+            //http://localhost:3000/getaboutme/{_id}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params._id;
+            var key = "getaboutme" + req.params._id;
+
+            var whereFilter = { "userid": userid };
+            var dataFilter = {};
+
+            var collection = "aboutme";
+
+            services.data
+                .getaboutme(collection, whereFilter, dataFilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
     return router;
 };
