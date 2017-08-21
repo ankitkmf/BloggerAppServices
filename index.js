@@ -9,8 +9,39 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(router);
 
-
 const log = services.logger.log;
+
+// swagger definition
+var swaggerDefinition = {
+    info: {
+        title: 'Blogger Meet API',
+        version: '1.0.0',
+        description: 'Validate RESTful API with Swagger',
+    },
+    host: services.config.webserver.host + ":" + services.config.webserver.port,
+    basePath: '/',
+};
+
+// options for the swagger docs
+var options = {
+    // import swaggerDefinitions
+    swaggerDefinition: swaggerDefinition,
+    // path to the API docs
+    apis: ['./router.js'],
+};
+
+// initialize swagger-jsdoc
+var swaggerJSDoc = require('swagger-jsdoc');
+var swaggerSpec = swaggerJSDoc(options);
+// serve swagger
+app.get('/swagger.json', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
+var swaggerUi = require('swagger-ui-express');
+var showExplorer = true;
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, showExplorer));
 
 // process.on('uncaughtException', function(err) {
 //     // log.error("uncaughtException:" + err);

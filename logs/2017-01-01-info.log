@@ -1,174 +1,21 @@
-{"name":"BMS","hostname":"NB3051517587","pid":3684,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T14:11:46.025Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T14:49:27.557Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T14:49:27.560Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T14:49:36.869Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T14:49:39.741Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T14:54:42.225Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T14:54:59.147Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T14:55:01.963Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T14:55:05.636Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T14:56:10.446Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T14:59:33.044Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:03:02.716Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:03:02.721Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:03:10.760Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:03:13.159Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:04:07.450Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:04:07.451Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:04:14.758Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:04:17.483Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:04:18.697Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:05:48.189Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:05:48.190Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:05:59.585Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:06:02.164Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:06:02.169Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:08:46.218Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:08:46.219Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:08:53.458Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:08:55.895Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T15:09:23.334Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:10:25.294Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:10:25.296Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:10:33.733Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:10:36.592Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:15:56.568Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:15:58.627Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:15:58.628Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:16:07.496Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T15:16:09.703Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:19:41.810Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:19:41.812Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:19:50.282Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:19:52.499Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:20:11.003Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:21:28.363Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:21:28.365Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:21:28.639Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:21:28.788Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:21:35.739Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:21:38.200Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:22:28.117Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:22:28.118Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:22:35.503Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:22:37.625Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:29:23.609Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:29:23.611Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:29:30.575Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:29:33.126Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:31:45.511Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:31:45.512Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:31:57.293Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:31:59.756Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:32:33.539Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:32:33.540Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:32:35.320Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:32:35.464Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:32:43.276Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:32:45.339Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:34:07.096Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:34:07.097Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:34:13.986Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:34:16.377Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:35:02.906Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:35:02.908Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:35:09.301Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:35:11.712Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:37:07.047Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:37:07.048Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:37:16.237Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:37:18.200Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:37:33.147Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:37:41.693Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:37:41.694Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T15:37:43.615Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:38:02.478Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:38:10.013Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:38:13.430Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:38:48.706Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:38:48.707Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:39:03.654Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:39:05.840Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T15:42:24.788Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T15:42:24.790Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T15:42:33.466Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:42:36.441Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:44:06.581Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T15:56:44.746Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:00:47.525Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:01:20.698Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:02:34.696Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:03:26.206Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:03:58.440Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:04:11.019Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:04:50.871Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:12:06.239Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:14:41.010Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:16:20.227Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:16:42.854Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:17:00.500Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:17:47.553Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:23:12.636Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:24:27.192Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:26:27.251Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:27:24.139Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:27:51.123Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:28:13.135Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:29:02.723Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:29:13.887Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:30:41.213Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:30:51.401Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:33:10.632Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:33:22.486Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:34:56.516Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:36:52.018Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:42:43.729Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:44:00.322Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:44:17.155Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:45:07.842Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:50:36.746Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:56:06.908Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T16:56:07.594Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T16:56:07.598Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T16:56:18.028Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:56:20.720Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:57:27.169Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T16:57:55.309Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:58:29.102Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T16:59:56.321Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T17:00:15.349Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T17:00:30.641Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T17:01:42.924Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T17:02:42.506Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T17:03:06.668Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T18:55:09.913Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T18:55:09.914Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T18:55:20.071Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T18:55:23.473Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T18:56:03.777Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T18:57:03.724Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T18:57:30.091Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T18:57:42.312Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:02:47.045Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:06:21.685Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:07:26.375Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:14:24.961Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:15:29.720Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:16:42.870Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:17:59.381Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:20:01.290Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:22:18.725Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T19:22:22.214Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T19:22:22.215Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T19:22:32.590Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme597ed31a206ca427084c1f95","time":"2017-08-19T19:22:36.420Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T19:24:07.676Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T19:24:07.678Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T19:24:19.693Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-19T19:30:47.778Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-19T19:30:47.782Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":16848,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-19T19:30:51.787Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":15596,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme595cde84f8ce4a2250f38820","time":"2017-08-19T19:35:43.514Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":9404,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme597ed31a206ca427084c1f95","time":"2017-08-19T19:43:28.192Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":6280,"level":30,"msg":"getaboutme method : data retrieve from cache","time":"2017-08-19T19:43:44.211Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":14960,"level":30,"msg":"getaboutme method : data retrieve from cache : Cache Key getaboutme597ed31a206ca427084c1f95","time":"2017-08-19T19:45:02.343Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":50,"msg":"findblogs method : connection error : error_code :103 , error_msg:Unable to connect db ,error:MongoError: failed to connect to server [ds161001.mlab.com:61001] on first connect [MongoError: connect ETIMEDOUT 54.198.97.85:61001]","time":"2017-08-21T05:13:46.809Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T05:14:34.814Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T05:14:34.829Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T05:15:36.537Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_1_all","time":"2017-08-21T05:15:36.538Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-21T05:15:39.631Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 2","time":"2017-08-21T06:07:10.790Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_3_all","time":"2017-08-21T06:07:10.796Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T06:07:16.894Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T06:07:16.895Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 1","time":"2017-08-21T06:07:28.206Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_4_all","time":"2017-08-21T06:07:28.208Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 0","time":"2017-08-21T06:07:36.133Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_5_all","time":"2017-08-21T06:07:36.134Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-21T06:07:40.627Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T06:09:31.058Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T06:09:31.062Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13264,"level":30,"msg":"insert method : results count : undefined","time":"2017-08-21T07:10:22.711Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":13264,"level":30,"msg":"insertsubscribeinfo method : data saved successfully : Collection Name : subscribeUser, Data {\"name\":\"test\",\"emailID\":\"vaskarsarma@gmail.com\",\"dateTime\":\"Mon Aug 21 2017\",\"_id\":\"599a875eb3dfe333d0e0eb9d\"}","time":"2017-08-21T07:10:22.712Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":8328,"level":30,"msg":"insert method : results count : undefined","time":"2017-08-21T07:33:48.836Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":8328,"level":30,"msg":"insertsubscribeinfo method : data saved successfully : Collection Name : subscribeUser, Data {\"name\":\"test\",\"emailID\":\"test@test.com\",\"dateTime\":\"Mon Aug 21 2017\",\"_id\":\"599a8cdcaf45f02088de46c6\"}","time":"2017-08-21T07:33:48.837Z","v":0}

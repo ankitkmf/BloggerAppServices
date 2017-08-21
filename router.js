@@ -211,14 +211,50 @@ module.exports = (dir, services) => {
         }
     });
 
+    /**
+     * @swagger
+     * definition:
+     *   data:
+     *     properties:
+     *       name:
+     *         type: string
+     *       emailID:
+     *         type: string
+     */
+
+    /**
+     * @swagger
+     * /updatesubscribe:
+     *   post:
+     *     tags:
+     *       - Update Subscribe
+     *     description: Update Subscribe
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: data
+     *         description: data object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/data'
+     *     responses:
+     *       200:
+     *         description: Successfully Subscribed
+     */
     router.post("/updatesubscribe", function(req, res) {
         try {
             //http://localhost:3000/updatesubscribe     
+
+            console.log(req.body.name + "," + req.body.emailID);
+
             var dataCollection = {
                 "name": req.body.name,
                 "emailID": req.body.emailID,
                 "dateTime": new Date().toDateString()
             };
+
+            console.log(JSON.stringify(dataCollection));
 
             var collection = "subscribeUser";
             services.data.insertsubscribeinfo(collection, dataCollection)
@@ -235,18 +271,34 @@ module.exports = (dir, services) => {
         }
     });
 
-    // Get profile about me
+    /**
+     * @swagger
+     * /getaboutme/{_id}:
+     *   get:
+     *     tags:
+     *       - About User
+     *     description: Returns about a user
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: _id
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
     router.get("/getaboutme/:_id", (req, res) => {
         try {
             //http://localhost:3000/getaboutme/{_id}
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params._id;
-            var key = "getaboutme" + req.params._id;
-
+            var key = "getaboutme" + userid;
             var whereFilter = { "userid": userid };
             var dataFilter = {};
-
             var collection = "aboutme";
 
             services.data

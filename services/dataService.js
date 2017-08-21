@@ -294,9 +294,9 @@ module.exports = (cache, logger, config) => {
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
                                 var data = { "result": [], "count": 0 };
-                                if (results != null)
+                                if (results != null) {
                                     data = { "result": results, "count": results.length };
-
+                                }
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getaboutme method : data retrieve from cache : Cache Key " + key);
