@@ -16,7 +16,7 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
             var key = "findone_" + req.params.collection + "_id_" + req.params.id;
             var whereFilter = { _id: ObjectId(req.params.id) };
-            var dataFilter = { usernamehash: false, password: false };
+            var dataFilter = { usernamehash: false };
             var collection = req.params.collection;
 
             services.data
@@ -203,6 +203,31 @@ module.exports = (dir, services) => {
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_1014.code + " , error_msg:" + errorMsg.msg_1014.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    router.post("/updatepassword", function(req, res) {
+        try {
+            //http://localhost:3000/validateUserEmail     
+            console.log("updatepassword pwd:" + req.body.pwd);
+            console.log("updatepassword id:" + req.body.id);
+            var whereFilter = { _id: ObjectId(req.body.id) };
+            var updateFilter = { "password": req.body.pwd };
+            var collection = "users";
+            console.log("whereFilter:" + JSON.stringify(whereFilter));
+            console.log("updateFilter:" + JSON.stringify(updateFilter));
+            services.data
+                .updatepassword(collection, whereFilter, updateFilter)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
                     res.json(_errorMsg);
                 });
         } catch (err) {

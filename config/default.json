@@ -95,6 +95,10 @@
             "msg_1017": {
                 "code": "1017",
                 "msg": "Exception in getaboutme method at db layer"
+            },
+            "msg_1018": {
+                "code": "1018",
+                "msg": "Exception in updatepassword method at db layer"
             }
         },
         "infolist": {
@@ -157,6 +161,10 @@
             "msg_2015": {
                 "code": "2015",
                 "msg": "validateUserEmail method run successfully"
+            },
+            "msg_2016": {
+                "code": "2016",
+                "msg": "updatepassword method run successfully"
             }
         }
     }

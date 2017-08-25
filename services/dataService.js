@@ -129,6 +129,7 @@ module.exports = (cache, logger, config) => {
             findOne: (collection, whereFilter, dataFilter, key) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
+                        console.log("Cache key result:" + results);
                         if (results != null) {
                             resolve(results);
                         } else {
@@ -137,8 +138,8 @@ module.exports = (cache, logger, config) => {
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
-                                console.log("data store in key:" + key);
-                                resolve(data);
+                                console.log("data store in data:" + JSON.stringify(data));
+                                resolve(JSON.stringify(data));
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
                                 console.log(_errorMsg);
@@ -309,7 +310,29 @@ module.exports = (cache, logger, config) => {
                         }
                     });
                 });
-            }
+            },
+            updatepassword: (collection, whereFilter, updateDataCollection) => {
+                console.log("inside updatepassword dataCollection:" + JSON.stringify(updateDataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).update(whereFilter, { $set: updateDataCollection },
+                            (err, results) => {
+                                console.log("inside updatepassword 1");
+                                if (!err) {
+                                    resolve(results);
+                                } else {
+                                    var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
+                                    console.log(_errorMsg);
+                                    reject(err);
+                                }
+                            });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;

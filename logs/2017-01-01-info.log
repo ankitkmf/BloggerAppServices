@@ -1,21 +1,4 @@
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":50,"msg":"findblogs method : connection error : error_code :103 , error_msg:Unable to connect db ,error:MongoError: failed to connect to server [ds161001.mlab.com:61001] on first connect [MongoError: connect ETIMEDOUT 54.198.97.85:61001]","time":"2017-08-21T05:13:46.809Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T05:14:34.814Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T05:14:34.829Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T05:15:36.537Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_1_all","time":"2017-08-21T05:15:36.538Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13352,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-21T05:15:39.631Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 2","time":"2017-08-21T06:07:10.790Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_3_all","time":"2017-08-21T06:07:10.796Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T06:07:16.894Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T06:07:16.895Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 1","time":"2017-08-21T06:07:28.206Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_4_all","time":"2017-08-21T06:07:28.208Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 0","time":"2017-08-21T06:07:36.133Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_5_all","time":"2017-08-21T06:07:36.134Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache","time":"2017-08-21T06:07:40.627Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-21T06:09:31.058Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":11500,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-21T06:09:31.062Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13264,"level":30,"msg":"insert method : results count : undefined","time":"2017-08-21T07:10:22.711Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":13264,"level":30,"msg":"insertsubscribeinfo method : data saved successfully : Collection Name : subscribeUser, Data {\"name\":\"test\",\"emailID\":\"vaskarsarma@gmail.com\",\"dateTime\":\"Mon Aug 21 2017\",\"_id\":\"599a875eb3dfe333d0e0eb9d\"}","time":"2017-08-21T07:10:22.712Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":8328,"level":30,"msg":"insert method : results count : undefined","time":"2017-08-21T07:33:48.836Z","v":0}
-{"name":"BMS","hostname":"NB3051517587","pid":8328,"level":30,"msg":"insertsubscribeinfo method : data saved successfully : Collection Name : subscribeUser, Data {\"name\":\"test\",\"emailID\":\"test@test.com\",\"dateTime\":\"Mon Aug 21 2017\",\"_id\":\"599a8cdcaf45f02088de46c6\"}","time":"2017-08-21T07:33:48.837Z","v":0}
+{"name":"BMS","hostname":"Lenovo-PC","pid":9228,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-25T07:46:38.283Z","v":0}
+{"name":"BMS","hostname":"Lenovo-PC","pid":9228,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-25T07:46:38.321Z","v":0}
+{"name":"BMS","hostname":"Lenovo-PC","pid":4020,"level":30,"msg":"findblogs method : data retrieve succesfully : results count : 4","time":"2017-08-25T15:14:29.372Z","v":0}
+{"name":"BMS","hostname":"Lenovo-PC","pid":4020,"level":30,"msg":"getblogs method : data retrieve from cache : Cache Key getblogs_0_all","time":"2017-08-25T15:14:29.384Z","v":0}
