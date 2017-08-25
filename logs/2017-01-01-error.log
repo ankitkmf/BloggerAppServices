@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+=======
+{"name":"BMS","hostname":"NB3051517587","pid":15600,"level":50,"msg":"updateaboutme method : findOne method returned error : Collection Name : aboutme, Data : {\"userid\":\"596cb352bf47a70c193ce630\",\"content\":\"Hi I am testing\"},Error : TypeError: Cannot read property '_id' of null","time":"2017-08-25T06:13:09.282Z","v":0}
+{"name":"BMS","hostname":"NB3051517587","pid":15600,"level":50,"msg":"updateaboutme method : findOne method returned error : Collection Name : aboutme, Data : {\"userid\":\"596cb352bf47a70c193ce630\",\"content\":\"Hi I am testing\"},Error : TypeError: Cannot read property '_id' of null","time":"2017-08-25T06:15:07.673Z","v":0}
+>>>>>>> 08676ea338526a9c96f70235fbb17aad8eecdf15
