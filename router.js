@@ -214,7 +214,7 @@ module.exports = (dir, services) => {
     /**
      * @swagger
      * definition:
-     *   data:
+     *   subscribedata:
      *     properties:
      *       name:
      *         type: string
@@ -232,12 +232,12 @@ module.exports = (dir, services) => {
      *     produces:
      *       - application/json
      *     parameters:
-     *       - name: data
-     *         description: data object
+     *       - name: subscribedata
+     *         description: subscribedata object
      *         in: body
      *         required: true
      *         schema:
-     *           $ref: '#/definitions/data'
+     *           $ref: '#/definitions/subscribedata'
      *     responses:
      *       200:
      *         description: Successfully Subscribed
@@ -313,6 +313,142 @@ module.exports = (dir, services) => {
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.send({ _errorMsg });
+        }
+    });
+
+
+    /**
+     * @swagger
+     * definition:
+     *   aboutmedata:
+     *     properties:
+     *       userid:
+     *         type: string
+     *       data:
+     *         type: string
+     *       id:
+     *         type: string
+     */
+
+    /**
+     * @swagger
+     * /updateaboutme:
+     *   post:
+     *     tags:
+     *       - Add or update about me section
+     *     description: Edit About me
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: aboutmedata
+     *         description: aboutmedata object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/aboutmedata'
+     *     responses:
+     *       200:
+     *         description: Successfully updated About Me
+     */
+    router.post("/updateaboutme", function(req, res) {
+        try {
+            //http://localhost:3000/updateaboutme   
+
+            var dataCollection = {};
+            var whereFilter = {};
+
+            dataCollection = {
+                "userid": req.body.userid,
+                "content": req.body.data
+            };
+
+            if (req.body.userid != "") {
+                whereFilter = { "userid": req.body.userid };
+            }
+
+            var collection = "aboutme";
+            services.data.updateaboutme(collection, dataCollection, whereFilter)
+                .then(function(result) {
+                    res.json(result);
+                }).catch(function(err) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * definition:
+     *   personaldetails:
+     *     properties:
+     *       userid:
+     *         type: string
+     *       firstname:
+     *         type: string
+     *       lastname:
+     *         type: string
+     *       dob:
+     *         type: string
+     *       phone:
+     *         type: string
+     *       _id:
+     *         type: string     
+     */
+
+    /**
+     * @swagger
+     * /updatepersonaldetails:
+     *   post:
+     *     tags:
+     *       - Add or update personal details
+     *     description: Edit personal details 
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: personaldetails
+     *         description: personaldetails object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/personaldetails'
+     *     responses:
+     *       200:
+     *         description: Successfully updated personal details
+     */
+    router.post("/updatepersonaldetails", function(req, res) {
+        try {
+            //http://localhost:3000/updatepersonaldetails
+
+            var dataCollection = {};
+            var whereFilter = {};
+
+            dataCollection = {
+                "userid": req.body.userid,
+                "firstname": req.body.firstname,
+                "lastname": req.body.lastname,
+                "dob": req.body.dob,
+                "phone": req.body.phone
+            };
+
+            if (req.body.userid != "") {
+                whereFilter = { "userid": req.body.userid };
+            }
+
+            var collection = "personalinfo";
+            services.data.updatepersonaldetails(collection, dataCollection, whereFilter)
+                .then(function(result) {
+                    res.json(result);
+                }).catch(function(err) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 

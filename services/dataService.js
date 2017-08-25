@@ -54,10 +54,8 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection)
                         .findOne(whereFilter, dataFilter, (err, results) => {
                             if (!err) {
-                                //console.log("0");
                                 resolve(results);
                             } else {
-                                //console.log("01");
                                 var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
                                 reject(_errorMsg);
                             }
@@ -119,6 +117,27 @@ module.exports = (cache, logger, config) => {
                         });
                 }).catch(function(err) {
                     logger.log.error("insert method : connection error : " + err);
+                });
+            });
+        }
+
+        let update = function(collection, dataCollection, wherefilter) {
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    db.collection(collection).update(wherefilter, {
+                        $set: dataCollection
+                    }, { upsert: false }, (err, results) => {
+                        if (!err) {
+                            console.log("content updated Successfully");
+                            logger.log.info("update method : Updated content successfully");
+                            resolve(results);
+                        } else {
+                            logger.log.info("update method : Error in updating content : error " + err);
+                            reject(err);
+                        }
+                    });
+                }).catch(function(err) {
+                    logger.log.error("update method : connection error : " + err);
                 });
             });
         }
@@ -309,6 +328,142 @@ module.exports = (cache, logger, config) => {
                         }
                     });
                 });
+            },
+
+            updateaboutme: (collection, dataCollection, filter) => {
+
+                if (filter != undefined && filter != null && filter.userid != undefined) {
+                    //console.log(filter.id);
+                    var whereFilter = { "userid": filter.userid };
+                    var datafilter = {};
+
+                    return new Promise(function(resolve, reject) {
+
+                        logger.log.info("updateaboutme method :  call findOne method : " +
+                            "Collection Name : " + collection +
+                            ", where filter : " + JSON.stringify(whereFilter));
+
+                        findOne(collection, whereFilter, datafilter).then(function(results) {
+                            if (results._id != undefined) {
+                                whereFilter = { "_id": ObjectId(results._id) };
+                                var updateQuery = { "content": dataCollection.content };
+
+                                logger.log.info("updateaboutme method : call update method : " +
+                                    "Collection Name : " + collection +
+                                    ", updated query data : " + JSON.stringify(updateQuery) +
+                                    ", where filter : " + JSON.stringify(whereFilter));
+
+                                update(collection, updateQuery, whereFilter).then(function(results) {
+                                    if (results != null && results != undefined) {
+
+                                        logger.log.info("updateaboutme method : successfully updated about me details : " +
+                                            "Collection Name : " + collection +
+                                            ", updated query data : " + JSON.stringify(results));
+
+                                        resolve(results);
+                                    }
+                                }).catch(function(err) {
+                                    logger.log.error("updateaboutme method : Erorr in updating about me details : " +
+                                        "Collection Name : " + collection +
+                                        ", Error : " + err);
+                                    reject(err);
+                                });
+                            }
+                        }).catch(function(err) {
+                            logger.log.error("updateaboutme method : Erorr in findOne method : " +
+                                "Collection Name : " + collection +
+                                ", Error : " + err);
+                            reject(err);
+                        });
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        insert(collection, dataCollection).then(function(result) {
+                            logger.log.info("updateaboutme method : data added successfully : " +
+                                "Collection Name : " + collection +
+                                ", Data " + JSON.stringify(dataCollection));
+                            resolve(result);
+                        }).catch(function(err) {
+                            logger.log.error("updateaboutme method : data does not saved : " +
+                                "Collection Name : " + collection +
+                                ", Data " + JSON.stringify(dataCollection));;
+                            reject(err);
+                        });
+                    })
+                }
+            },
+
+            updatepersonaldetails: (collection, dataCollection, filter) => {
+
+                if (filter != undefined && filter != null && filter.userid != undefined) {
+                    //console.log(filter.id);
+                    var whereFilter = { "userid": filter.userid };
+                    var datafilter = {};
+
+                    console.log("aaa 1" + filter.userid);
+
+                    return new Promise(function(resolve, reject) {
+
+                        logger.log.info("updatepersonaldetails method :  call findOne method : " +
+                            "Collection Name : " + collection +
+                            ", where filter : " + JSON.stringify(whereFilter));
+
+                        findOne(collection, whereFilter, datafilter).then(function(results) {
+                            if (results._id != undefined) {
+                                whereFilter = { "_id": ObjectId(results._id) };
+
+                                console.log("aaa " + results._id);
+
+                                var updateQuery = {
+                                    "firstname": dataCollection.firstname,
+                                    "lastname": dataCollection.lastname,
+                                    "dob": dataCollection.dob,
+                                    "phone": dataCollection.phone
+                                };
+
+                                logger.log.info("updatepersonaldetails method : call update method : " +
+                                    "Collection Name : " + collection +
+                                    ", updated query data : " + JSON.stringify(updateQuery) +
+                                    ", where filter : " + JSON.stringify(whereFilter));
+
+                                update(collection, updateQuery, whereFilter).then(function(results) {
+                                    if (results != null && results != undefined) {
+
+                                        logger.log.info("updatepersonaldetails method : successfully updated personal details : " +
+                                            "Collection Name : " + collection +
+                                            ", updated query data : " + JSON.stringify(results));
+
+                                        resolve(results);
+                                    }
+                                }).catch(function(err) {
+                                    logger.log.error("updatepersonaldetails method : Erorr in updating personal details : " +
+                                        "Collection Name : " + collection +
+                                        ", Error : " + err);
+                                    reject(err);
+                                });
+                            }
+                        }).catch(function(err) {
+                            logger.log.error("updatepersonaldetails method : Erorr in findOne method : " +
+                                "Collection Name : " + collection +
+                                ", Error : " + err);
+                            reject(err);
+                        });
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        insert(collection, dataCollection).then(function(result) {
+                            logger.log.info("updatepersonaldetails method : data added successfully : " +
+                                "Collection Name : " + collection +
+                                ", Data " + JSON.stringify(dataCollection));
+                            resolve(result);
+                        }).catch(function(err) {
+                            logger.log.error("updatepersonaldetails method : data does not saved : " +
+                                "Collection Name : " + collection +
+                                ", Data " + JSON.stringify(dataCollection));;
+                            reject(err);
+                        });
+                    })
+                }
             }
         }
     } catch (err) {
