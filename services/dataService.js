@@ -330,7 +330,6 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
-<<<<<<< HEAD
             updatepassword: (collection, whereFilter, updateDataCollection) => {
                 console.log("inside updatepassword dataCollection:" + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
@@ -353,7 +352,6 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
-=======
 
             updateaboutme: (collection, dataCollection, filter) => {
 
@@ -490,7 +488,6 @@ module.exports = (cache, logger, config) => {
                     })
                 }
             }
->>>>>>> 08676ea338526a9c96f70235fbb17aad8eecdf15
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;
