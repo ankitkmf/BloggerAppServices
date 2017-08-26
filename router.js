@@ -321,7 +321,7 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params._id;
-            var key = "getaboutme" + userid;
+            var key = "getaboutme_" + userid;
             var whereFilter = { "userid": userid };
             var dataFilter = {};
             var collection = "aboutme";
@@ -351,7 +351,7 @@ module.exports = (dir, services) => {
      *         type: string
      *       data:
      *         type: string
-     *       id:
+     *       _id:
      *         type: string
      */
 
@@ -387,9 +387,9 @@ module.exports = (dir, services) => {
                 "content": req.body.data
             };
 
-            if (req.body.userid != "") {
-                whereFilter = { "userid": req.body.userid };
-            }
+            //if (req.body.userid != "") {
+            whereFilter = { "userid": req.body.userid };
+            //}
 
             var collection = "aboutme";
             services.data.updateaboutme(collection, dataCollection, whereFilter)
@@ -418,8 +418,16 @@ module.exports = (dir, services) => {
      *         type: string
      *       dob:
      *         type: string
-     *       phone:
+     *       address1:
      *         type: string
+     *       address2:
+     *         type: string
+     *       country:
+     *         type: string
+     *       pinno:
+     *         type: number
+     *       phone:
+     *         type: number
      *       _id:
      *         type: string     
      */
@@ -456,14 +464,16 @@ module.exports = (dir, services) => {
                 "firstname": req.body.firstname,
                 "lastname": req.body.lastname,
                 "dob": req.body.dob,
+                "address1": req.body.address1,
+                "address2": req.body.address2,
+                "country": req.body.country,
+                "pinno": req.body.pinno,
                 "phone": req.body.phone
             };
 
-            if (req.body.userid != "") {
-                whereFilter = { "userid": req.body.userid };
-            }
+            whereFilter = { "userid": req.body.userid };
 
-            var collection = "personalinfo";
+            var collection = "personalinfoV2";
             services.data.updatepersonaldetails(collection, dataCollection, whereFilter)
                 .then(function(result) {
                     res.json(result);
@@ -474,6 +484,183 @@ module.exports = (dir, services) => {
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.json({ _errorMsg });
+        }
+    });
+
+
+    /**
+     * @swagger
+     * /getpersonaldetails/{_id}:
+     *   get:
+     *     tags:
+     *       - Personal info about User
+     *     description: Returns user's personal info
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: _id
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getpersonaldetails/:_id", (req, res) => {
+        try {
+            //http://localhost:3000/getpersonaldetails/{_id}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params._id;
+            var key = "getpersonaldetails_" + userid;
+            var whereFilter = { "userid": userid };
+            var dataFilter = {};
+            var collection = "personalinfoV2";
+
+            services.data
+                .getpersonaldetails(collection, whereFilter, dataFilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * definition:
+     *   proffessionaldetail:
+     *     properties:
+     *       userid:
+     *         type: string
+     *       proffession:
+     *         type: string
+     *       experience:
+     *         type: number
+     *       deptname:
+     *         type: string
+     *       companyname:
+     *         type: string
+     *       compemailid:
+     *         type: string
+     *       compphone:
+     *         type: number
+     *       qualification:
+     *         type: string
+     *       educationyear:
+     *         type: number
+     *       location:
+     *         type: string
+     *       _id:
+     *         type: string     
+     */
+
+    /**
+     * @swagger
+     * /updateproffessionaldetails:
+     *   post:
+     *     tags:
+     *       - Add or update proffessional details
+     *     description: Edit proffessional details 
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: personaldetails
+     *         description: proffessional details object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/proffessionaldetail'
+     *     responses:
+     *       200:
+     *         description: Successfully updated proffessional details
+     */
+    router.post("/updateproffessionaldetails", function(req, res) {
+        try {
+            //http://localhost:3000/updateproffessionaldetails
+
+            var dataCollection = {};
+            var whereFilter = {};
+
+            dataCollection = {
+                "userid": req.body.userid,
+                "proffession": req.body.proffession,
+                "experience": req.body.experience,
+                "deptname": req.body.deptname,
+                "companyname": req.body.companyname,
+                "compemailid": req.body.compemailid,
+                "compphone": req.body.compphone,
+                "qualification": req.body.qualification,
+                "educationyear": req.body.educationyear,
+                "location": req.body.location
+            };
+
+            whereFilter = { "userid": req.body.userid };
+
+            var collection = "proffessionalinfoV2";
+            services.data.updateproffessionaldetails(collection, dataCollection, whereFilter)
+                .then(function(result) {
+                    res.json(result);
+                }).catch(function(err) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+
+    /**
+     * @swagger
+     * /getproffessionaldetails/{_id}:
+     *   get:
+     *     tags:
+     *       - proffessional info about User
+     *     description: Returns user's proffessional info
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: _id
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getproffessionaldetails/:_id", (req, res) => {
+        try {
+            //http://localhost:3000/getproffessionaldetails/{_id}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params._id;
+            var key = "getproffessionaldetails_" + userid;
+            var whereFilter = { "userid": userid };
+            var dataFilter = {};
+            var collection = "proffessionalinfoV2";
+
+            services.data
+                .getproffessionaldetails(collection, whereFilter, dataFilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
         }
     });
 
