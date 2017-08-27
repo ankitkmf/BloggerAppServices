@@ -133,7 +133,9 @@ module.exports = (dir, services) => {
                 "email": req.body.email,
                 "IsEmailVerified": false,
                 "active": false,
-                "dateTime": new Date().toDateString()
+                "dateTime": new Date().toDateString(),
+                "authType": req.body.authType,
+                "profileID": req.body.profileID,
             };
 
             var collection = "users";
