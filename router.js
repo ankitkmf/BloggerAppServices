@@ -67,7 +67,7 @@ module.exports = (dir, services) => {
             //http://localhost:3000/findall/users/active/false
             //http://localhost:3000/findall/users/email/false
             //http://localhost:3000/findall/users/email/true
-            res.header("Access-Control-Allow-Origin", "*");
+            /// res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
             var value =
@@ -89,6 +89,15 @@ module.exports = (dir, services) => {
                     break;
                 case "email":
                     whereFilter = { IsEmailVerified: req.params.value === "true" };
+                    break;
+                case "google":
+                    whereFilter = { authType: "google" };
+                    break;
+                case "facebook":
+                    whereFilter = { authType: "facebook" };
+                    break;
+                case "local":
+                    whereFilter = { authType: "local" };
                     break;
                 default:
                     break;
