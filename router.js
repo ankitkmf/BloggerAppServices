@@ -136,6 +136,7 @@ module.exports = (dir, services) => {
                 "dateTime": new Date().toDateString(),
                 "authType": req.body.authType,
                 "profileID": req.body.profileID,
+                "userImage": req.body.userImage
             };
 
             var collection = "users";
@@ -195,9 +196,9 @@ module.exports = (dir, services) => {
             //http://localhost:3000/validateUserEmail     
             console.log("Email:" + req.body.email);
             var whereFilter = { email: req.body.email };
-            var dataFilter = { password: true, username: true };
+            var dataFilter = { password: true, username: true, authType: true, userImage: true };
             var collection = "users";
-            // console.log("1:" + JSON.stringify(req.body));
+
             services.data
                 .validateUserEmail(collection, whereFilter, dataFilter)
                 .then(function(result) {
