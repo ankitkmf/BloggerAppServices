@@ -100,11 +100,11 @@ module.exports = (dir, services) => {
             services.data
                 .findAll(collection, whereFilter, dataFilter, key)
                 .then(function(result) {
-                    res.json(result);
+                    res.send(result);
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_107.code + " , error_msg:" + errorMsg.msg_107.msg + " ,error:" + error;
-                    res.json(_errorMsg);
+                    res.send(_errorMsg);
                 });
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
@@ -172,9 +172,11 @@ module.exports = (dir, services) => {
             var collection = "blogs";
 
             if (ct == "all")
-                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si } };
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gte: si } };
             else
-                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si }, categorykey: ct };
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gte: si }, categorykey: ct };
+
+            console.log(JSON.stringify(whereFilter));
 
             services.data
                 .getblogs(collection, whereFilter, sortfilter, key)
@@ -654,6 +656,60 @@ module.exports = (dir, services) => {
 
             services.data
                 .getproffessionaldetails(collection, whereFilter, dataFilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getblogsbyuserid/{userid}/{startindex}:
+     *   get:
+     *     tags:
+     *       - ge tblogs by userid
+     *     description: Returns blogs by user id
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: userid
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *       - name: startindex
+     *         in: path
+     *         description: start index
+     *         required: true
+     *         type: string 
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getblogsbyuserid/:userid/:startindex", (req, res) => {
+        try {
+            //http://localhost:3000/getblogsbyuserid/{userid}/{startindex}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var si = req.params.startindex;
+            var key = "getblogsbyuserid_" + userid + "_" + si;
+            var whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si }, "userid": userid };
+            var sortfilter = { "creationdate": 1 }; //--- 1 for asc and -1 for desc
+            var dataFilter = {};
+            var collection = "blogs";
+
+            //console.log(" 1 whereFilter " + JSON.stringify(whereFilter));
+
+            services.data
+                .getblogsbyuserid(collection, whereFilter, dataFilter, key)
                 .then(function(result) {
                     res.send(result);
                 })

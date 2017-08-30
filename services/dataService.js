@@ -603,7 +603,30 @@ module.exports = (cache, logger, config) => {
                         }
                     });
                 });
+            },
+
+            getblogsbyuserid: (collection, whereFilter, sortfilter, key) => {
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getblogsbyuserid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            findblogs(collection, whereFilter, sortfilter).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getblogsbyuserid method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getblogsbyuserid method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
+                    });
+                });
             }
+
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;
