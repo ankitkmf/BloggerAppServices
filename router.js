@@ -46,15 +46,15 @@ module.exports = (dir, services) => {
             services.data
                 .checkUserName(collection, whereFilter, key)
                 .then(function(result) {
-                    res.json(result);
+                    res.send(result);
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_105.code + " , error_msg:" + errorMsg.msg_105.msg + " ,error:" + error;
-                    res.json(_errorMsg);
+                    res.send(_errorMsg);
                 });
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-            res.json({ _errorMsg });
+            res.send({ _errorMsg });
         }
     });
 
@@ -109,15 +109,15 @@ module.exports = (dir, services) => {
             services.data
                 .findAll(collection, whereFilter, dataFilter, key)
                 .then(function(result) {
-                    res.json(result);
+                    res.send(result);
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_107.code + " , error_msg:" + errorMsg.msg_107.msg + " ,error:" + error;
-                    res.json(_errorMsg);
+                    res.send(_errorMsg);
                 });
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-            res.json({ _errorMsg });
+            res.send({ _errorMsg });
         }
     });
 
