@@ -380,6 +380,31 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
+            UpdateUsersRecord: (collection, whereFilter, updateDataCollection) => {
+                console.log("inside UpdateUsersRecord dataCollection 1:" + JSON.stringify(updateDataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).update(whereFilter, { $set: updateDataCollection },
+                            (err, results) => {
+                                console.log("inside UpdateUsersRecord 2");
+                                if (!err) {
+                                    console.log("success" + results);
+                                    resolve(results);
+                                } else {
+                                    var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
+                                    console.log(_errorMsg);
+                                    console.log("Error");
+                                    reject(err);
+                                }
+                            });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
+
             updateaboutme: (collection, dataCollection, filter) => {
 
                 var whereFilter = filter;
