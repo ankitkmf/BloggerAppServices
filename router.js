@@ -103,7 +103,7 @@ module.exports = (dir, services) => {
                     break;
             }
             var key = "findall_" + req.params.collection + "_" + type + "_" + value;
-            var dataFilter = { usernamehash: false, password: false, _id: false };
+            var dataFilter = { usernamehash: false, password: false };
             var collection = req.params.collection;
 
             services.data
@@ -150,6 +150,32 @@ module.exports = (dir, services) => {
 
             var collection = "users";
             services.data.saveSignUP(collection, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
+    });
+
+    router.post("/updateUsersRecord", (req, res) => {
+        try {
+            console.log("UpdateTableRecords Step 1");
+            var filterQuery = { "_id": ObjectId(req.body.id) };
+            console.log("UpdateTableRecords Step 2:" + JSON.stringify(filterQuery));
+            var updateQuery = {
+                "IsEmailVerified": (req.body.IsEmailVerified),
+                "active": (req.body.active),
+                "admin": (req.body.admin)
+            };
+            console.log("UpdateTableRecords step 2:" + JSON.stringify(updateQuery));
+            var collection = "users";
+            services.data.UpdateUsersRecord(collection, filterQuery, updateQuery)
                 .then(function(result) {
                     res.json(result);
                 })
