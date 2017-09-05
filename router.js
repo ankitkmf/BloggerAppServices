@@ -163,6 +163,46 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.post("/saveLoginHistory", (req, res) => {
+        try {
+            // var dataCollection = {
+            //     "username": req.body.username,
+            //     "name": req.body.name,
+            //     "password": req.body.password, // bcrypt.hashSync(password, 10),
+            //     "admin": false,
+            //     "email": req.body.email,
+            //     "IsEmailVerified": false,
+            //     "active": false,
+            //     "dateTime": new Date().toDateString(),
+            //     "authType": req.body.authType,
+            //     "profileID": req.body.profileID,
+            //     "userImage": req.body.userImage
+            // };
+
+            var dataCollection = {
+                "username": req.body.username,
+                "name": req.body.name,
+                "email": req.body.email,
+                "authType": req.body.authType,
+                "profileID": req.body.profileID,
+                "dateTime": new Date().toDateString(),
+            };
+
+            var collection = "userLoginHistory";
+            services.data.saveLoginHistory(collection, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1019.code + " , error_msg:" + errorMsg.msg_1019.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
+    });
+
     router.post("/updateUsersRecord", (req, res) => {
         try {
             console.log("UpdateTableRecords Step 1");

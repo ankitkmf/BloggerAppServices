@@ -99,6 +99,10 @@
             "msg_1018": {
                 "code": "1018",
                 "msg": "Exception in updatepassword method at db layer"
+            },
+            "msg_1019": {
+                "code": "1019",
+                "msg": "Exception in userLoginHistory method at db layer"
             }
         },
         "infolist": {
@@ -165,6 +169,10 @@
             "msg_2016": {
                 "code": "2016",
                 "msg": "updatepassword method run successfully"
+            },
+            "msg_2017": {
+                "code": "2017",
+                "msg": "userLoginHistory method run successfully"
             }
         }
     }

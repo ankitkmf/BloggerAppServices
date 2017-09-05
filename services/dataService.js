@@ -243,6 +243,27 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
+            saveLoginHistory: (collection, dataCollection) => {
+                console.log("inside saveLoginHistory dataCollection:" + JSON.stringify(dataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).save(dataCollection, (err, results) => {
+                            console.log("inside saveLoginHistory 1");
+                            if (!err) {
+                                resolve(results);
+                            } else {
+                                var _errorMsg = "error_code :" + errorMsg.msg_1019.code + " , error_msg:" + errorMsg.msg_1019.msg + " ,error:" + err;
+                                console.log(_errorMsg);
+                                reject(err);
+                            }
+                        });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
             validateUserEmail: (collection, whereFilter, dataCollection) => {
                 console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
                 return new Promise((resolve, reject) => {

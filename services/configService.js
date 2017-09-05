@@ -92,6 +92,10 @@ module.exports = () => {
                 msg_1016: {
                     code: config.get('messageList.exceptionList.msg_1016.code'),
                     msg: config.get('messageList.exceptionList.msg_1016.msg')
+                },
+                msg_1019: {
+                    code: config.get('messageList.exceptionList.msg_1019.code'),
+                    msg: config.get('messageList.exceptionList.msg_1019.msg')
                 }
             },
             infoList: {
@@ -158,6 +162,10 @@ module.exports = () => {
                 msg_2016: {
                     code: config.get('messageList.infolist.msg_2016.code'),
                     msg: config.get('messageList.infolist.msg_2016.msg')
+                },
+                msg_2017: {
+                    code: config.get('messageList.infolist.msg_2017.code'),
+                    msg: config.get('messageList.infolist.msg_2017.msg')
                 }
             }
         }
