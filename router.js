@@ -247,9 +247,9 @@ module.exports = (dir, services) => {
             var collection = "blogs";
 
             if (ct == "all")
-                whereFilter = { status: { $in: ["0", "1"] }, index: { $gte: si } };
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si } };
             else
-                whereFilter = { status: { $in: ["0", "1"] }, index: { $gte: si }, categorykey: ct };
+                whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si }, categorykey: ct };
 
             console.log(JSON.stringify(whereFilter));
 
@@ -746,7 +746,7 @@ module.exports = (dir, services) => {
 
     /**
      * @swagger
-     * /getblogsbyuserid/{userid}/{startindex}:
+     * /getblogsbyuserid/{userid}/{startindex}/{recordcount}:
      *   get:
      *     tags:
      *       - ge tblogs by userid
@@ -764,27 +764,42 @@ module.exports = (dir, services) => {
      *         description: start index
      *         required: true
      *         type: string 
+     *       - name: recordcount
+     *         in: path
+     *         description: record count
+     *         required: false
+     *         type: number 
      *     responses:
      *       200:
      *         description: Successfully retrieved      
      */
-    router.get("/getblogsbyuserid/:userid/:startindex", (req, res) => {
+    router.get("/getblogsbyuserid/:userid/:startindex/:recordcount?", (req, res) => {
         try {
             //http://localhost:3000/getblogsbyuserid/{userid}/{startindex}
+            //http://localhost:3000/getblogsbyuserid/{userid}/{startindex}/6
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params.userid;
             var si = req.params.startindex;
-            var key = "getblogsbyuserid_" + userid + "_" + si;
+
+            //console.log(req.params.recordcount);
+            var rc = 4;
+            //if (req.params.recordcount != "undefined")
+            //    rc = req.params.recordcount;
+
+            console.log(" rc " + rc);
+
+            var key = "getblogsbyuserid_" + userid + "_" + si + "_" + rc;
             var whereFilter = { status: { $in: ["0", "1"] }, index: { $gt: si }, "userid": userid };
-            var sortfilter = { "creationdate": 1 }; //--- 1 for asc and -1 for desc
+            //var sortfilter = { "creationdate": 1 }; //--- 1 for asc and -1 for desc
+            var sortfilter = { "index": 1 };
             var dataFilter = {};
             var collection = "blogs";
 
-            //console.log(" 1 whereFilter " + JSON.stringify(whereFilter));
+            console.log(" 1 whereFilter " + JSON.stringify(whereFilter));
 
             services.data
-                .getblogsbyuserid(collection, whereFilter, dataFilter, key)
+                .getblogsbyuserid(collection, whereFilter, sortfilter, rc, key)
                 .then(function(result) {
                     res.send(result);
                 })
@@ -795,6 +810,255 @@ module.exports = (dir, services) => {
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * definition:
+     *   addblog:
+     *     properties:
+     *       topic:
+     *         type: string
+     *       content:
+     *         type: string
+     *       category:
+     *         type: string
+     *       userid:
+     *         type: string
+     *       createdby:
+     *         type: string
+     */
+
+    /**
+     * @swagger
+     * /addblog:
+     *   post:
+     *     tags:
+     *       - Add blog
+     *     description: add blog 
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: addblog
+     *         description: blog object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/addblog'
+     *     responses:
+     *       200:
+     *         description: Successfully added the blog
+     */
+    router.post("/addblog", function(req, res) {
+        try {
+            //http://localhost:3000/addblog
+
+            console.log("1");
+
+            var dataCollection = {};
+            var whereFilter = {};
+            var sortfilter = { index: -1 }
+            var maxIndex = "";
+            var collection = "blogs";
+
+            services.data.findMaxBlogIndex(collection, sortfilter).then(function(result) {
+                if (result != null) {
+                    //console.log(" findMaxBlogIndex " + result[0].index);
+                    maxIndex = (result[0] != undefined) ? result[0].index : "0";
+
+                    if (maxIndex != "") {
+                        maxIndex = (Number(maxIndex) + 1).toString();
+                        console.log("New Index " + maxIndex);
+
+                        dataCollection = {
+                            "userid": req.body.userid,
+                            "topic": req.body.topic,
+                            "content": req.body.content,
+                            "categorykey": req.body.category,
+                            "createdby": req.body.createdby,
+                            "status": "0",
+                            "creationdate": new Date().toUTCString(),
+                            "index": maxIndex
+                        };
+
+                        services.data.addblog(collection, dataCollection, whereFilter)
+                            .then(function(result) {
+                                console.log("2");
+                                res.json(result);
+                            }).catch(function(err) {
+                                console.log("3");
+                                var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                                res.json(_errorMsg);
+                            });
+                    }
+                }
+            }).catch(function(err) {
+                console.log(err);
+                res.json("Error in retrieveing max blog index . Error " + err);
+            });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getblogbyblogid/{_id}:
+     *   get:
+     *     tags:
+     *       - Blog by ID
+     *     description: Returns a blog by ID
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: _id
+     *         in: path
+     *         description: blog id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getblogbyblogid/:_id", (req, res) => {
+        try {
+            //http://localhost:3000/getblogbyblogid/{_id}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var _id = req.params._id;
+            var key = "getblogbyblogid_" + _id;
+            var dataFilter = {};
+            var collection = "blogs";
+
+            services.data
+                .getblogbyblogid(collection, _id, dataFilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /deleteblogbyblogid/{_id}:
+     *   get:
+     *     tags:
+     *       - Blog by ID
+     *     description: delete a blog
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: _id
+     *         in: path
+     *         description: blog id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully deleted      
+     */
+    router.get("/deleteblogbyblogid/:_id", (req, res) => {
+        try {
+            //http://localhost:3000/deleteblogbyblogid/{_id}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var _id = req.params._id;
+            var dataFilter = {};
+            var collection = "blogs";
+
+            console.log(_id);
+
+            services.data
+                .deleteblogbyblogid(collection, _id, dataFilter)
+                .then(function(result) {
+                    console.log("done");
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * definition:
+     *   editblog:
+     *     properties:
+     *       topic:
+     *         type: string
+     *       content:
+     *         type: string
+     *       category:
+     *         type: string
+     *       _id:
+     *         type: string
+     */
+
+    /**
+     * @swagger
+     * /editblog:
+     *   post:
+     *     tags:
+     *       - edit blog
+     *     description: edit blog 
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: editblog
+     *         description: blog object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/editblog'
+     *     responses:
+     *       200:
+     *         description: Successfully updated the blog
+     */
+    router.post("/editblog", function(req, res) {
+        try {
+            //http://localhost:3000/editblog
+
+            console.log("1");
+
+            var dataCollection = {};
+            var whereFilter = {};
+            var collection = "blogs";
+
+            dataCollection = {
+                "_id": req.body._id,
+                "topic": req.body.topic,
+                "content": req.body.content,
+                "categorykey": req.body.category
+            };
+
+
+
+            services.data.editblog(collection, dataCollection, whereFilter)
+                .then(function(result) {
+                    console.log("2");
+                    res.json(result);
+                }).catch(function(err) {
+                    console.log("3");
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
         }
     });
 
