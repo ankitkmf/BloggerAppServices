@@ -67,16 +67,18 @@ module.exports = (dir, services) => {
             //http://localhost:3000/findall/users/active/false
             //http://localhost:3000/findall/users/email/false
             //http://localhost:3000/findall/users/email/true
+            //http://localhost:3000/findall/userLoginHistory/userhistory/5945424df36d28265550c8ea
             /// res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
+            var dataFilter = { usernamehash: false, password: false };
             var value =
                 req.params.value != null && type != "all" ?
                 req.params.value.toLowerCase() :
                 "";
 
             console.log("type:" + type + " ,value:" + value);
-
+            // var dataFilter = { usernamehash: false, password: false };
             switch (type) {
                 case "all":
                     // whereFilter = { "admin": true };
@@ -99,11 +101,15 @@ module.exports = (dir, services) => {
                 case "local":
                     whereFilter = { authType: "local" };
                     break;
+                case "userhistory":
+                    whereFilter = { "profileID": req.params.value };
+                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    break;
                 default:
                     break;
             }
             var key = "findall_" + req.params.collection + "_" + type + "_" + value;
-            var dataFilter = { usernamehash: false, password: false };
+
             var collection = req.params.collection;
 
             services.data
