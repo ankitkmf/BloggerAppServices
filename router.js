@@ -68,6 +68,7 @@ module.exports = (dir, services) => {
             //http://localhost:3000/findall/users/email/false
             //http://localhost:3000/findall/users/email/true
             //http://localhost:3000/findall/userLoginHistory/userhistory/5945424df36d28265550c8ea
+            //http://localhost:3000/findall/userLoginHistory/alluserhistory
             /// res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
@@ -101,7 +102,11 @@ module.exports = (dir, services) => {
                 case "local":
                     whereFilter = { authType: "local" };
                     break;
-                case "userhistory":
+                case "alluserhistory":
+                    whereFilter = {};
+                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    break;
+                case "userhistorybyid":
                     whereFilter = { "profileID": req.params.value };
                     dataFilter = { _id: false, profileID: false, email: false, username: false };
                     break;
