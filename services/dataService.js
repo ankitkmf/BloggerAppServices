@@ -82,12 +82,16 @@ module.exports = (cache, logger, config) => {
             })
         }
 
-        let findblogs = function(collection, whereFilter, sortfilter, recordcount) {
-            console.log(recordcount);
+        let findblogs = function(collection, whereFilter, dataFilter, sortfilter, recordcount) {
+            console.log("whereFilter " + JSON.stringify(whereFilter));
+            console.log("sortfilter " + JSON.stringify(sortfilter));
+            //console.log("recordcount " + recordcount);
             return new Promise(function(resolve, reject) {
+                console.log("findblogs : findblog");
                 connect().then(function(db) {
                     db.collection(collection)
-                        .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
+                        //.find().toArray(function(err, results) {
+                        .find(whereFilter, dataFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
                                 console.log(44 + " , " + results.length);
 
@@ -102,6 +106,30 @@ module.exports = (cache, logger, config) => {
                 }).catch(function(err) {
                     console.log(44);
                     logger.log.error("findblogs method : connection error : " + err);
+                });
+            });
+        }
+
+        let findcomments = function(collection, whereFilter, sortfilter, recordcount) {
+            console.log(recordcount);
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    db.collection(collection)
+                        .find(whereFilter).sort(sortfilter).toArray(function(err, results) {
+                            if (!err) {
+                                console.log(44 + " , " + results.length);
+
+                                logger.log.info("findcomments method : data retrieve succesfully : results count : " + results.length);
+                                resolve(results);
+                            } else {
+                                console.log(err);
+                                logger.log.error("findcomments method : error : " + err);
+                                reject(err);
+                            }
+                        });
+                }).catch(function(err) {
+                    console.log(44);
+                    logger.log.error("findcomments method : connection error : " + err);
                 });
             });
         }
@@ -296,7 +324,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getblogs: (collection, whereFilter, sortfilter, key) => {
+            getblogs: (collection, whereFilter, dataFilter, sortfilter, key) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
@@ -304,7 +332,7 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             var resultlimit = 4;
-                            findblogs(collection, whereFilter, sortfilter, resultlimit).then(function(results) {
+                            findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
@@ -660,27 +688,31 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getblogsbyuserid: (collection, whereFilter, sortfilter, recordcount, key) => {
+            getblogsbyuserid: (collection, whereFilter, dataFilter, sortfilter, recordcount, key) => {
                 console.log(recordcount);
+                console.log(JSON.stringify(whereFilter));
+                console.log(JSON.stringify(sortfilter));
+
                 return new Promise(function(resolve, reject) {
-                    //cache.get(key).then(results => {
-                    //    if (results != null) {
-                    //        logger.log.info("getblogsbyuserid method : data retrieve from cache");
-                    //        resolve(results);
-                    //    } else {
-                    console.log("2");
-                    findblogs(collection, whereFilter, sortfilter, recordcount).then(function(results) {
-                        var data = { "result": results, "count": results.length };
-                        //cache.set(key, JSON.stringify(data));
-                        //cache.expire(key, redisKeyExpire);
-                        logger.log.info("getblogsbyuserid method : data retrieve from cache : Cache Key " + key);
-                        resolve(data);
-                    }).catch(function(err) {
-                        logger.log.error("getblogsbyuserid method : data retrieve error " + err);
-                        reject(err);
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getblogsbyuserid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            console.log("2");
+                            findblogs(collection, whereFilter, dataFilter, sortfilter, recordcount).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                console.log("data : " + data);
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getblogsbyuserid method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getblogsbyuserid method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
                     });
-                    //    }
-                    //});
                 });
             },
 
@@ -688,14 +720,35 @@ module.exports = (cache, logger, config) => {
                 return new Promise(function(resolve, reject) {
                     connect().then(function(db) {
                         db.collection(collection)
-                            .find({}).sort(sortfilter).toArray(function(err, results) {
+                            .find({}).limit(1).sort(sortfilter).toArray(function(err, results) {
                                 if (!err) {
-
-                                    console.log(JSON.stringify(results));
-
+                                    //var data = { "result": [], "count": 0 };
+                                    //if (results != null) {
+                                    //    data = { "result": results, "count": 1 };
+                                    //}
+                                    console.log("findMaxBlogIndex : " + JSON.stringify(results));
                                     resolve(results);
                                 } else {
                                     console.log("findMaxBlogIndex " + err);
+                                    reject(err);
+                                }
+                            });
+                    });
+                });
+            },
+
+            findMaxBlogCommentIndex: (collection, whereFilter, sortfilter) => {
+                return new Promise(function(resolve, reject) {
+                    console.log("findMaxBlogCommentIndex " + JSON.stringify(whereFilter));
+                    console.log("findMaxBlogCommentIndex " + JSON.stringify(sortfilter));
+                    connect().then(function(db) {
+                        db.collection(collection)
+                            .find({ whereFilter }).sort(sortfilter).toArray(function(err, results) {
+                                if (!err) {
+                                    console.log("findMaxBlogCommentIndex : " + JSON.stringify(results));
+                                    resolve(results);
+                                } else {
+                                    console.log("findMaxBlogCommentIndex " + err);
                                     reject(err);
                                 }
                             });
@@ -708,22 +761,43 @@ module.exports = (cache, logger, config) => {
                 var datafilter = {};
                 var data = dataCollection;
 
-                console.log("5");
+                console.log("addblog 5");
 
                 return new Promise(function(resolve, reject) {
                     insert(collection, dataCollection).then(function(result) {
-                        logger.log.info("updatepersonaldetails method : data added successfully : " +
+                        logger.log.info("addblog method : data added successfully : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        console.log("7");
+                        console.log("addblog 7");
                         resolve(result);
                     }).catch(function(err) {
-                        logger.log.error("updatepersonaldetails method : data does not saved : " +
+                        logger.log.error("addblog method : data does not saved : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        console.log("8");
+                        console.log("addblog 8");
+                        reject(err);
+                    });
+                })
+            },
+
+            addblogcomment: (collection, dataCollection) => {
+
+                return new Promise(function(resolve, reject) {
+                    insert(collection, dataCollection).then(function(result) {
+                        logger.log.info("addblogcomment method : data added successfully : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));
+
+                        //console.log("7");
+                        resolve(result);
+                    }).catch(function(err) {
+                        logger.log.error("addblogcomment method : data does not saved : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));
+
+                        //console.log("8");
                         reject(err);
                     });
                 })
@@ -731,28 +805,52 @@ module.exports = (cache, logger, config) => {
 
             getblogbyblogid: (collection, _id, dataFilter, key) => {
                 return new Promise(function(resolve, reject) {
-                    //cache.get(key).then(results => {
-                    //    if (results != null) {
-                    //        logger.log.info("getblogbyblogid method : data retrieve from cache");
-                    //        resolve(results);
-                    //    } else {
-                    var whereFilter = { "_id": ObjectId(_id) };
-                    findOne(collection, whereFilter, dataFilter).then(function(results) {
-                        var data = { "result": [], "count": 0 };
+                    cache.get(key).then(results => {
                         if (results != null) {
-                            data = { "result": results, "count": 1 };
+                            logger.log.info("getblogbyblogid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            var whereFilter = { "_id": ObjectId(_id) };
+                            findOne(collection, whereFilter, dataFilter).then(function(results) {
+                                var data = { "result": [], "count": 0 };
+                                if (results != null) {
+                                    data = { "result": results, "count": 1 };
+                                }
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
+                                console.log(_errorMsg);
+                                reject({ _errorMsg });
+                            });
                         }
-                        //cache.set(key, JSON.stringify(data));
-                        //cache.expire(key, redisKeyExpire);
-                        logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
-                        resolve(data);
-                    }).catch(function(err) {
-                        var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
-                        console.log(_errorMsg);
-                        reject({ _errorMsg });
                     });
-                    //    }
-                    //});
+                });
+            },
+
+            getblogcommentbyblogid: (collection, whereFilter, sortfilter, recordcount, key) => {
+                console.log(recordcount);
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getblogcommentbyblogid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            console.log("2");
+                            findcomments(collection, whereFilter, sortfilter, recordcount).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getblogcommentbyblogid method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getblogcommentbyblogid method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
+                    });
                 });
             },
 
@@ -828,7 +926,11 @@ module.exports = (cache, logger, config) => {
                             console.log("editblog " + 3);
 
                             whereFilter = { "_id": ObjectId(results._id) };
-                            var updateQuery = { "topic": dataCollection.topic, "content": dataCollection.content, "categorykey": dataCollection.categorykey };
+                            var updateQuery = {
+                                "topic": dataCollection.topic,
+                                "content": dataCollection.content,
+                                "categorykey": dataCollection.categorykey
+                            };
 
                             logger.log.info("editblog method : call update method : " +
                                 "Collection Name : " + collection +
