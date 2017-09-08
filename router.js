@@ -67,16 +67,20 @@ module.exports = (dir, services) => {
             //http://localhost:3000/findall/users/active/false
             //http://localhost:3000/findall/users/email/false
             //http://localhost:3000/findall/users/email/true
+            //http://localhost:3000/findall/userLoginHistory/userhistorybyid/5945424df36d28265550c8ea
+            //http://localhost:3000/findall/userLoginHistory/alluserhistory
+            //http://localhost:3000/findall/blogs/userblogbyid/595cde84f8ce4a2250f38820
             /// res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
+            var dataFilter = { usernamehash: false, password: false };
             var value =
                 req.params.value != null && type != "all" ?
                 req.params.value.toLowerCase() :
                 "";
 
             console.log("type:" + type + " ,value:" + value);
-
+            // var dataFilter = { usernamehash: false, password: false };
             switch (type) {
                 case "all":
                     // whereFilter = { "admin": true };
@@ -99,11 +103,31 @@ module.exports = (dir, services) => {
                 case "local":
                     whereFilter = { authType: "local" };
                     break;
+                case "alluserhistory":
+                    whereFilter = {};
+                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    break;
+                case "userhistorybyid":
+                    whereFilter = { "profileID": req.params.value };
+                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    break;
+                case "userblogbyid":
+                    whereFilter = { "userid": req.params.value };
+                    dataFilter = { userid: false, content: false, createdby: false };
+                    break;
+                case "usercommentsbyid":
+                    whereFilter = { "userid": req.params.value };
+                    dataFilter = { userid: false, comment: false, createdby: false, blogid: false };
+                    break;
+                case "userinfobyid":
+                    whereFilter = { "_id": ObjectId(req.params.value) };
+                    dataFilter = { password: false, username: false, email: false };
+                    break;
                 default:
                     break;
             }
             var key = "findall_" + req.params.collection + "_" + type + "_" + value;
-            var dataFilter = { usernamehash: false, password: false };
+
             var collection = req.params.collection;
 
             services.data
