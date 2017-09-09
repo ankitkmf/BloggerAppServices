@@ -115,7 +115,7 @@ module.exports = (cache, logger, config) => {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
                     db.collection(collection)
-                        .find(whereFilter).sort(sortfilter).toArray(function(err, results) {
+                        .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
                                 console.log(44 + " , " + results.length);
 
@@ -830,7 +830,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getblogcommentbyblogid: (collection, whereFilter, sortfilter, recordcount, key) => {
+            getblogcommentbyblogid: (collection, blogid, lastcommentid, sortfilter, recordcount, key) => {
                 console.log(recordcount);
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
@@ -839,6 +839,16 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             console.log("2");
+                            var whereFilter = {};
+                            if (lastcommentid == "0")
+                                whereFilter = { status: { $in: ["0", "1"] }, "blogid": blogid };
+                            else
+                                whereFilter = {
+                                    status: { $in: ["0", "1"] },
+                                    _id: { $lt: ObjectId(lastcommentid) },
+                                    "blogid": blogid
+                                };
+
                             findcomments(collection, whereFilter, sortfilter, recordcount).then(function(results) {
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
