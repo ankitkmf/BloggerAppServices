@@ -88,6 +88,9 @@ module.exports = (dir, services) => {
                 case "active":
                     whereFilter = { active: req.params.value === "true" };
                     break;
+                case "admin":
+                    whereFilter = { admin: req.params.value === "true" };
+                    break;
                 case "deactive":
                     whereFilter = { active: req.params.value === "true" };
                     break;
@@ -129,6 +132,8 @@ module.exports = (dir, services) => {
             var key = "findall_" + req.params.collection + "_" + type + "_" + value;
 
             var collection = req.params.collection;
+            console.log("whereFilter:" + JSON.stringify(whereFilter));
+            console.log("dataFilter:" + JSON.stringify(dataFilter));
 
             services.data
                 .findAll(collection, whereFilter, dataFilter, key)
@@ -189,19 +194,6 @@ module.exports = (dir, services) => {
 
     router.post("/saveLoginHistory", (req, res) => {
         try {
-            // var dataCollection = {
-            //     "username": req.body.username,
-            //     "name": req.body.name,
-            //     "password": req.body.password, // bcrypt.hashSync(password, 10),
-            //     "admin": false,
-            //     "email": req.body.email,
-            //     "IsEmailVerified": false,
-            //     "active": false,
-            //     "dateTime": new Date().toDateString(),
-            //     "authType": req.body.authType,
-            //     "profileID": req.body.profileID,
-            //     "userImage": req.body.userImage
-            // };
 
             var dataCollection = {
                 "username": req.body.username,
