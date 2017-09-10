@@ -70,6 +70,7 @@ module.exports = (dir, services) => {
             //http://localhost:3000/findall/userLoginHistory/userhistorybyid/5945424df36d28265550c8ea
             //http://localhost:3000/findall/userLoginHistory/alluserhistory
             //http://localhost:3000/findall/blogs/userblogbyid/595cde84f8ce4a2250f38820
+            //http://localhost:3000/findall/blogs/totalblog/
             /// res.header("Access-Control-Allow-Origin", "*");
             var whereFilter = {};
             var type = req.params.type != null ? req.params.type.toLowerCase() : null;
@@ -125,6 +126,22 @@ module.exports = (dir, services) => {
                 case "userinfobyid":
                     whereFilter = { "_id": ObjectId(req.params.value) };
                     dataFilter = { password: false, username: false, email: false };
+                    break;
+                case "totalblog":
+                    whereFilter = {};
+                    dataFilter = { creationdate: false };
+                    break;
+                case "bApproved":
+                    whereFilter = { status: "1" };
+                    dataFilter = { creationdate: false };
+                    break;
+                case "bDisapproved":
+                    whereFilter = { status: "2" };
+                    dataFilter = { creationdate: false };
+                    break;
+                case "bPending":
+                    whereFilter = { status: "0" };
+                    dataFilter = { creationdate: false };
                     break;
                 default:
                     break;
