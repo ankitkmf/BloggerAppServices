@@ -85,16 +85,13 @@ module.exports = (cache, logger, config) => {
         let findblogs = function(collection, whereFilter, dataFilter, sortfilter, recordcount) {
             console.log("whereFilter " + JSON.stringify(whereFilter));
             console.log("sortfilter " + JSON.stringify(sortfilter));
-            //console.log("recordcount " + recordcount);
+
             return new Promise(function(resolve, reject) {
                 console.log("findblogs : findblog");
                 connect().then(function(db) {
                     db.collection(collection)
-                        //.find().toArray(function(err, results) {
                         .find(whereFilter, dataFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                console.log(44 + " , " + results.length);
-
                                 logger.log.info("findblogs method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
@@ -324,7 +321,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getblogs: (collection, whereFilter, dataFilter, sortfilter, key) => {
+            getblogs: (collection, lbid, ct, dataFilter, sortfilter, key) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
@@ -332,6 +329,41 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             var resultlimit = 4;
+
+                            var whereFilter = {};
+                            if (ct == "all" && lbid == "0")
+                                whereFilter = { status: { $in: ["0", "1"] } };
+                            else if (ct == "all" && lbid != "0")
+                                whereFilter = { status: { $in: ["0", "1"] }, _id: { $lt: ObjectId(lbid) } };
+                            else if (ct != "all" && lbid == "0")
+                                whereFilter = { status: { $in: ["0", "1"] }, categorykey: ct };
+                            else if (ct != "all" && lbid != "0")
+                                whereFilter = { status: { $in: ["0", "1"] }, _id: { $lt: ObjectId(lbid) }, categorykey: ct };
+
+                            findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getblogs method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getblogs method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
+                    });
+                });
+            },
+
+            getmostrecentblogs: (collection, whereFilter, dataFilter, sortfilter, key) => {
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getblogs method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            var resultlimit = 4;
+
                             findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
@@ -688,21 +720,26 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getblogsbyuserid: (collection, whereFilter, dataFilter, sortfilter, recordcount, key) => {
-                console.log(recordcount);
-                console.log(JSON.stringify(whereFilter));
-                console.log(JSON.stringify(sortfilter));
-
+            getblogsbyuserid: (collection, userid, lastblogid, dataFilter, sortfilter, recordcount, key) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
                             logger.log.info("getblogsbyuserid method : data retrieve from cache");
                             resolve(results);
                         } else {
-                            console.log("2");
+
+                            var whereFilter = {};
+                            if (lastblogid == "0")
+                                whereFilter = { status: { $in: ["0", "1"] }, userid: userid };
+                            else
+                                whereFilter = {
+                                    status: { $in: ["0", "1"] },
+                                    _id: { $lt: ObjectId(lastblogid) },
+                                    userid: userid
+                                };
+
                             findblogs(collection, whereFilter, dataFilter, sortfilter, recordcount).then(function(results) {
                                 var data = { "result": results, "count": results.length };
-                                console.log("data : " + data);
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getblogsbyuserid method : data retrieve from cache : Cache Key " + key);
@@ -716,52 +753,33 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            findMaxBlogIndex: (collection, sortfilter) => {
-                return new Promise(function(resolve, reject) {
-                    connect().then(function(db) {
-                        db.collection(collection)
-                            .find({}).limit(1).sort(sortfilter).toArray(function(err, results) {
-                                if (!err) {
-                                    //var data = { "result": [], "count": 0 };
-                                    //if (results != null) {
-                                    //    data = { "result": results, "count": 1 };
-                                    //}
-                                    console.log("findMaxBlogIndex : " + JSON.stringify(results));
-                                    resolve(results);
-                                } else {
-                                    console.log("findMaxBlogIndex " + err);
-                                    reject(err);
-                                }
-                            });
-                    });
-                });
-            },
-
-            findMaxBlogCommentIndex: (collection, whereFilter, sortfilter) => {
-                return new Promise(function(resolve, reject) {
-                    console.log("findMaxBlogCommentIndex " + JSON.stringify(whereFilter));
-                    console.log("findMaxBlogCommentIndex " + JSON.stringify(sortfilter));
-                    connect().then(function(db) {
-                        db.collection(collection)
-                            .find({ whereFilter }).sort(sortfilter).toArray(function(err, results) {
-                                if (!err) {
-                                    console.log("findMaxBlogCommentIndex : " + JSON.stringify(results));
-                                    resolve(results);
-                                } else {
-                                    console.log("findMaxBlogCommentIndex " + err);
-                                    reject(err);
-                                }
-                            });
-                    });
-                });
-            },
+            // findMaxBlogIndex: (collection, sortfilter) => {
+            //     return new Promise(function(resolve, reject) {
+            //         connect().then(function(db) {
+            //             db.collection(collection)
+            //                 .find({}).limit(1).sort(sortfilter).toArray(function(err, results) {
+            //                     if (!err) {
+            //                         //var data = { "result": [], "count": 0 };
+            //                         //if (results != null) {
+            //                         //    data = { "result": results, "count": 1 };
+            //                         //}
+            //                         console.log("findMaxBlogIndex : " + JSON.stringify(results));
+            //                         resolve(results);
+            //                     } else {
+            //                         console.log("findMaxBlogIndex " + err);
+            //                         reject(err);
+            //                     }
+            //                 });
+            //         });
+            //     });
+            // },
 
             addblog: (collection, dataCollection, filter) => {
                 var whereFilter = filter;
                 var datafilter = {};
                 var data = dataCollection;
 
-                console.log("addblog 5");
+                //console.log("addblog 5");
 
                 return new Promise(function(resolve, reject) {
                     insert(collection, dataCollection).then(function(result) {
@@ -769,14 +787,14 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        console.log("addblog 7");
+                        //console.log("addblog 7");
                         resolve(result);
                     }).catch(function(err) {
                         logger.log.error("addblog method : data does not saved : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        console.log("addblog 8");
+                        //console.log("addblog 8");
                         reject(err);
                     });
                 })
@@ -790,14 +808,12 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        //console.log("7");
                         resolve(result);
                     }).catch(function(err) {
                         logger.log.error("addblogcomment method : data does not saved : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        //console.log("8");
                         reject(err);
                     });
                 })
@@ -838,7 +854,7 @@ module.exports = (cache, logger, config) => {
                             logger.log.info("getblogcommentbyblogid method : data retrieve from cache");
                             resolve(results);
                         } else {
-                            console.log("2");
+                            //console.log("2");
                             var whereFilter = {};
                             if (lastcommentid == "0")
                                 whereFilter = { status: { $in: ["0", "1"] }, "blogid": blogid };
