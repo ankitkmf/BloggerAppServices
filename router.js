@@ -430,7 +430,6 @@ module.exports = (dir, services) => {
         }
     });
 
-
     /**
      * @swagger
      * definition:
@@ -872,7 +871,13 @@ module.exports = (dir, services) => {
                 "creationdate": new Date().toISOString()
             };
 
-            services.data.addblog(collection, dataCollection, whereFilter)
+            var historycollection = {
+                "userid": req.body.userid,
+                "date": new Date().toISOString(),
+                "actiontype": "New Blog added"
+            }
+
+            services.data.addblog(collection, dataCollection, whereFilter, historycollection)
                 .then(function(result) {
                     res.json(result);
                 }).catch(function(err) {
@@ -992,7 +997,7 @@ module.exports = (dir, services) => {
 
     /**
      * @swagger
-     * /deleteblogbyblogid/{_id}:
+     * /deleteblogbyblogid/{_id}/{userid}:
      *   get:
      *     tags:
      *       - Delete Blog by ID
@@ -1005,23 +1010,36 @@ module.exports = (dir, services) => {
      *         description: blog id
      *         required: true
      *         type: string
+     *       - name: userid
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
      *     responses:
      *       200:
      *         description: Successfully deleted      
      */
-    router.get("/deleteblogbyblogid/:_id", (req, res) => {
+    router.get("/deleteblogbyblogid/:_id/:userid", (req, res) => {
         try {
-            //http://localhost:3000/deleteblogbyblogid/{_id}
+            //http://localhost:3000/deleteblogbyblogid/{_id}/{userid}
             res.header("Access-Control-Allow-Origin", "*");
 
             var _id = req.params._id;
+            var userid = req.params.userid;
             var dataFilter = {};
             var collection = "blogs";
+
+            var historycollection = {
+                "blogid": _id,
+                "userid": userid,
+                "date": new Date().toISOString(),
+                "actiontype": "Blog removed"
+            }
 
             console.log(_id);
 
             services.data
-                .deleteblogbyblogid(collection, _id, dataFilter)
+                .deleteblogbyblogid(collection, _id, dataFilter, historycollection)
                 .then(function(result) {
                     console.log("done");
                     res.send(result);
@@ -1049,6 +1067,8 @@ module.exports = (dir, services) => {
      *         type: string
      *       _id:
      *         type: string
+     *       userid:
+     *         type: string   
      */
 
     /**
@@ -1086,7 +1106,14 @@ module.exports = (dir, services) => {
                 "categorykey": req.body.category
             };
 
-            services.data.editblog(collection, dataCollection, whereFilter)
+            var historycollection = {
+                "blogid": req.body._id,
+                "userid": req.body.userid,
+                "date": new Date().toISOString(),
+                "actiontype": "Blog editted"
+            }
+
+            services.data.editblog(collection, dataCollection, whereFilter, historycollection)
                 .then(function(result) {
                     res.json(result);
                 }).catch(function(err) {
@@ -1152,7 +1179,16 @@ module.exports = (dir, services) => {
                 "creationdate": new Date().toISOString()
             };
 
-            services.data.addblogcomment(collection, dataCollection)
+            var historycollection = {
+                "blogid": req.body.blogid,
+                "userid": req.body.userid,
+                "date": new Date().toISOString(),
+                "actiontype": "New comment added"
+            }
+
+            console.log("dataCollection " + JSON.stringify(dataCollection));
+
+            services.data.addblogcomment(collection, dataCollection, historycollection)
                 .then(function(result) {
                     res.json(result);
                 }).catch(function(err) {

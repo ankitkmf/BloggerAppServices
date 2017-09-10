@@ -65,6 +65,27 @@ module.exports = (cache, logger, config) => {
             });
         }
 
+        let findTopRow = function(collection, whereFilter, dataFilter, sortFilter) {
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    db.collection(collection)
+                        .find(whereFilter, dataFilter).limit(1).sort(sortFilter).toArray(function(err, results) {
+                            if (!err) {
+                                logger.log.info("findTopRow method : data retrieve succesfully : results count : " + results.length);
+                                resolve(results);
+                            } else {
+                                console.log(err);
+                                logger.log.error("findTopRow method : error : " + err);
+                                reject(err);
+                            }
+                        });
+                }).catch(function(err) {
+                    console.log(44);
+                    logger.log.error("findTopRow method : connection error : " + err);
+                });
+            });
+        }
+
         let findAll = function(collection, whereFilter, dataFilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
@@ -172,6 +193,22 @@ module.exports = (cache, logger, config) => {
                 }).catch(function(err) {
                     logger.log.error("update method : connection error : " + err);
                 });
+            });
+        }
+
+        let addhistory = (collection, dataCollection) => {
+            insert(collection, dataCollection).then(function(result) {
+                logger.log.info("addhistory method : data added successfully : " +
+                    "Collection Name : " + collection +
+                    ", Data " + JSON.stringify(dataCollection));
+
+                console.log("addhistory : inserted : Collection Name : " + collection +
+                    ", Data " + JSON.stringify(dataCollection));
+            }).catch(function(err) {
+                console.log(err);
+                logger.log.error("addhistory method : data does not saved : " +
+                    "Collection Name : " + collection +
+                    ", Data " + JSON.stringify(dataCollection));
             });
         }
 
@@ -774,12 +811,10 @@ module.exports = (cache, logger, config) => {
             //     });
             // },
 
-            addblog: (collection, dataCollection, filter) => {
+            addblog: (collection, dataCollection, filter, historycollection) => {
                 var whereFilter = filter;
                 var datafilter = {};
                 var data = dataCollection;
-
-                //console.log("addblog 5");
 
                 return new Promise(function(resolve, reject) {
                     insert(collection, dataCollection).then(function(result) {
@@ -787,7 +822,22 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        //console.log("addblog 7");
+
+                        var dataFilter = {};
+                        var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
+                        var whereFilter = { status: { $in: ["0"] } };
+
+                        findTopRow(collection, whereFilter, dataFilter).then(function(result) {
+                            if (result != null) {
+                                historycollection.blogid = result[0]._id;
+                                addhistory("bloghistory", historycollection);
+                            }
+                        }).catch(function(err) {
+                            logger.log.error("findTopRow method : data could not retrieve : " +
+                                "Collection Name : " + collection +
+                                ", whereFilter " + JSON.stringify(whereFilter));
+                        });
+
                         resolve(result);
                     }).catch(function(err) {
                         logger.log.error("addblog method : data does not saved : " +
@@ -800,13 +850,28 @@ module.exports = (cache, logger, config) => {
                 })
             },
 
-            addblogcomment: (collection, dataCollection) => {
+            addblogcomment: (collection, dataCollection, historycollection) => {
 
                 return new Promise(function(resolve, reject) {
                     insert(collection, dataCollection).then(function(result) {
                         logger.log.info("addblogcomment method : data added successfully : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
+
+                        var dataFilter = {};
+                        var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
+                        var whereFilter = { status: { $in: ["0"] } };
+
+                        findTopRow(collection, whereFilter, dataFilter).then(function(result) {
+                            if (result != null) {
+                                historycollection.commentid = result[0]._id;
+                                addhistory("commenthistory", historycollection);
+                            }
+                        }).catch(function(err) {
+                            logger.log.error("findTopRow method : data could not retrieve : " +
+                                "Collection Name : " + collection +
+                                ", whereFilter " + JSON.stringify(whereFilter));
+                        });
 
                         resolve(result);
                     }).catch(function(err) {
@@ -880,7 +945,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            deleteblogbyblogid: (collection, _id, filter) => {
+            deleteblogbyblogid: (collection, _id, filter, historycollection) => {
 
                 console.log(JSON.stringify(filter));
                 var whereFilter = { "_id": ObjectId(_id) };
@@ -911,6 +976,8 @@ module.exports = (cache, logger, config) => {
 
                                     console.log("2222");
 
+                                    addhistory("bloghistory", historycollection);
+
                                     resolve(results);
                                 }
                             }).catch(function(err) {
@@ -931,7 +998,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            editblog: (collection, dataCollection, filter) => {
+            editblog: (collection, dataCollection, filter, historycollection) => {
 
                 console.log("editblog " + 1 + " , " + JSON.stringify(dataCollection));
 
@@ -968,6 +1035,8 @@ module.exports = (cache, logger, config) => {
 
                                     console.log("editblog " + 4);
 
+                                    addhistory("bloghistory", historycollection);
+
                                     logger.log.info("editblog method : successfully updated the blog : " +
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
@@ -994,7 +1063,6 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             }
-
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;
