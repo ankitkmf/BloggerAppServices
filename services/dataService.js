@@ -113,6 +113,7 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection)
                         .find(whereFilter, dataFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
+                                console.log("aaa");
                                 logger.log.info("findblogs method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
@@ -376,6 +377,8 @@ module.exports = (cache, logger, config) => {
                                 whereFilter = { status: { $in: ["0", "1"] }, categorykey: ct };
                             else if (ct != "all" && lbid != "0")
                                 whereFilter = { status: { $in: ["0", "1"] }, _id: { $lt: ObjectId(lbid) }, categorykey: ct };
+
+                            console.log("getblogs " + JSON.stringify(whereFilter));
 
                             findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
                                 var data = { "result": results, "count": results.length };
