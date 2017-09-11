@@ -299,6 +299,9 @@ module.exports = (cache, logger, config) => {
                         db.collection(collection).save(dataCollection, (err, results) => {
                             console.log("inside signup 1");
                             if (!err) {
+
+                                cache.clearkey(collection);
+
                                 resolve(results);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
@@ -321,6 +324,7 @@ module.exports = (cache, logger, config) => {
                         db.collection(collection).save(dataCollection, (err, results) => {
                             console.log("inside saveLoginHistory 1");
                             if (!err) {
+                                cache.clearkey(collection);
                                 resolve(results);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1019.code + " , error_msg:" + errorMsg.msg_1019.msg + " ,error:" + err;
@@ -425,6 +429,9 @@ module.exports = (cache, logger, config) => {
                         logger.log.info("insertsubscribeinfo method : data saved successfully : " +
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
+
+                        cache.clearkey(collection);
+
                         resolve(result);
                     }).catch(function(err) {
                         logger.log.error("insertsubscribeinfo method : data does not saved : " +
@@ -519,6 +526,7 @@ module.exports = (cache, logger, config) => {
                                 console.log("inside UpdateUsersRecord 2");
                                 if (!err) {
                                     console.log("success" + results);
+                                    cache.clearkey(collection);
                                     resolve(results);
                                 } else {
                                     var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
@@ -562,6 +570,8 @@ module.exports = (cache, logger, config) => {
                                     logger.log.info("updateaboutme method : successfully updated about me details : " +
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
+
+                                    cache.clearkey(collection);
 
                                     resolve(results);
                                 }
@@ -630,6 +640,8 @@ module.exports = (cache, logger, config) => {
                                     logger.log.info("updatepersonaldetails method : successfully updated personal details : " +
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
+
+                                    cache.clearkey(collection);
 
                                     resolve(results);
                                 }
@@ -701,6 +713,8 @@ module.exports = (cache, logger, config) => {
                                     logger.log.info("updateproffessionaldetails method : successfully updated proffessional details : " +
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
+
+                                    cache.clearkey(collection);
 
                                     resolve(results);
                                 }
@@ -825,10 +839,11 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-
                         var dataFilter = {};
                         var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
                         var whereFilter = { status: { $in: ["0"] } };
+
+                        cache.clearkey(collection);
 
                         findTopRow(collection, whereFilter, dataFilter).then(function(result) {
                             if (result != null) {
@@ -864,6 +879,8 @@ module.exports = (cache, logger, config) => {
                         var dataFilter = {};
                         var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
                         var whereFilter = { status: { $in: ["0"] } };
+
+                        cache.clearkey(collection);
 
                         findTopRow(collection, whereFilter, dataFilter).then(function(result) {
                             if (result != null) {
@@ -977,7 +994,7 @@ module.exports = (cache, logger, config) => {
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
 
-                                    console.log("2222");
+                                    cache.clearkey(collection);
 
                                     addhistory("bloghistory", historycollection);
 
@@ -1036,7 +1053,7 @@ module.exports = (cache, logger, config) => {
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
 
-                                    console.log("editblog " + 4);
+                                    cache.clearkey(collection);
 
                                     addhistory("bloghistory", historycollection);
 

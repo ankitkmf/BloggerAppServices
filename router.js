@@ -39,10 +39,13 @@ module.exports = (dir, services) => {
             //http://localhost:3000/checkUserName/rohit
             //http://localhost:3000/checkUserName/ankit
             res.header("Access-Control-Allow-Origin", "*");
-            var key = "checkUserName_users_username_" + req.params.username;
-            console.log("get key:" + key);
+
             var whereFilter = { username: req.params.username };
             var collection = "users";
+
+            var key = "checkUserName_" + collection + "_username_" + req.params.username;
+            console.log("get key:" + key);
+
             services.data
                 .checkUserName(collection, whereFilter, key)
                 .then(function(result) {
@@ -271,13 +274,14 @@ module.exports = (dir, services) => {
             //http://localhost:3000/getblogs/10/3
             //http://localhost:3000/getblogs/90/4
             res.header("Access-Control-Allow-Origin", "*");
-            var key = "getblogs_" + req.params.lbid + "_" + req.params.ct;
 
             var sortfilter = { "creationdate": -1 }; //--- 1 for asc and -1 for desc
             var lbid = req.params.lbid;
             var ct = req.params.ct;
             var collection = "blogs";
             var dataFilter = {};
+
+            var key = "getblogs_" + collection + "_" + req.params.lbid + "_" + req.params.ct;
 
             services.data
                 .getblogs(collection, lbid, ct, dataFilter, sortfilter, key)
@@ -427,10 +431,12 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params._id;
-            var key = "getaboutme_" + userid;
+            //var key = "getaboutme_" + userid;
             var whereFilter = { "userid": userid };
             var dataFilter = {};
             var collection = "aboutme";
+
+            var key = "getaboutme_" + collection + "_" + userid;
 
             services.data
                 .getaboutme(collection, whereFilter, dataFilter, key)
@@ -618,10 +624,12 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params._id;
-            var key = "getpersonaldetails_" + userid;
+            //var key = "getpersonaldetails_" + userid;
             var whereFilter = { "userid": userid };
             var dataFilter = {};
             var collection = "personalinfoV2";
+
+            var key = "getpersonaldetails_" + collection + "_" + userid;
 
             services.data
                 .getpersonaldetails(collection, whereFilter, dataFilter, key)
@@ -748,10 +756,12 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params._id;
-            var key = "getproffessionaldetails_" + userid;
+            //var key = "getproffessionaldetails_" + userid;
             var whereFilter = { "userid": userid };
             var dataFilter = {};
             var collection = "proffessionalinfoV2";
+
+            var key = "getproffessionaldetails_" + collection + "_" + userid;
 
             services.data
                 .getproffessionaldetails(collection, whereFilter, dataFilter, key)
@@ -809,13 +819,14 @@ module.exports = (dir, services) => {
 
             var rc = 4;
 
-            var key = "getblogsbyuserid_" + userid + "_" + lbid + "_" + rc;
-
-            console.log("vaskar: user id: " + userid + " , lbid : " + lbid + " , rc : " + rc + " , Key : " + key);
-
             var sortfilter = { "creationdate": -1 }; //--- 1 for asc and -1 for desc
             var dataFilter = {};
             var collection = "blogs";
+
+            var key = "getblogsbyuserid_" + collection + "_" + userid + "_" + lbid + "_" + rc;
+
+            console.log("vaskar: user id: " + userid + " , lbid : " + lbid + " , rc : " + rc + " , Key : " + key);
+
 
             services.data
                 .getblogsbyuserid(collection, userid, lbid, dataFilter, sortfilter, rc, key)
@@ -932,9 +943,11 @@ module.exports = (dir, services) => {
             res.header("Access-Control-Allow-Origin", "*");
 
             var _id = req.params._id;
-            var key = "getblogbyblogid_" + _id;
+            //var key = "getblogbyblogid_" + _id;
             var dataFilter = {};
             var collection = "blogs";
+
+            var key = "getblogbyblogid_" + collection + "_" + _id;
 
             services.data
                 .getblogbyblogid(collection, _id, dataFilter, key)
@@ -991,11 +1004,13 @@ module.exports = (dir, services) => {
 
             var rc = 4;
 
-            var key = "getblogcommentbyblogid_" + blogid + "_" + lcid + "_" + rc;
-
             var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
             var dataFilter = {};
             var collection = "comments";
+
+            //var key = "getblogcommentbyblogid_" + blogid + "_" + lcid + "_" + rc;
+
+            var key = "getblogcommentbyblogid_" + collection + "_" + blogid + "_" + lcid + "_" + rc;
 
             services.data
                 .getblogcommentbyblogid(collection, blogid, lcid, sortfilter, rc, key)
@@ -1236,7 +1251,7 @@ module.exports = (dir, services) => {
             //http://localhost:3000/getmostrecentblogs
             res.header("Access-Control-Allow-Origin", "*");
 
-            var key = "getmostrecentblogs";
+            //var key = "getmostrecentblogs";
             var dataFilter = {
                 userid: false,
                 content: false,
@@ -1248,6 +1263,8 @@ module.exports = (dir, services) => {
             var whereFilter = { status: { $in: ["0", "1"] } };
             var sortfilter = { "creationdate": -1 }; //--- 1 for asc and -1 for desc
             var collection = "blogs";
+
+            var key = "getmostrecentblogs_" + collection + "_most_recent";
 
             console.log(JSON.stringify(whereFilter));
 
