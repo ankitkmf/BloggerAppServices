@@ -134,15 +134,15 @@ module.exports = (dir, services) => {
                     whereFilter = {};
                     dataFilter = { creationdate: false };
                     break;
-                case "bApproved":
+                case "bapproved":
                     whereFilter = { status: "1" };
                     dataFilter = { creationdate: false };
                     break;
-                case "bDisapproved":
+                case "bdisapproved":
                     whereFilter = { status: "2" };
                     dataFilter = { creationdate: false };
                     break;
-                case "bPending":
+                case "bpending":
                     whereFilter = { status: "0" };
                     dataFilter = { creationdate: false };
                     break;
