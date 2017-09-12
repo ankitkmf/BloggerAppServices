@@ -924,7 +924,8 @@ module.exports = (dir, services) => {
             var historycollection = {
                 "userid": req.body.userid,
                 "date": new Date().toISOString(),
-                "actiontype": "New Blog added"
+                "actiontype": "added",
+                "blogtopic": req.body.topic
             }
 
             services.data.addblog(collection, dataCollection, whereFilter, historycollection)
@@ -1087,7 +1088,7 @@ module.exports = (dir, services) => {
                 "blogid": _id,
                 "userid": userid,
                 "date": new Date().toISOString(),
-                "actiontype": "Blog removed"
+                "actiontype": "removed"
             }
 
             console.log(_id);
@@ -1164,7 +1165,8 @@ module.exports = (dir, services) => {
                 "blogid": req.body._id,
                 "userid": req.body.userid,
                 "date": new Date().toISOString(),
-                "actiontype": "Blog editted"
+                "actiontype": "modified",
+                "blogtopic": req.body.topic
             }
 
             services.data.editblog(collection, dataCollection, whereFilter, historycollection)
@@ -1193,6 +1195,8 @@ module.exports = (dir, services) => {
      *         type: string
      *       username:
      *         type: string
+     *       blogtopic:
+     *         type: string 
      */
 
     /**
@@ -1237,7 +1241,8 @@ module.exports = (dir, services) => {
                 "blogid": req.body.blogid,
                 "userid": req.body.userid,
                 "date": new Date().toISOString(),
-                "actiontype": "New comment added"
+                "actiontype": "added",
+                "blogtopic": req.body.blogtopic
             }
 
             console.log("dataCollection " + JSON.stringify(dataCollection));
@@ -1292,6 +1297,66 @@ module.exports = (dir, services) => {
 
             services.data
                 .getmostrecentblogs(collection, whereFilter, dataFilter, sortfilter)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getbloghistoryuserid/{userid}/{lastbloghistoryid}/{recordcount}:
+     *   get:
+     *     tags:
+     *       - get blog history by user id
+     *     description: Returns blogs history by user id
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: userid
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *       - name: lastbloghistoryid
+     *         in: path
+     *         description: last blog history id
+     *         required: true
+     *         type: string 
+     *       - name: recordcount
+     *         in: path
+     *         description: record count
+     *         required: false
+     *         type: number 
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getbloghistoryuserid/:userid/:lastbloghistoryid/:recordcount?", (req, res) => {
+        try {
+            //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}
+            //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}/6
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var lbhid = req.params.lastbloghistoryid;
+            var rc = 10;
+
+            var sortfilter = { "date": -1 }; // Sort --- 1 for asc and -1 for desc
+            var dataFilter = {};
+            var collection = "bloghistory";
+
+            var key = "getbloghistoryuserid_" + collection + "_" + userid + "_" + lbhid + "_" + rc;
+
+            services.data
+                .getbloghistoryuserid(collection, userid, lbhid, dataFilter, sortfilter, rc, key)
                 .then(function(result) {
                     res.send(result);
                 })
