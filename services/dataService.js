@@ -103,6 +103,22 @@ module.exports = (cache, logger, config) => {
             })
         }
 
+        let findAllWithSort = function(collection, whereFilter, dataFilter, sortfilter) {
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    db.collection(collection)
+                        .find(whereFilter, dataFilter).sort(sortfilter).toArray(function(err, results) {
+                            if (!err) {
+                                resolve(results);
+                            } else {
+                                var _errorMsg = "error_code :" + errorMsg.msg_107.code + " , error_msg:" + errorMsg.msg_107.msg + " ,error:" + err;
+                                reject(_errorMsg);
+                            }
+                        });
+                });
+            })
+        }
+
         let findblogs = function(collection, whereFilter, dataFilter, sortfilter, recordcount) {
             console.log("whereFilter " + JSON.stringify(whereFilter));
             console.log("sortfilter " + JSON.stringify(sortfilter));
@@ -206,6 +222,27 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection).update(wherefilter, {
                         $set: dataCollection
                     }, { upsert: false }, (err, results) => {
+                        if (!err) {
+                            console.log("content updated Successfully");
+                            logger.log.info("update method : Updated content successfully");
+                            resolve(results);
+                        } else {
+                            logger.log.info("update method : Error in updating content : error " + err);
+                            reject(err);
+                        }
+                    });
+                }).catch(function(err) {
+                    logger.log.error("update method : connection error : " + err);
+                });
+            });
+        }
+
+        let updatemultirecord = function(collection, dataCollection, wherefilter) {
+            return new Promise(function(resolve, reject) {
+                connect().then(function(db) {
+                    db.collection(collection).update(wherefilter, {
+                        $set: dataCollection
+                    }, { upsert: false, multi: true }, (err, results) => {
                         if (!err) {
                             console.log("content updated Successfully");
                             logger.log.info("update method : Updated content successfully");
@@ -864,8 +901,7 @@ module.exports = (cache, logger, config) => {
                             ", Data " + JSON.stringify(dataCollection));
 
 
-                        var _id = (result.ops[0])._id;
-                        historycollection.blogid = _id;
+                        historycollection.blogid = ((result.ops[0])._id).toString();
 
                         cache.clearkey(collection);
 
@@ -884,7 +920,7 @@ module.exports = (cache, logger, config) => {
                 })
             },
 
-            addblogcomment: (collection, dataCollection, historycollection) => {
+            addblogcomment: (collection, dataCollection) => {
 
                 return new Promise(function(resolve, reject) {
                     insert(collection, dataCollection).then(function(result) {
@@ -892,12 +928,7 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Data " + JSON.stringify(dataCollection));
 
-                        var _id = (result.ops[0])._id;
-
                         cache.clearkey(collection);
-
-                        historycollection.commentid = _id;
-                        addhistory("commenthistory", historycollection);
 
                         resolve(result);
 
@@ -999,11 +1030,33 @@ module.exports = (cache, logger, config) => {
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
 
+                                    console.log("3");
+
                                     logger.log.info("deleteblogbyblogid method : successfully disabled a blog : " +
                                         "Collection Name : " + collection +
                                         ", updated query data : " + JSON.stringify(results));
 
                                     cache.clearkey(collection);
+
+                                    //Updated comment
+                                    collection = "comments";
+                                    whereFilter = { "blogid": _id };
+                                    updateQuery = { "status": "2" };
+                                    updatemultirecord(collection, updateQuery, whereFilter).then(function(results) {
+
+                                        console.log("1");
+                                        logger.log.info("updatecomment method : successfully disabled a blog : " +
+                                            "Collection Name : " + collection +
+                                            ", updated query data : " + JSON.stringify(results));
+
+                                        resolve(results);
+                                    }).catch(function(err) {
+                                        console.log("2");
+                                        logger.log.error("updatecomment method : Erorr in disabling the blog : " +
+                                            "Collection Name : " + collection +
+                                            ", Error : " + err);
+                                        reject(err);
+                                    });
 
                                     addhistory("bloghistory", historycollection);
 
@@ -1093,24 +1146,47 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            getbloghistoryuserid: (collection, userid, lastbloghistoryid, dataFilter, sortfilter, recordcount, key) => {
-                console.log(recordcount);
+            // getbloghistoryuserid: (collection, userid, lastbloghistoryid, dataFilter, sortfilter, recordcount, key) => {
+            //     console.log(recordcount);
+            //     return new Promise(function(resolve, reject) {
+            //         cache.get(key).then(results => {
+            //             if (results != null) {
+            //                 logger.log.info("getbloghistoryuserid method : data retrieve from cache");
+            //                 resolve(results);
+            //             } else {
+            //                 var whereFilter = {};
+            //                 if (lastbloghistoryid == "0")
+            //                     whereFilter = { "userid": userid };
+            //                 else
+            //                     whereFilter = {
+            //                         _id: { $lt: ObjectId(lastbloghistoryid) },
+            //                         "userid": userid
+            //                     };
+
+            //                 finddatabyrange(collection, whereFilter, dataFilter, sortfilter, recordcount).then(function(results) {
+            //                     var data = { "result": results, "count": results.length };
+            //                     cache.set(key, JSON.stringify(data));
+            //                     cache.expire(key, redisKeyExpire);
+            //                     logger.log.info("getbloghistoryuserid method : data retrieve from cache : Cache Key " + key);
+            //                     resolve(data);
+            //                 }).catch(function(err) {
+            //                     logger.log.error("getbloghistoryuserid method : data retrieve error " + err);
+            //                     reject(err);
+            //                 });
+            //             }
+            //         });
+            //     });
+            // },
+
+            getbloglistbyuserid: (collection, whereFilter, dataFilter, sortfilter, key) => {
+
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
-                            logger.log.info("getbloghistoryuserid method : data retrieve from cache");
+                            logger.log.info("getbloglistbyuserid method : data retrieve from cache");
                             resolve(results);
                         } else {
-                            var whereFilter = {};
-                            if (lastbloghistoryid == "0")
-                                whereFilter = { "userid": userid };
-                            else
-                                whereFilter = {
-                                    _id: { $lt: ObjectId(lastbloghistoryid) },
-                                    "userid": userid
-                                };
-
-                            finddatabyrange(collection, whereFilter, dataFilter, sortfilter, recordcount).then(function(results) {
+                            findAllWithSort(collection, whereFilter, dataFilter, sortfilter).then(function(results) {
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
@@ -1124,6 +1200,58 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
+
+            getbloghistorybyblogid: (collection, userid, selectedBlogID, dataFilter, sortfilter, key) => {
+
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getbloghistorybyblogid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            //var orFilter = { $or: [{ blogid: ObjectId(selectedBlogID) }, { blogid: selectedBlogID }] }
+                            var whereFilter = {};
+                            whereFilter = {
+                                "blogid": selectedBlogID,
+                                "userid": userid
+                            };
+
+                            findAllWithSort(collection, whereFilter, dataFilter, sortfilter).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getbloghistorybyblogid method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getbloghistorybyblogid method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
+                    });
+                });
+            },
+
+            getcommentbyblogid: (collection, whereFilter, dataFilter, sortfilter, key) => {
+                return new Promise(function(resolve, reject) {
+                    cache.get(key).then(results => {
+                        if (results != null) {
+                            logger.log.info("getcommentbyblogid method : data retrieve from cache");
+                            resolve(results);
+                        } else {
+                            findAllWithSort(collection, whereFilter, dataFilter, sortfilter).then(function(results) {
+                                var data = { "result": results, "count": results.length };
+                                cache.set(key, JSON.stringify(data));
+                                cache.expire(key, redisKeyExpire);
+                                logger.log.info("getcommentbyblogid method : data retrieve from cache : Cache Key " + key);
+                                resolve(data);
+                            }).catch(function(err) {
+                                logger.log.error("getcommentbyblogid method : data retrieve error " + err);
+                                reject(err);
+                            });
+                        }
+                    });
+                });
+            }
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;

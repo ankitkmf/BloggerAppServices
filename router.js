@@ -1215,17 +1215,7 @@ module.exports = (dir, services) => {
                 "creationdate": new Date().toISOString()
             };
 
-            var historycollection = {
-                "blogid": req.body.blogid,
-                "userid": req.body.userid,
-                "date": new Date().toISOString(),
-                "actiontype": "added",
-                "blogtopic": req.body.blogtopic
-            }
-
-            console.log("dataCollection " + JSON.stringify(dataCollection));
-
-            services.data.addblogcomment(collection, dataCollection, historycollection)
+            services.data.addblogcomment(collection, dataCollection)
                 .then(function(result) {
                     res.json(result);
                 }).catch(function(err) {
@@ -1288,13 +1278,73 @@ module.exports = (dir, services) => {
         }
     });
 
+    // /**
+    //  * @swagger
+    //  * /getbloghistoryuserid/{userid}/{lastbloghistoryid}/{recordcount}:
+    //  *   get:
+    //  *     tags:
+    //  *       - get blog history by user id
+    //  *     description: Returns blogs history by user id
+    //  *     produces:
+    //  *       - application/json
+    //  *     parameters:
+    //  *       - name: userid
+    //  *         in: path
+    //  *         description: user id
+    //  *         required: true
+    //  *         type: string
+    //  *       - name: lastbloghistoryid
+    //  *         in: path
+    //  *         description: last blog history id
+    //  *         required: true
+    //  *         type: string 
+    //  *       - name: recordcount
+    //  *         in: path
+    //  *         description: record count
+    //  *         required: false
+    //  *         type: number 
+    //  *     responses:
+    //  *       200:
+    //  *         description: Successfully retrieved      
+    //  */
+    // router.get("/getbloghistoryuserid/:userid/:lastbloghistoryid/:recordcount?", (req, res) => {
+    //     try {
+    //         //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}
+    //         //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}/6
+    //         res.header("Access-Control-Allow-Origin", "*");
+
+    //         var userid = req.params.userid;
+    //         var lbhid = req.params.lastbloghistoryid;
+    //         var rc = 10;
+
+    //         var sortfilter = { "date": -1 }; // Sort --- 1 for asc and -1 for desc
+    //         var dataFilter = {};
+    //         var collection = "bloghistory";
+
+    //         var key = "getbloghistoryuserid_" + collection + "_" + userid + "_" + lbhid + "_" + rc;
+
+    //         services.data
+    //             .getbloghistoryuserid(collection, userid, lbhid, dataFilter, sortfilter, rc, key)
+    //             .then(function(result) {
+    //                 res.send(result);
+    //             })
+    //             .catch(function(error) {
+    //                 res.send("data for key error: " + JSON.stringify(error));
+    //             });
+
+    //     } catch (err) {
+    //         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+    //         res.send({ _errorMsg });
+    //     }
+    // });
+
     /**
      * @swagger
-     * /getbloghistoryuserid/{userid}/{lastbloghistoryid}/{recordcount}:
+     * /getbloglistbyuserid/{userid}:
      *   get:
      *     tags:
-     *       - get blog history by user id
-     *     description: Returns blogs history by user id
+     *       - get blog list by user id
+     *     description: Returns blogs list by user id
      *     produces:
      *       - application/json
      *     parameters:
@@ -1303,38 +1353,124 @@ module.exports = (dir, services) => {
      *         description: user id
      *         required: true
      *         type: string
-     *       - name: lastbloghistoryid
-     *         in: path
-     *         description: last blog history id
-     *         required: true
-     *         type: string 
-     *       - name: recordcount
-     *         in: path
-     *         description: record count
-     *         required: false
-     *         type: number 
      *     responses:
      *       200:
      *         description: Successfully retrieved      
      */
-    router.get("/getbloghistoryuserid/:userid/:lastbloghistoryid/:recordcount?", (req, res) => {
+    router.get("/getbloglistbyuserid/:userid", (req, res) => {
         try {
-            //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}
-            //http://localhost:3000/getbloghistoryuserid/{userid}/{lastbloghistoryid}/6
+            //http://localhost:3000/getbloglistbyuserid/{userid}
             res.header("Access-Control-Allow-Origin", "*");
 
             var userid = req.params.userid;
-            var lbhid = req.params.lastbloghistoryid;
-            var rc = 10;
+            var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
+            var dataFilter = { userid: false, content: false, categorykey: false, createdby: false, status: false, creationdate: false };
+            var whereFilter = { "userid": userid };
+            var collection = "blogs";
 
-            var sortfilter = { "date": -1 }; // Sort --- 1 for asc and -1 for desc
+            var key = "getbloglistbyuserid_" + collection + "_" + userid;
+
+            services.data
+                .getbloglistbyuserid(collection, whereFilter, dataFilter, sortfilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getbloghistorybyblogid/{userid}/{selectedBlogID}:
+     *   get:
+     *     tags:
+     *       - get blog history by blog id
+     *     description: Returns blogs history by blog id
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: userid
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *       - name: selectedBlogID
+     *         in: path
+     *         description: selected blog id
+     *         required: true
+     *         type: string 
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getbloghistorybyblogid/:userid/:selectedBlogID", (req, res) => {
+        try {
+            //http://localhost:3000/getbloghistorybyblogid/{userid}/{selectedBlogID}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var selectedBlogID = req.params.selectedBlogID;
+            var sortfilter = { "date": 1 }; // Sort --- 1 for asc and -1 for desc
             var dataFilter = {};
             var collection = "bloghistory";
 
-            var key = "getbloghistoryuserid_" + collection + "_" + userid + "_" + lbhid + "_" + rc;
+            var key = "getbloghistorybyblogid_" + collection + "_" + userid + "_" + selectedBlogID;
 
             services.data
-                .getbloghistoryuserid(collection, userid, lbhid, dataFilter, sortfilter, rc, key)
+                .getbloghistorybyblogid(collection, userid, selectedBlogID, dataFilter, sortfilter, key)
+                .then(function(result) {
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getcommentbyblogid/{selectedBlogID}:
+     *   get:
+     *     tags:
+     *       - get comment history by blog id
+     *     description: Returns comment history by blog id
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: selectedBlogID
+     *         in: path
+     *         description: selected blog id
+     *         required: true
+     *         type: string 
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getcommentbyblogid/:selectedBlogID", (req, res) => {
+        try {
+            //http://localhost:3000/getcommentbyblogid/{selectedBlogID}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var selectedBlogID = req.params.selectedBlogID;
+            var whereFilter = { "blogid": selectedBlogID };
+            var sortfilter = { "creationdate": 1 }; // Sort --- 1 for asc and -1 for desc
+            var dataFilter = {};
+            var collection = "comments";
+
+            var key = "getcommentbyblogid_" + collection + "_" + selectedBlogID;
+
+            services.data
+                .getcommentbyblogid(collection, whereFilter, dataFilter, sortfilter, key)
                 .then(function(result) {
                     res.send(result);
                 })
