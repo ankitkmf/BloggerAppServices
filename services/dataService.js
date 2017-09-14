@@ -53,12 +53,20 @@ module.exports = (cache, logger, config) => {
                 connect().then(function(db) {
                     db.collection(collection)
                         .findOne(whereFilter, dataFilter, (err, results) => {
-                            if (!err) {
+                            console.log("step 1");
+                            if (!err && results != null) {
+                                console.log("step 2");
                                 resolve(results);
                             } else {
-                                var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
-                                reject(_errorMsg);
+                                // console.log("step 3");
+                                // var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
+                                results = [];
+                                resolve(results);
                             }
+                        }).catch(function(err) {
+                            var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
+                            console.log(_errorMsg);
+                            reject({ _errorMsg });
                         });
                 })
 
@@ -286,7 +294,7 @@ module.exports = (cache, logger, config) => {
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
                                 console.log("In find one method");
-                                var data = { "result": results, "count": results.length };
+                                var data = { "result": results };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
                                 console.log("data store in data:" + JSON.stringify(data));
@@ -401,21 +409,24 @@ module.exports = (cache, logger, config) => {
                 });
             },
             validateUserEmail: (collection, whereFilter, dataCollection) => {
-                console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
+                // console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
+                //  console.log("inside validateUserEmail whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
-                    connect().then((db) => {
-                        db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
-                            // console.log("inside validateUserEmail 1");
-                            if (!err) {
-                                console.log("inside validateUserEmail 1:" + JSON.stringify(results));
-                                var data = { "result": results, "count": results.length };
-                                resolve(data);
-                            } else {
-                                var _errorMsg = "error_code :" + errorMsg.msg_1015.code + " , error_msg:" + errorMsg.msg_1015.msg + " ,error:" + err;
-                                console.log("inside validateUserEmail 2" + _errorMsg);
-                                reject(_errorMsg);
-                            }
-                        });
+                    // connect().then((db) => {
+                    //db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
+                    findOne(collection, whereFilter, dataCollection).then(function(results) {
+                        // console.log("inside validateUserEmail 1");
+                        // if (!err) {
+                        //     console.log("inside validateUserEmail 1:" + JSON.stringify(results));
+                        //  var data = { "result": results, "count": results.length };
+                        var data = { "result": results };
+                        resolve(data);
+                        // } else {
+                        //     var _errorMsg = "error_code :" + errorMsg.msg_1015.code + " , error_msg:" + errorMsg.msg_1015.msg + " ,error:" + err;
+                        //     console.log("inside validateUserEmail 2" + _errorMsg);
+                        //     reject(_errorMsg);
+                        // }
+                        // });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
                         console.log(_errorMsg);

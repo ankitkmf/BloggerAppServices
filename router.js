@@ -188,9 +188,13 @@ module.exports = (dir, services) => {
                 "name": req.body.name,
                 "password": req.body.password, // bcrypt.hashSync(password, 10),
                 "admin": false,
-                "email": req.body.email,
+                "localemail": req.body.email,
                 "IsEmailVerified": false,
                 "active": false,
+                "googlename": req.body.googlename,
+                "facebookname": req.body.facebookname,
+                "googleemail": req.body.googleemail,
+                "facebookemail": req.body.facebookemail,
                 "dateTime": new Date().toDateString(),
                 "authType": req.body.authType,
                 "profileID": req.body.profileID,
@@ -320,11 +324,13 @@ module.exports = (dir, services) => {
         }
     });
 
-    router.post("/validateUserEmail", function(req, res) {
+    router.get("/validateUserEmail/:email", function(req, res) {
         try {
             //http://localhost:3000/validateUserEmail     
-            console.log("Email:" + req.body.email);
-            var whereFilter = { email: req.body.email };
+            console.log("Email:" + req.params.email);
+            var whereFilter = {
+                $or: [{ email: req.params.email }, { googleemail: req.params.email }, { facebookemail: req.params.email }]
+            };
             var dataFilter = { password: true, username: true, authType: true, userImage: true };
             var collection = "users";
 
