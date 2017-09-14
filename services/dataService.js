@@ -1038,6 +1038,8 @@ module.exports = (cache, logger, config) => {
 
                                     cache.clearkey(collection);
 
+                                    addhistory("bloghistory", historycollection);
+
                                     //Updated comment
                                     collection = "comments";
                                     whereFilter = { "blogid": _id };
@@ -1057,8 +1059,6 @@ module.exports = (cache, logger, config) => {
                                             ", Error : " + err);
                                         reject(err);
                                     });
-
-                                    addhistory("bloghistory", historycollection);
 
                                     resolve(results);
                                 }
@@ -1249,6 +1249,32 @@ module.exports = (cache, logger, config) => {
                                 reject(err);
                             });
                         }
+                    });
+                });
+            },
+
+            UpdateCommentStatus: (collection, whereFilter, updateDataCollection) => {
+                console.log("inside UpdateCommentStatus dataCollection 1:" + JSON.stringify(updateDataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).update(whereFilter, { $set: updateDataCollection },
+                            (err, results) => {
+                                console.log("inside UpdateCommentStatus 2");
+                                if (!err) {
+                                    console.log("success" + results);
+                                    cache.clearkey(collection);
+                                    resolve(results);
+                                } else {
+                                    var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
+                                    console.log(_errorMsg);
+                                    console.log("Error");
+                                    reject(err);
+                                }
+                            });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
                     });
                 });
             }
