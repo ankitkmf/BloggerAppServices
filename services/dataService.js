@@ -51,23 +51,28 @@ module.exports = (cache, logger, config) => {
         let findOne = function(collection, whereFilter, dataFilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
+                    var data = { "result": "", "count": 0 };
                     db.collection(collection)
                         .findOne(whereFilter, dataFilter, (err, results) => {
                             console.log("step 1");
                             if (!err && results != null) {
+
+                                data.result = results;
+                                data.count = 1;
                                 console.log("step 2");
-                                resolve(results);
+                                resolve(data);
                             } else {
                                 // console.log("step 3");
                                 // var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
-                                results = [];
-                                resolve(results);
+                                //results = {};
+                                resolve(data);
                             }
-                        }).catch(function(err) {
-                            var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
-                            console.log(_errorMsg);
-                            reject({ _errorMsg });
-                        });
+                        })
+                        // .catch(function(err) {
+                        //     var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
+                        //     console.log(_errorMsg);
+                        //     reject({ _errorMsg });
+                        // });
                 })
 
             });
