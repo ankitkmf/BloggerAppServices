@@ -265,6 +265,28 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.post("/updateBlogTableRecords", (req, res) => {
+        try {
+            console.log("updateBlogTableRecords Step 1");
+            var filterQuery = { "_id": ObjectId(req.body.id) };
+            console.log("updateBlogTableRecords Step 2:" + JSON.stringify(filterQuery));
+            var updateQuery = { "status": req.body.type };
+            console.log("UpdateTableRecords step 2:" + JSON.stringify(updateQuery));
+            var collection = "blogs";
+            services.data.UpdateUsersRecord(collection, filterQuery, updateQuery)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
+    });
+
     router.get("/getblogs/:lbid/:ct", (req, res) => {
         try {
             //http://localhost:3000/getblogs/0/all
