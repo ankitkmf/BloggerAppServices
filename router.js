@@ -1163,9 +1163,11 @@ module.exports = (dir, services) => {
             dataCollection = {
                 "_id": req.body._id,
                 "topic": req.body.topic,
-                "content": req.body.content,
-                "categorykey": req.body.category
+                "categorykey": req.body.category,
+                "content": req.body.content
             };
+
+            console.log("editblog dataCollection : " + JSON.stringify(dataCollection));
 
             var historycollection = {
                 "blogid": req.body._id,
@@ -1521,6 +1523,28 @@ module.exports = (dir, services) => {
             console.log("updatecomment step 2:" + JSON.stringify(updateQuery));
             var collection = "comments";
             services.data.UpdateCommentStatus(collection, filterQuery, updateQuery)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
+    });
+
+    router.post("/updateprofilephotopath", (req, res) => {
+        try {
+            console.log("updateprofilephotopath Step 1");
+            var filterQuery = { "_id": ObjectId(req.body.userid) };
+            console.log("updateprofilephotopath Step 2:" + JSON.stringify(filterQuery));
+            var updateQuery = { "localphoto": req.body.localphoto };
+            console.log("updateprofilephotopath step 2:" + JSON.stringify(updateQuery));
+            var collection = "users";
+            services.data.updateprofilephotopath(collection, filterQuery, updateQuery)
                 .then(function(result) {
                     res.json(result);
                 })

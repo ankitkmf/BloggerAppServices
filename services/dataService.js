@@ -527,14 +527,14 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                var data = { "result": [], "count": 0 };
-                                if (results != null) {
-                                    data = { "result": results, "count": results.length };
-                                }
-                                cache.set(key, JSON.stringify(data));
+                                //var data = { "result": [], "count": 0 };
+                                //if (results != null) {
+                                //    data = { "result": results, "count": results.length };
+                                //}
+                                cache.set(key, JSON.stringify(results));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getaboutme method : data retrieved and stored in cache : Cache Key " + key);
-                                resolve(data);
+                                resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
                                 console.log(_errorMsg);
@@ -553,14 +553,14 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                var data = { "result": [], "count": 0 };
-                                if (results != null) {
-                                    data = { "result": results, "count": results.length };
-                                }
-                                cache.set(key, JSON.stringify(data));
+                                // var data = { "result": [], "count": 0 };
+                                // if (results != null) {
+                                //     data = { "result": results, "count": results.length };
+                                // }
+                                cache.set(key, JSON.stringify(results));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getpersonaldetails method : data retrieved and stored in cache : Cache Key " + key);
-                                resolve(data);
+                                resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
                                 console.log(_errorMsg);
@@ -632,8 +632,8 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results._id != undefined) {
-                            whereFilter = { "_id": ObjectId(results._id) };
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
                             var updateQuery = { "content": dataCollection.content };
 
                             logger.log.info("updateaboutme method : call update method : " +
@@ -692,8 +692,8 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results._id != undefined) {
-                            whereFilter = { "_id": ObjectId(results._id) };
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
 
                             var updateQuery = {
                                 "firstname": dataCollection.firstname,
@@ -764,8 +764,8 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results._id != undefined) {
-                            whereFilter = { "_id": ObjectId(results._id) };
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
 
                             var updateQuery = {
                                 "proffession": dataCollection.proffession,
@@ -833,14 +833,14 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                var data = { "result": [], "count": 0 };
-                                if (results != null) {
-                                    data = { "result": results, "count": results.length };
-                                }
-                                cache.set(key, JSON.stringify(data));
+                                // var data = { "result": [], "count": 0 };
+                                // if (results != null) {
+                                //     data = { "result": results, "count": results.length };
+                                // }
+                                cache.set(key, JSON.stringify(results));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getproffessionaldetails method : data retrieved and stored in cache : Cache Key " + key);
-                                resolve(data);
+                                resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
                                 console.log(_errorMsg);
@@ -967,14 +967,14 @@ module.exports = (cache, logger, config) => {
                         } else {
                             var whereFilter = { "_id": ObjectId(_id) };
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                var data = { "result": [], "count": 0 };
-                                if (results != null) {
-                                    data = { "result": results, "count": 1 };
-                                }
-                                cache.set(key, JSON.stringify(data));
+                                // var data = { "result": [], "count": 0 };
+                                // if (results != null) {
+                                //     data = { "result": results, "count": 1 };
+                                // }
+                                cache.set(key, JSON.stringify(results));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
-                                resolve(data);
+                                resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
                                 console.log(_errorMsg);
@@ -1032,8 +1032,8 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results._id != undefined) {
-                            whereFilter = { "_id": ObjectId(results._id) };
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
                             var updateQuery = { "status": "2" };
 
                             historycollection.blogtopic = results.topic;
@@ -1112,11 +1112,11 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results._id != undefined) {
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
 
                             console.log("editblog " + 3);
 
-                            whereFilter = { "_id": ObjectId(results._id) };
+                            whereFilter = { "_id": ObjectId(results.result._id) };
                             var updateQuery = {
                                 "topic": dataCollection.topic,
                                 "content": dataCollection.content,
@@ -1276,6 +1276,32 @@ module.exports = (cache, logger, config) => {
                         db.collection(collection).update(whereFilter, { $set: updateDataCollection },
                             (err, results) => {
                                 console.log("inside UpdateCommentStatus 2");
+                                if (!err) {
+                                    console.log("success" + results);
+                                    cache.clearkey(collection);
+                                    resolve(results);
+                                } else {
+                                    var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
+                                    console.log(_errorMsg);
+                                    console.log("Error");
+                                    reject(err);
+                                }
+                            });
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
+
+            updateprofilephotopath: (collection, whereFilter, updateDataCollection) => {
+                console.log("inside updateprofilephotopath dataCollection 1:" + JSON.stringify(updateDataCollection));
+                return new Promise((resolve, reject) => {
+                    connect().then((db) => {
+                        db.collection(collection).update(whereFilter, { $set: updateDataCollection },
+                            (err, results) => {
+                                console.log("inside updateprofilephotopath 2");
                                 if (!err) {
                                     console.log("success" + results);
                                     cache.clearkey(collection);
