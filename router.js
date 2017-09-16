@@ -1163,11 +1163,11 @@ module.exports = (dir, services) => {
             dataCollection = {
                 "_id": req.body._id,
                 "topic": req.body.topic,
-                "categorykey": req.body.category,
+                "categorykey": req.body.categorykey,
                 "content": req.body.content
             };
 
-            console.log("editblog dataCollection : " + JSON.stringify(dataCollection));
+            //console.log("editblog dataCollection : " + JSON.stringify(dataCollection));
 
             var historycollection = {
                 "blogid": req.body._id,

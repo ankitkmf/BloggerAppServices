@@ -1077,7 +1077,7 @@ module.exports = (cache, logger, config) => {
 
             editblog: (collection, dataCollection, filter, historycollection) => {
 
-                console.log("editblog " + 1 + " , " + JSON.stringify(dataCollection));
+                console.log("editblog " + 1); // + " , " + JSON.stringify(dataCollection));
 
                 var whereFilter = { "_id": ObjectId(dataCollection._id) };
                 var datafilter = {};
