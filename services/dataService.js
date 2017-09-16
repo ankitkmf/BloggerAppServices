@@ -1280,6 +1280,62 @@ module.exports = (cache, logger, config) => {
                         reject(_errorMsg);
                     });
                 });
+            },
+            verifyemailtrigger: (collection, whereFilter, updateQuery, dataCollection) => {
+
+                var datafilter = {};
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("verifyemailtrigger method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
+
+                            logger.log.info("verifyemailtrigger method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(updateQuery) +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            update(collection, updateQuery, whereFilter).then(function(results) {
+                                if (results != null && results != undefined) {
+
+                                    logger.log.info("verifyemailtrigger method : successfully verify email trigger details : " +
+                                        "Collection Name : " + collection +
+                                        ", updated query data : " + JSON.stringify(results));
+
+                                    resolve(results);
+                                }
+                            }).catch(function(err) {
+                                logger.log.error("updateproffessionaldetails method : Erorr in updating proffessional details : " +
+                                    "Collection Name : " + collection +
+                                    ", Error : " + err);
+                                reject(err);
+                            });
+                        } else {
+                            return new Promise(function(resolve, reject) {
+                                insert(collection, dataCollection).then(function(result) {
+                                    logger.log.info("verifyemailtrigger method : data added successfully : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));
+                                    resolve(result);
+                                }).catch(function(err) {
+                                    logger.log.error("verifyemailtrigger method : data does not saved : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));;
+                                    reject(err);
+                                });
+                            })
+                        }
+                    }).catch(function(err) {
+                        logger.log.error("verifyemailtrigger method : Erorr in findOne method : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(err);
+                    });
+                });
             }
         }
     } catch (err) {
