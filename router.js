@@ -1558,5 +1558,59 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.post("/updaterecords", (req, res) => {
+        try {
+            console.log("updaterecords Step 1");
+            var whereQuery = {};
+            var updateQuery = {};
+            var collectoin = "";
+            var type = req.params.type != null ? req.params.type.toLowerCase() : null;
+
+            switch (type) {
+                case "mapgoogleaccount":
+                    collectoin = "users";
+                    whereQuery = { "_id": ObjectId(req.body.id) };
+                    updateQuery = {
+                        "googleemail": req.body.googleemail,
+                        "googlename": req.body.googlename,
+                        "userImage": req.body.userImage,
+                        "authType": req.body.authType,
+                    };
+                    break;
+                case "blogs":
+                    collectoin = "blogs";
+                    updateQuery = { "userid": req.body.userid, "createdby": req.body.username };
+                    whereQuery = { "userid": req.body.userid };
+                    break;
+                case "comments":
+                    collectoin = "comments";
+                    updateQuery = { "userid": req.body.userid, "username": req.body.username };
+                    whereQuery = { "userid": req.body.userid };
+                    break;
+                case "deactivegoogle":
+                    collectoin = "users";
+                    updateQuery = { "active": false };
+                    whereQuery = { _id: ObjectId(req.params.id) };
+                    break;
+                default:
+                    break;
+            }
+
+            console.log("updategoogleaccount updateQuery:" + JSON.stringify(updateQuery));
+            var collection = "users";
+            services.data.updateRecords(collection, filterQuery, updateQuery)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json(_errorMsg);
+        }
+    });
+
     return router;
 };

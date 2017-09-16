@@ -884,27 +884,6 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            // findMaxBlogIndex: (collection, sortfilter) => {
-            //     return new Promise(function(resolve, reject) {
-            //         connect().then(function(db) {
-            //             db.collection(collection)
-            //                 .find({}).limit(1).sort(sortfilter).toArray(function(err, results) {
-            //                     if (!err) {
-            //                         //var data = { "result": [], "count": 0 };
-            //                         //if (results != null) {
-            //                         //    data = { "result": results, "count": 1 };
-            //                         //}
-            //                         console.log("findMaxBlogIndex : " + JSON.stringify(results));
-            //                         resolve(results);
-            //                     } else {
-            //                         console.log("findMaxBlogIndex " + err);
-            //                         reject(err);
-            //                     }
-            //                 });
-            //         });
-            //     });
-            // },
-
             addblog: (collection, dataCollection, filter, historycollection) => {
                 var whereFilter = filter;
                 var datafilter = {};
@@ -1162,38 +1141,6 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            // getbloghistoryuserid: (collection, userid, lastbloghistoryid, dataFilter, sortfilter, recordcount, key) => {
-            //     console.log(recordcount);
-            //     return new Promise(function(resolve, reject) {
-            //         cache.get(key).then(results => {
-            //             if (results != null) {
-            //                 logger.log.info("getbloghistoryuserid method : data retrieve from cache");
-            //                 resolve(results);
-            //             } else {
-            //                 var whereFilter = {};
-            //                 if (lastbloghistoryid == "0")
-            //                     whereFilter = { "userid": userid };
-            //                 else
-            //                     whereFilter = {
-            //                         _id: { $lt: ObjectId(lastbloghistoryid) },
-            //                         "userid": userid
-            //                     };
-
-            //                 finddatabyrange(collection, whereFilter, dataFilter, sortfilter, recordcount).then(function(results) {
-            //                     var data = { "result": results, "count": results.length };
-            //                     cache.set(key, JSON.stringify(data));
-            //                     cache.expire(key, redisKeyExpire);
-            //                     logger.log.info("getbloghistoryuserid method : data retrieve from cache : Cache Key " + key);
-            //                     resolve(data);
-            //                 }).catch(function(err) {
-            //                     logger.log.error("getbloghistoryuserid method : data retrieve error " + err);
-            //                     reject(err);
-            //                 });
-            //             }
-            //         });
-            //     });
-            // },
-
             getbloglistbyuserid: (collection, whereFilter, dataFilter, sortfilter, key) => {
 
                 return new Promise(function(resolve, reject) {
@@ -1294,7 +1241,21 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
-
+            updateRecords: (collection, whereFilter, updateDataCollection) => {
+                console.log("updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
+                console.log("updateRecords whereFilter:" + JSON.stringify(whereFilter));
+                return new Promise((resolve, reject) => {
+                    updatemultirecord(collection, updateDataCollection, whereFilter).then(function(results) {
+                        console.log("updateRecords for " + collection + " successful");
+                        cache.clearkey(collection);
+                        resolve(data);
+                    }).catch(function(err) {
+                        var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+                        console.log(_errorMsg);
+                        reject(_errorMsg);
+                    });
+                });
+            },
             updateprofilephotopath: (collection, whereFilter, updateDataCollection) => {
                 console.log("inside updateprofilephotopath dataCollection 1:" + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
