@@ -331,7 +331,7 @@ module.exports = (dir, services) => {
             var whereFilter = {
                 $or: [{ email: req.params.email }, { googleemail: req.params.email }, { facebookemail: req.params.email }]
             };
-            var dataFilter = { password: true, username: true, authType: true, userImage: true };
+            var dataFilter = { password: true, username: true, authType: true, userImage: true, IsEmailVerified: true, admin: true, email: true };
             var collection = "users";
 
             services.data
