@@ -1646,5 +1646,33 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.get("/verifyemail/:userid", function(req, res) {
+        try {
+            //http://localhost:3000/verifyemail/{userid}     
+            //console.log("updatepassword pwd:" + req.body.pwd);
+            //console.log("updatepassword id:" + req.body.id);
+            //res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var whereFilter = { userid: userid };
+            var updateQuery = {};
+            var collection = "verifyemailtrigger";
+
+            services.data
+                .verifyemail(collection, whereFilter, updateQuery)
+                .then(function(result) {
+                    console.log(JSON.stringify(result));
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
     return router;
 };

@@ -1336,6 +1336,89 @@ module.exports = (cache, logger, config) => {
                         reject(err);
                     });
                 });
+            },
+
+            verifyemail: (collection, whereFilter, updateQuery) => {
+
+                var datafilter = {};
+                var data = { "state": "" };
+
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("verifyemail method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    var emailactiveduration;
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+
+                            logger.log.info("verifyemail method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            var currentDT = new Date(new Date().toISOString());
+                            var verifedEmailSentDT = new Date(results.result.dt);
+                            var diffDT = currentDT - verifedEmailSentDT;
+                            emailactiveduration = config.verifyemail.timeofactivate;
+
+                            if (Math.floor(diffDT / 1e3) < parseInt(emailactiveduration)) {
+
+                                collection = "users";
+                                whereFilter = { "_id": ObjectId(results.result.userid) };
+
+                                findOne(collection, whereFilter, datafilter).then(function(userinfo) {
+
+                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.result._id != undefined) {
+
+                                        whereFilter = { "_id": ObjectId(userinfo.result._id) };
+                                        updateQuery = { "IsEmailVerified": true };
+
+                                        if (userinfo.result.IsEmailVerified) {
+                                            data.state = "2" //email is already verified
+                                            resolve(data);
+                                        } else {
+                                            update(collection, updateQuery, whereFilter).then(function(results) {
+
+                                                if (results != null && results != undefined) {
+
+                                                    logger.log.info("verifyemail method : successfully verified email : " +
+                                                        "Collection Name : " + collection +
+                                                        ", updated query data : " + JSON.stringify(results));
+
+                                                    data.state = "1"; //Email Verified
+                                                    resolve(data);
+                                                }
+                                            }).catch(function(err) {
+                                                data.state = "0"; // Error in email verification
+                                                logger.log.error("verifyemail method : Erorr in verifying email : " +
+                                                    "Collection Name : " + collection +
+                                                    ", Error : " + err);
+                                                reject(data);
+                                            });
+                                        }
+                                    }
+                                }).catch(function(err) {
+                                    data.state = "0"; // Error in email verification
+                                    logger.log.error("verifyemail method : Erorr in verifying email : " +
+                                        "Collection Name : " + collection +
+                                        ", Error : " + err);
+                                    reject(data);
+                                });
+                            } else {
+                                data.state = "3"; // Invalid URL
+                                resolve(data);
+                            }
+                        }
+                    }).catch(function(err) {
+                        data.state = "0"; // Error in email verification
+                        logger.log.error("verifyemail method : Erorr in verifying email : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(data);
+                    });
+                });
             }
         }
     } catch (err) {
