@@ -414,12 +414,19 @@ module.exports = (cache, logger, config) => {
                 });
             },
             validateUserEmail: (collection, whereFilter, dataCollection) => {
+                console.log("1 validateUserEmail");
                 // console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
                 //  console.log("inside validateUserEmail whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
+
+                    console.log("2 validateUserEmail");
+
                     // connect().then((db) => {
                     //db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
                     findOne(collection, whereFilter, dataCollection).then(function(results) {
+
+                        console.log("3 validateUserEmail");
+
                         // console.log("inside validateUserEmail 1");
                         // if (!err) {
                         //     console.log("inside validateUserEmail 1:" + JSON.stringify(results));
@@ -1417,6 +1424,63 @@ module.exports = (cache, logger, config) => {
                             "Collection Name : " + collection +
                             ", Error : " + err);
                         reject(data);
+                    });
+                });
+            },
+
+            triggerfpwdemail: (collection, whereFilter, updateQuery, dataCollection) => {
+
+                var datafilter = {};
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("triggerfpwdemail method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
+
+                            logger.log.info("triggerfpwdemail method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(updateQuery) +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            update(collection, updateQuery, whereFilter).then(function(results) {
+                                if (results != null && results != undefined) {
+
+                                    logger.log.info("triggerfpwdemail method : successfully verify email trigger details : " +
+                                        "Collection Name : " + collection +
+                                        ", updated query data : " + JSON.stringify(results));
+
+                                    resolve(results);
+                                }
+                            }).catch(function(err) {
+                                logger.log.error("triggerfpwdemail method : Erorr in updating proffessional details : " +
+                                    "Collection Name : " + collection +
+                                    ", Error : " + err);
+                                reject(err);
+                            });
+                        } else {
+                            return new Promise(function(resolve, reject) {
+                                insert(collection, dataCollection).then(function(result) {
+                                    logger.log.info("triggerfpwdemail method : data added successfully : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));
+                                    resolve(result);
+                                }).catch(function(err) {
+                                    logger.log.error("triggerfpwdemail method : data does not saved : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));;
+                                    reject(err);
+                                });
+                            })
+                        }
+                    }).catch(function(err) {
+                        logger.log.error("triggerfpwdemail method : Erorr in findOne method : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(err);
                     });
                 });
             }

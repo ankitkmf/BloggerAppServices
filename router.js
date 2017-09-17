@@ -1674,5 +1674,40 @@ module.exports = (dir, services) => {
         }
     });
 
+    router.post("/triggerfpwdemail", function(req, res) {
+        try {
+            //http://localhost:3000/triggerfpwdemail     
+            //console.log("updatepassword pwd:" + req.body.pwd);
+            //console.log("updatepassword id:" + req.body.id);
+
+            var userid = req.body.userid;
+            var dt = req.body.dt;
+
+            var dataCollection = {
+                "userid": userid,
+                "dt": dt
+            }
+
+            var whereFilter = { userid: userid };
+            var updateQuery = { "dt": dt };
+            var collection = "fpwdemailtrigger";
+
+            //console.log("whereFilter:" + JSON.stringify(whereFilter));
+            //console.log("updateFilter:" + JSON.stringify(updateFilter));
+            services.data
+                .triggerfpwdemail(collection, whereFilter, updateQuery, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
     return router;
 };
