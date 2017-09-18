@@ -1593,11 +1593,11 @@ module.exports = (dir, services) => {
 
     router.post("/updaterecords", (req, res) => {
         try {
-            console.log("updaterecords Step 1");
+            console.log("updaterecords Step 1,req.body.type:" + req.body.type);
             var whereQuery = {};
             var updateQuery = {};
             var collectoin = "";
-            var type = req.params.type != null ? req.params.type.toLowerCase() : null;
+            var type = req.body.type != null ? req.body.type.toLowerCase() : null;
 
             switch (type) {
                 case "mapgoogleaccount":
@@ -1608,26 +1608,27 @@ module.exports = (dir, services) => {
                         "googlename": req.body.googlename,
                         "userImage": req.body.userImage,
                         "authType": req.body.authType,
+                        "mapGoogleUser": true
                     };
                     break;
                 case "blogs":
                     collectoin = "blogs";
-                    updateQuery = { "userid": req.body.userid, "createdby": req.body.username };
+                    updateQuery = { "userid": req.body.mapuserid, "createdby": req.body.username };
                     whereQuery = { "userid": req.body.userid };
                     break;
                 case "comments":
                     collectoin = "comments";
-                    updateQuery = { "userid": req.body.userid, "username": req.body.username };
+                    updateQuery = { "userid": req.body.mapuserid, "username": req.body.username };
                     whereQuery = { "userid": req.body.userid };
                     break;
                 case "deactivegoogleuser":
                     collectoin = "users";
                     updateQuery = { "active": false };
-                    whereQuery = { _id: ObjectId(req.params.id) };
+                    whereQuery = { "googleemail": req.params.googleemail, "username": req.body.username };
                     break;
                 case "blogshistory":
                     collectoin = "bloghistory";
-                    updateQuery = { "userid": req.body.userid };
+                    updateQuery = { "userid": req.body.mapuserid };
                     whereQuery = { "userid": req.body.userid };
                     break;
                     // case "commentshistory":
@@ -1637,24 +1638,25 @@ module.exports = (dir, services) => {
                     //     break;
                 case "loginhistory":
                     collectoin = "userLoginHistory";
-                    updateQuery = { "profileID": req.body.userid, "username": req.body.username };
+                    updateQuery = { "profileID": req.body.mapuserid, "username": req.body.username };
                     whereQuery = { "profileID": req.body.userid };
                     break;
                 default:
                     break;
             }
 
-            console.log("updaterecords for " + type + " ,updateQuery:" + JSON.stringify(updateQuery));
-            console.log("updaterecords for " + type + " ,whereQuery:" + JSON.stringify(whereQuery));
-            //   var collection = "users";
+            console.log("updaterecords for " + collectoin + " ,updateQuery:" + JSON.stringify(updateQuery));
+            console.log("updaterecords for " + collectoin + " ,whereQuery:" + JSON.stringify(whereQuery));
+            var collection = "users";
             services.data.updateRecords(collection, filterQuery, updateQuery)
                 .then(function(result) {
-                    res.json(result);
+                    res.send(result);
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
-                    res.json(_errorMsg);
+                    res.send(_errorMsg);
                 });
+            // res.send(true);
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.json(_errorMsg);
