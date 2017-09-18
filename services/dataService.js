@@ -1446,17 +1446,32 @@ module.exports = (cache, logger, config) => {
                         "Collection Name : " + collection +
                         ", where filter : " + JSON.stringify(whereFilter));
 
+                    console.log("Collection Name : " + collection +
+                        ", updated query data : " + JSON.stringify(updateQuery) +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+                        console.log("record found " + JSON.stringify(results.result));
+                        if (results != undefined && results.result != undefined && results.count > 0) {
                             whereFilter = { "_id": ObjectId(results.result._id) };
+                            //updateQuery = {};
 
                             logger.log.info("triggerfpwdemail method : call update method : " +
                                 "Collection Name : " + collection +
                                 ", updated query data : " + JSON.stringify(updateQuery) +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
+                            console.log("find one Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(updateQuery) +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
+
+
+                                    console.log(" update Collection Name : " + collection +
+                                        ", updated query data : " + JSON.stringify(updateQuery) +
+                                        ", where filter : " + JSON.stringify(whereFilter));
 
                                     logger.log.info("triggerfpwdemail method : successfully verify email trigger details : " +
                                         "Collection Name : " + collection +
@@ -1494,14 +1509,14 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            fpwdemailtrigger: (collection, whereFilter, updateQuery) => {
+            verifyfpwdemail: (collection, whereFilter, updateQuery) => {
 
                 var datafilter = {};
                 var data = { "state": "" };
 
                 return new Promise(function(resolve, reject) {
 
-                    logger.log.info("fpwdemailtrigger method :  call findOne method : " +
+                    logger.log.info("verifyfpwdemail method :  call findOne method : " +
                         "Collection Name : " + collection +
                         ", where filter : " + JSON.stringify(whereFilter));
 
@@ -1515,7 +1530,7 @@ module.exports = (cache, logger, config) => {
 
                             console.log("2");
 
-                            logger.log.info("fpwdemailtrigger method : call update method : " +
+                            logger.log.info("verifyfpwdemail method : call update method : " +
                                 "Collection Name : " + collection +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
@@ -1542,7 +1557,7 @@ module.exports = (cache, logger, config) => {
                                     }
                                 }).catch(function(err) {
                                     data.state = "0"; // Error in email verification
-                                    logger.log.error("fpwdemailtrigger method : Erorr in verifying email : " +
+                                    logger.log.error("verifyfpwdemail method : Erorr in verifying email : " +
                                         "Collection Name : " + collection +
                                         ", Error : " + err);
                                     reject(data);
@@ -1557,7 +1572,7 @@ module.exports = (cache, logger, config) => {
                         }
                     }).catch(function(err) {
                         data.state = "0"; // Error in email verification
-                        logger.log.error("fpwdemailtrigger method : Erorr in verifying email : " +
+                        logger.log.error("verifyfpwdemail method : Erorr in verifying email : " +
                             "Collection Name : " + collection +
                             ", Error : " + err);
                         reject(data);

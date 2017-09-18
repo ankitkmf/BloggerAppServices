@@ -383,8 +383,8 @@ module.exports = (dir, services) => {
         try {
             //http://localhost:3000/validateUserEmail     
             console.log("updatepassword pwd:" + req.body.pwd);
-            console.log("updatepassword id:" + req.body.id);
-            var whereFilter = { _id: ObjectId(req.body.id) };
+            console.log("updatepassword id:" + req.body.userid);
+            var whereFilter = { _id: ObjectId(req.body.userid) };
             var updateFilter = { "password": req.body.pwd };
             var collection = "users";
             console.log("whereFilter:" + JSON.stringify(whereFilter));
@@ -1768,10 +1768,10 @@ module.exports = (dir, services) => {
             var userid = req.params.userid;
             var whereFilter = { userid: userid };
             var updateQuery = {};
-            var collection = "fpwdemailtrigger";
+            var collection = "verifyfpwdemail";
 
             services.data
-                .fpwdemailtrigger(collection, whereFilter, updateQuery)
+                .verifyfpwdemail(collection, whereFilter, updateQuery)
                 .then(function(result) {
                     console.log(JSON.stringify(result));
                     res.json(result);
