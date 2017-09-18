@@ -62,6 +62,7 @@ module.exports = (cache, logger, config) => {
                                 console.log("step 2");
                                 resolve(data);
                             } else {
+                                console.log("444");
                                 // console.log("step 3");
                                 // var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
                                 //results = {};
@@ -414,12 +415,19 @@ module.exports = (cache, logger, config) => {
                 });
             },
             validateUserEmail: (collection, whereFilter, dataCollection) => {
+                console.log("1 validateUserEmail");
                 // console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
                 //  console.log("inside validateUserEmail whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
+
+                    console.log("2 validateUserEmail");
+
                     // connect().then((db) => {
                     //db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
                     findOne(collection, whereFilter, dataCollection).then(function(results) {
+
+                        console.log("3 validateUserEmail");
+
                         // console.log("inside validateUserEmail 1");
                         // if (!err) {
                         //     console.log("inside validateUserEmail 1:" + JSON.stringify(results));
@@ -1291,7 +1299,7 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                        if (results != undefined && results.result != undefined && results.result.count > 0) {
                             whereFilter = { "_id": ObjectId(results.result._id) };
 
                             logger.log.info("verifyemailtrigger method : call update method : " +
@@ -1336,7 +1344,221 @@ module.exports = (cache, logger, config) => {
                         reject(err);
                     });
                 });
-            }
+            },
+
+            verifyemail: (collection, whereFilter, updateQuery) => {
+
+                var datafilter = {};
+                var data = { "state": "" };
+
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("verifyemail method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    var emailactiveduration;
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+
+                            logger.log.info("verifyemail method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            var currentDT = new Date(new Date().toISOString());
+                            var verifedEmailSentDT = new Date(results.result.dt);
+                            var diffDT = currentDT - verifedEmailSentDT;
+                            emailactiveduration = config.verifyemail.timeofactivate;
+
+                            if (Math.floor(diffDT / 1e3) < parseInt(emailactiveduration)) {
+
+                                collection = "users";
+                                whereFilter = { "_id": ObjectId(results.result.userid) };
+
+                                findOne(collection, whereFilter, datafilter).then(function(userinfo) {
+
+                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.result.count > 0) {
+
+                                        whereFilter = { "_id": ObjectId(userinfo.result._id) };
+                                        updateQuery = { "IsEmailVerified": true };
+
+                                        if (userinfo.result.IsEmailVerified) {
+                                            data.state = "2" //email is already verified
+                                            resolve(data);
+                                        } else {
+                                            update(collection, updateQuery, whereFilter).then(function(results) {
+
+                                                if (results != null && results != undefined) {
+
+                                                    logger.log.info("verifyemail method : successfully verified email : " +
+                                                        "Collection Name : " + collection +
+                                                        ", updated query data : " + JSON.stringify(results));
+
+                                                    data.state = "1"; //Email Verified
+                                                    resolve(data);
+                                                }
+                                            }).catch(function(err) {
+                                                data.state = "0"; // Error in email verification
+                                                logger.log.error("verifyemail method : Erorr in verifying email : " +
+                                                    "Collection Name : " + collection +
+                                                    ", Error : " + err);
+                                                reject(data);
+                                            });
+                                        }
+                                    }
+                                }).catch(function(err) {
+                                    data.state = "0"; // Error in email verification
+                                    logger.log.error("verifyemail method : Erorr in verifying email : " +
+                                        "Collection Name : " + collection +
+                                        ", Error : " + err);
+                                    reject(data);
+                                });
+                            } else {
+                                data.state = "3"; // Invalid URL
+                                resolve(data);
+                            }
+                        } else {
+                            data.state = "3"; // Invalid URL
+                            resolve(data);
+                        }
+                    }).catch(function(err) {
+                        data.state = "0"; // Error in email verification
+                        logger.log.error("verifyemail method : Erorr in verifying email : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(data);
+                    });
+                });
+            },
+
+            triggerfpwdemail: (collection, whereFilter, updateQuery, dataCollection) => {
+
+                var datafilter = {};
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("triggerfpwdemail method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+                            whereFilter = { "_id": ObjectId(results.result._id) };
+
+                            logger.log.info("triggerfpwdemail method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(updateQuery) +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            update(collection, updateQuery, whereFilter).then(function(results) {
+                                if (results != null && results != undefined) {
+
+                                    logger.log.info("triggerfpwdemail method : successfully verify email trigger details : " +
+                                        "Collection Name : " + collection +
+                                        ", updated query data : " + JSON.stringify(results));
+
+                                    resolve(results);
+                                }
+                            }).catch(function(err) {
+                                logger.log.error("triggerfpwdemail method : Erorr in updating proffessional details : " +
+                                    "Collection Name : " + collection +
+                                    ", Error : " + err);
+                                reject(err);
+                            });
+                        } else {
+                            return new Promise(function(resolve, reject) {
+                                insert(collection, dataCollection).then(function(result) {
+                                    logger.log.info("triggerfpwdemail method : data added successfully : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));
+                                    resolve(result);
+                                }).catch(function(err) {
+                                    logger.log.error("triggerfpwdemail method : data does not saved : " +
+                                        "Collection Name : " + collection +
+                                        ", Data " + JSON.stringify(dataCollection));;
+                                    reject(err);
+                                });
+                            })
+                        }
+                    }).catch(function(err) {
+                        logger.log.error("triggerfpwdemail method : Erorr in findOne method : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(err);
+                    });
+                });
+            },
+
+            fpwdemailtrigger: (collection, whereFilter, updateQuery) => {
+
+                var datafilter = {};
+                var data = { "state": "" };
+
+                return new Promise(function(resolve, reject) {
+
+                    logger.log.info("fpwdemailtrigger method :  call findOne method : " +
+                        "Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    var emailactiveduration;
+
+                    findOne(collection, whereFilter, datafilter).then(function(results) {
+
+                        console.log("1");
+
+                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+
+                            console.log("2");
+
+                            logger.log.info("fpwdemailtrigger method : call update method : " +
+                                "Collection Name : " + collection +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            var currentDT = new Date(new Date().toISOString());
+                            var verifedEmailSentDT = new Date(results.result.dt);
+                            var diffDT = currentDT - verifedEmailSentDT;
+                            emailactiveduration = config.verifyemail.timeofactivate;
+
+                            if (Math.floor(diffDT / 1e3) < parseInt(emailactiveduration)) {
+
+                                console.log("3");
+
+                                collection = "users";
+                                whereFilter = { "_id": ObjectId(results.result.userid) };
+
+                                findOne(collection, whereFilter, datafilter).then(function(userinfo) {
+
+                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.result.count > 0) {
+                                        data.state = "1" //Valid User
+                                        resolve(data);
+                                    } else {
+                                        data.state = "2" //Invalid User
+                                        resolve(data);
+                                    }
+                                }).catch(function(err) {
+                                    data.state = "0"; // Error in email verification
+                                    logger.log.error("fpwdemailtrigger method : Erorr in verifying email : " +
+                                        "Collection Name : " + collection +
+                                        ", Error : " + err);
+                                    reject(data);
+                                });
+                            } else {
+                                data.state = "3"; // Invalid URL
+                                resolve(data);
+                            }
+                        } else {
+                            data.state = "3"; // Invalid URL
+                            resolve(data);
+                        }
+                    }).catch(function(err) {
+                        data.state = "0"; // Error in email verification
+                        logger.log.error("fpwdemailtrigger method : Erorr in verifying email : " +
+                            "Collection Name : " + collection +
+                            ", Error : " + err);
+                        reject(data);
+                    });
+                });
+            },
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;

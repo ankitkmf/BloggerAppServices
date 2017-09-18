@@ -16,12 +16,15 @@ module.exports = () => {
             },
             logLevel: 'debug'
         },
+        verifyemail: {
+            timeofactivate: config.get("verifyemail.timeofactivate")
+        },
         mongoDB: {
             connectString: config.get("mongoDB.connectString") // "mongodb://vaskar:12345678@ds161001.mlab.com:61001/mytest_mongodb"
         },
         webserver: {
-            protocol: "http",
-            host: "localhost",
+            protocol: config.get("app.webserver.protocol"),
+            host: config.get("app.webserver.host"),
             port: config.get("app.webserver.port")
         },
         cache: {

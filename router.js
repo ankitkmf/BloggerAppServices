@@ -324,12 +324,14 @@ module.exports = (dir, services) => {
         }
     });
 
-    router.get("/validateUserEmail/:email", function(req, res) {
+    router.post("/validateUserEmail", function(req, res) {
         try {
             //http://localhost:3000/validateUserEmail     
-            console.log("Email:" + req.params.email);
+            console.log("Email:" + req.body.email);
+            var email = req.body.email;
+
             var whereFilter = {
-                $or: [{ email: req.params.email }, { googleemail: req.params.email }, { facebookemail: req.params.email }]
+                $or: [{ email: email }, { googleemail: email }, { facebookemail: email }]
             };
             var dataFilter = { password: true, username: true, authType: true, userImage: true, IsEmailVerified: true, admin: true, email: true };
             var collection = "users";
@@ -337,6 +339,9 @@ module.exports = (dir, services) => {
             services.data
                 .validateUserEmail(collection, whereFilter, dataFilter)
                 .then(function(result) {
+
+                    console.log("4 " + JSON.stringify(result));
+
                     res.json(result);
                 })
                 .catch(function(error) {
@@ -1650,6 +1655,97 @@ module.exports = (dir, services) => {
             services.data
                 .verifyemailtrigger(collection, whereFilter, updateQuery, dataCollection)
                 .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    router.get("/verifyemail/:userid", function(req, res) {
+        try {
+            //http://localhost:3000/verifyemail/{userid}     
+            //console.log("updatepassword pwd:" + req.body.pwd);
+            //console.log("updatepassword id:" + req.body.id);
+            //res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var whereFilter = { userid: userid };
+            var updateQuery = {};
+            var collection = "verifyemailtrigger";
+
+            services.data
+                .verifyemail(collection, whereFilter, updateQuery)
+                .then(function(result) {
+                    console.log(JSON.stringify(result));
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    router.post("/triggerfpwdemail", function(req, res) {
+        try {
+            //http://localhost:3000/triggerfpwdemail     
+            //console.log("updatepassword pwd:" + req.body.pwd);
+            //console.log("updatepassword id:" + req.body.id);
+
+            var userid = req.body.userid;
+            var dt = req.body.dt;
+
+            var dataCollection = {
+                "userid": userid,
+                "dt": dt
+            }
+
+            var whereFilter = { userid: userid };
+            var updateQuery = { "dt": dt };
+            var collection = "fpwdemailtrigger";
+
+            //console.log("whereFilter:" + JSON.stringify(whereFilter));
+            //console.log("updateFilter:" + JSON.stringify(updateFilter));
+            services.data
+                .triggerfpwdemail(collection, whereFilter, updateQuery, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    router.get("/verifyfpwdemail/:userid", function(req, res) {
+        try {
+            //http://localhost:3000/verifyfpwdemail/{userid}     
+            //console.log("updatepassword pwd:" + req.body.pwd);
+            //console.log("updatepassword id:" + req.body.id);
+            //res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var whereFilter = { userid: userid };
+            var updateQuery = {};
+            var collection = "fpwdemailtrigger";
+
+            services.data
+                .fpwdemailtrigger(collection, whereFilter, updateQuery)
+                .then(function(result) {
+                    console.log(JSON.stringify(result));
                     res.json(result);
                 })
                 .catch(function(error) {
