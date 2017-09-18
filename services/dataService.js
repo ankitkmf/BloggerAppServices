@@ -374,10 +374,12 @@ module.exports = (cache, logger, config) => {
                         db.collection(collection).save(dataCollection, (err, results) => {
                             console.log("inside signup 1");
                             if (!err) {
-
                                 cache.clearkey(collection);
-
-                                resolve(results);
+                                var data = {
+                                    "resultID": ((results.ops[0])._id).toString(),
+                                    "count": 1
+                                };
+                                resolve(data);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
                                 console.log(_errorMsg);

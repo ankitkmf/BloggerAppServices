@@ -204,11 +204,12 @@ module.exports = (dir, services) => {
             var collection = "users";
             services.data.saveSignUP(collection, dataCollection)
                 .then(function(result) {
-                    res.json(result);
+                    // console.log("result:" + result);
+                    res.send(result);
                 })
                 .catch(function(error) {
                     var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
-                    res.json(_errorMsg);
+                    res.send(_errorMsg);
                 });
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
