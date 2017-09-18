@@ -1257,13 +1257,13 @@ module.exports = (cache, logger, config) => {
                 });
             },
             updateRecords: (collection, whereFilter, updateDataCollection) => {
-                console.log("data updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
-                console.log("data updateRecords whereFilter:" + JSON.stringify(whereFilter));
+                console.log("****data updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
+                console.log("****data updateRecords whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
                     updatemultirecord(collection, updateDataCollection, whereFilter).then(function(results) {
-                        console.log("updateRecords for " + collection + " successful");
+                        console.log("****updateRecords for " + collection + " successful");
                         cache.clearkey(collection);
-                        resolve(data);
+                        resolve(results);
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
                         console.log(_errorMsg);

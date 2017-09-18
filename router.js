@@ -1608,7 +1608,7 @@ module.exports = (dir, services) => {
                         "googleemail": req.body.googleemail,
                         "googlename": req.body.googlename,
                         "userImage": req.body.userImage,
-                        "authType": req.body.authType,
+                        // "authType": req.body.authType,
                         "mapGoogleUser": true
                     };
                     break;
@@ -1646,10 +1646,10 @@ module.exports = (dir, services) => {
                     break;
             }
 
-            console.log("updaterecords for " + collectoin + " ,updateQuery:" + JSON.stringify(updateQuery));
-            console.log("updaterecords for " + collectoin + " ,whereQuery:" + JSON.stringify(whereQuery));
+            //  console.log("updaterecords for " + collectoin + " ,updateQuery:" + JSON.stringify(updateQuery));
+            //console.log("updaterecords for " + collectoin + " ,whereQuery:" + JSON.stringify(whereQuery));
             var collection = "users";
-            services.data.updateRecords(collection, filterQuery, updateQuery)
+            services.data.updateRecords(collection, whereQuery, updateQuery)
                 .then(function(result) {
                     res.send(result);
                 })
