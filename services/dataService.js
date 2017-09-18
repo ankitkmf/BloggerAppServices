@@ -580,20 +580,25 @@ module.exports = (cache, logger, config) => {
             },
 
             updatepassword: (collection, whereFilter, updateDataCollection) => {
-                console.log("inside updatepassword dataCollection:" + JSON.stringify(updateDataCollection));
+                console.log("inside updatepassword dataCollection: " +
+                    collection + " , " + JSON.stringify(whereFilter) + " ," + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
-                        db.collection(collection).update(whereFilter, { $set: updateDataCollection },
-                            (err, results) => {
-                                console.log("inside updatepassword 1");
-                                if (!err) {
-                                    resolve(results);
-                                } else {
-                                    var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
-                                    console.log(_errorMsg);
-                                    reject(err);
-                                }
-                            });
+                        //db.collection(collection).update(whereFilter, { $set: updateDataCollection },
+                        db.collection(collection).update(whereFilter, {
+                            $set: updateDataCollection
+                        }, { upsert: false }, (err, results) => {
+                            //(err, results) => {
+                            console.log("inside updatepassword 1");
+                            if (!err) {
+                                console.log("password updated");
+                                resolve(results);
+                            } else {
+                                var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
+                                console.log(_errorMsg);
+                                reject(err);
+                            }
+                        });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
                         console.log(_errorMsg);

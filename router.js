@@ -324,9 +324,34 @@ module.exports = (dir, services) => {
         }
     });
 
-    router.post("/validateUserEmail", function(req, res) {
+    router.get("/validateUserEmail/:email", function(req, res) {
         try {
             //http://localhost:3000/validateUserEmail     
+            console.log("Email:" + req.params.email);
+            var whereFilter = {
+                $or: [{ email: req.params.email }, { googleemail: req.params.email }, { facebookemail: req.params.email }]
+            };
+            var dataFilter = { password: true, username: true, authType: true, userImage: true, IsEmailVerified: true, admin: true, email: true };
+            var collection = "users";
+
+            services.data
+                .validateUserEmail(collection, whereFilter, dataFilter)
+                .then(function(result) {
+                    res.json(result);
+                })
+                .catch(function(error) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1014.code + " , error_msg:" + errorMsg.msg_1014.msg + " ,error:" + error;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
+    router.post("/validateUserOnReset", function(req, res) {
+        try {
+            //http://localhost:3000/validateUserOnReset     
             console.log("Email:" + req.body.email);
             var email = req.body.email;
 
@@ -367,13 +392,16 @@ module.exports = (dir, services) => {
             services.data
                 .updatepassword(collection, whereFilter, updateFilter)
                 .then(function(result) {
+                    console.log("update");
                     res.json(result);
                 })
                 .catch(function(error) {
+                    console.log("error");
                     var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
                     res.json(_errorMsg);
                 });
         } catch (err) {
+            console.log("error 1");
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.json({ _errorMsg });
         }
