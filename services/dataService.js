@@ -1255,8 +1255,8 @@ module.exports = (cache, logger, config) => {
                 });
             },
             updateRecords: (collection, whereFilter, updateDataCollection) => {
-                console.log("updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
-                console.log("updateRecords whereFilter:" + JSON.stringify(whereFilter));
+                // console.log("updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
+                // console.log("updateRecords whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
                     updatemultirecord(collection, updateDataCollection, whereFilter).then(function(results) {
                         console.log("updateRecords for " + collection + " successful");

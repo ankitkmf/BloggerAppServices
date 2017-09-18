@@ -1620,17 +1620,33 @@ module.exports = (dir, services) => {
                     updateQuery = { "userid": req.body.userid, "username": req.body.username };
                     whereQuery = { "userid": req.body.userid };
                     break;
-                case "deactivegoogle":
+                case "deactivegoogleuser":
                     collectoin = "users";
                     updateQuery = { "active": false };
                     whereQuery = { _id: ObjectId(req.params.id) };
+                    break;
+                case "blogshistory":
+                    collectoin = "bloghistory";
+                    updateQuery = { "userid": req.body.userid };
+                    whereQuery = { "userid": req.body.userid };
+                    break;
+                    // case "commentshistory":
+                    //     collectoin = "users";
+                    //     updateQuery = { "active": false };
+                    //     whereQuery = { _id: ObjectId(req.params.id) };
+                    //     break;
+                case "loginhistory":
+                    collectoin = "userLoginHistory";
+                    updateQuery = { "profileID": req.body.userid, "username": req.body.username };
+                    whereQuery = { "profileID": req.body.userid };
                     break;
                 default:
                     break;
             }
 
-            console.log("updategoogleaccount updateQuery:" + JSON.stringify(updateQuery));
-            var collection = "users";
+            console.log("updaterecords for " + type + " ,updateQuery:" + JSON.stringify(updateQuery));
+            console.log("updaterecords for " + type + " ,whereQuery:" + JSON.stringify(whereQuery));
+            //   var collection = "users";
             services.data.updateRecords(collection, filterQuery, updateQuery)
                 .then(function(result) {
                     res.json(result);
