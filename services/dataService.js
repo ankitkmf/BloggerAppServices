@@ -1360,12 +1360,19 @@ module.exports = (cache, logger, config) => {
 
                     var emailactiveduration;
 
+                    console.log("1 Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+
+                        if (results != undefined && results.result != undefined && results.count > 0) {
 
                             logger.log.info("verifyemail method : call update method : " +
                                 "Collection Name : " + collection +
                                 ", where filter : " + JSON.stringify(whereFilter));
+
+                            console.log("2 Collection Name : " + collection +
+                                ", result : " + JSON.stringify(results));
 
                             var currentDT = new Date(new Date().toISOString());
                             var verifedEmailSentDT = new Date(results.result.dt);
@@ -1377,9 +1384,15 @@ module.exports = (cache, logger, config) => {
                                 collection = "users";
                                 whereFilter = { "_id": ObjectId(results.result.userid) };
 
+                                console.log("2 Collection Name : " + collection +
+                                    ", whereFilter : " + JSON.stringify(whereFilter));
+
                                 findOne(collection, whereFilter, datafilter).then(function(userinfo) {
 
-                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.result.count > 0) {
+                                    console.log("2 Collection Name : " + collection +
+                                        ", userinfo : " + JSON.stringify(userinfo));
+
+                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.count > 0) {
 
                                         whereFilter = { "_id": ObjectId(userinfo.result._id) };
                                         updateQuery = { "IsEmailVerified": true };
