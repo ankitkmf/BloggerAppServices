@@ -79,27 +79,6 @@ module.exports = (cache, logger, config) => {
             });
         }
 
-        // let findTopRow = function(collection, whereFilter, dataFilter, sortFilter) {
-        //     return new Promise(function(resolve, reject) {
-        //         connect().then(function(db) {
-        //             db.collection(collection)
-        //                 .find(whereFilter, dataFilter).limit(1).sort(sortFilter).toArray(function(err, results) {
-        //                     if (!err) {
-        //                         logger.log.info("findTopRow method : data retrieve succesfully : results count : " + results.length);
-        //                         resolve(results);
-        //                     } else {
-        //                         console.log(err);
-        //                         logger.log.error("findTopRow method : error : " + err);
-        //                         reject(err);
-        //                     }
-        //                 });
-        //         }).catch(function(err) {
-        //             console.log(44);
-        //             logger.log.error("findTopRow method : connection error : " + err);
-        //         });
-        //     });
-        // }
-
         let findAll = function(collection, whereFilter, dataFilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
@@ -216,7 +195,7 @@ module.exports = (cache, logger, config) => {
                         .save(dataCollection, (err, result) => {
                             if (!err) {
                                 console.log("10");
-                                logger.log.info("insert method : results count : " + result.length);
+                                logger.log.info("record inserted");
                                 resolve(result);
                             } else {
                                 console.log("11");
@@ -424,6 +403,7 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
+
             validateUserEmail: (collection, whereFilter, dataCollection) => {
                 console.log("1 validateUserEmail");
                 // console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
@@ -752,19 +732,19 @@ module.exports = (cache, logger, config) => {
                                 reject(err);
                             });
                         } else {
-                            return new Promise(function(resolve, reject) {
-                                insert(collection, dataCollection).then(function(result) {
-                                    logger.log.info("updatepersonaldetails method : data added successfully : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));
-                                    resolve(result);
-                                }).catch(function(err) {
-                                    logger.log.error("updatepersonaldetails method : data does not saved : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));;
-                                    reject(err);
-                                });
-                            })
+                            //return new Promise(function(resolve, reject) {
+                            insert(collection, dataCollection).then(function(result) {
+                                logger.log.info("updatepersonaldetails method : data added successfully : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));
+                                resolve(result);
+                            }).catch(function(err) {
+                                logger.log.error("updatepersonaldetails method : data does not saved : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));;
+                                reject(err);
+                            });
+                            //})
                         }
                     }).catch(function(err) {
                         logger.log.error("updatepersonaldetails method : Erorr in findOne method : " +
@@ -825,19 +805,19 @@ module.exports = (cache, logger, config) => {
                                 reject(err);
                             });
                         } else {
-                            return new Promise(function(resolve, reject) {
-                                insert(collection, dataCollection).then(function(result) {
-                                    logger.log.info("updateproffessionaldetails method : data added successfully : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));
-                                    resolve(result);
-                                }).catch(function(err) {
-                                    logger.log.error("updateproffessionaldetails method : data does not saved : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));;
-                                    reject(err);
-                                });
-                            })
+                            //return new Promise(function(resolve, reject) {
+                            insert(collection, dataCollection).then(function(result) {
+                                logger.log.info("updateproffessionaldetails method : data added successfully : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));
+                                resolve(result);
+                            }).catch(function(err) {
+                                logger.log.error("updateproffessionaldetails method : data does not saved : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));;
+                                reject(err);
+                            });
+                            //})
                         }
                     }).catch(function(err) {
                         logger.log.error("updateproffessionaldetails method : Erorr in findOne method : " +
@@ -1318,11 +1298,20 @@ module.exports = (cache, logger, config) => {
                         ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+
+                        console.log("findOne whereFilter:" + JSON.stringify(whereFilter));
+                        console.log("findOne updateQuery:" + JSON.stringify(updateQuery));
+                        console.log(JSON.stringify(results));
+
+                        if (results != undefined && results.result != undefined && results.count > 0) {
                             whereFilter = { "_id": ObjectId(results.result._id) };
 
                             logger.log.info("verifyemailtrigger method : call update method : " +
                                 "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(updateQuery) +
+                                ", where filter : " + JSON.stringify(whereFilter));
+
+                            console.log("findone Collection Name : " + collection +
                                 ", updated query data : " + JSON.stringify(updateQuery) +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
@@ -1342,21 +1331,26 @@ module.exports = (cache, logger, config) => {
                                 reject(err);
                             });
                         } else {
-                            return new Promise(function(resolve, reject) {
-                                insert(collection, dataCollection).then(function(result) {
-                                    logger.log.info("verifyemailtrigger method : data added successfully : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));
-                                    resolve(result);
-                                }).catch(function(err) {
-                                    logger.log.error("verifyemailtrigger method : data does not saved : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));;
-                                    reject(err);
-                                });
-                            })
+                            //return new Promise(function(resolve, reject) {
+                            insert(collection, dataCollection).then(function(result) {
+                                logger.log.info("verifyemailtrigger method : data added successfully : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));
+
+                                console.log("11");
+                                resolve(result);
+                                //next();
+                            }).catch(function(err) {
+                                console.log("111");
+                                logger.log.error("verifyemailtrigger method : data does not saved : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));;
+                                reject(err);
+                            });
+                            //})
                         }
                     }).catch(function(err) {
+                        console.log("112");
                         logger.log.error("verifyemailtrigger method : Erorr in findOne method : " +
                             "Collection Name : " + collection +
                             ", Error : " + err);
@@ -1378,12 +1372,19 @@ module.exports = (cache, logger, config) => {
 
                     var emailactiveduration;
 
+                    console.log("1 Collection Name : " + collection +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        if (results != undefined && results.result != undefined && results.result.count > 0) {
+
+                        if (results != undefined && results.result != undefined && results.count > 0) {
 
                             logger.log.info("verifyemail method : call update method : " +
                                 "Collection Name : " + collection +
                                 ", where filter : " + JSON.stringify(whereFilter));
+
+                            console.log("2 Collection Name : " + collection +
+                                ", result : " + JSON.stringify(results));
 
                             var currentDT = new Date(new Date().toISOString());
                             var verifedEmailSentDT = new Date(results.result.dt);
@@ -1395,9 +1396,15 @@ module.exports = (cache, logger, config) => {
                                 collection = "users";
                                 whereFilter = { "_id": ObjectId(results.result.userid) };
 
+                                console.log("2 Collection Name : " + collection +
+                                    ", whereFilter : " + JSON.stringify(whereFilter));
+
                                 findOne(collection, whereFilter, datafilter).then(function(userinfo) {
 
-                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.result.count > 0) {
+                                    console.log("2 Collection Name : " + collection +
+                                        ", userinfo : " + JSON.stringify(userinfo));
+
+                                    if (userinfo != undefined && userinfo.result != undefined && userinfo.count > 0) {
 
                                         whereFilter = { "_id": ObjectId(userinfo.result._id) };
                                         updateQuery = { "IsEmailVerified": true };
@@ -1500,19 +1507,19 @@ module.exports = (cache, logger, config) => {
                                 reject(err);
                             });
                         } else {
-                            return new Promise(function(resolve, reject) {
-                                insert(collection, dataCollection).then(function(result) {
-                                    logger.log.info("triggerfpwdemail method : data added successfully : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));
-                                    resolve(result);
-                                }).catch(function(err) {
-                                    logger.log.error("triggerfpwdemail method : data does not saved : " +
-                                        "Collection Name : " + collection +
-                                        ", Data " + JSON.stringify(dataCollection));;
-                                    reject(err);
-                                });
-                            })
+                            //return new Promise(function(resolve, reject) {
+                            insert(collection, dataCollection).then(function(result) {
+                                logger.log.info("triggerfpwdemail method : data added successfully : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));
+                                resolve(result);
+                            }).catch(function(err) {
+                                logger.log.error("triggerfpwdemail method : data does not saved : " +
+                                    "Collection Name : " + collection +
+                                    ", Data " + JSON.stringify(dataCollection));;
+                                reject(err);
+                            });
+                            //})
                         }
                     }).catch(function(err) {
                         logger.log.error("triggerfpwdemail method : Erorr in findOne method : " +

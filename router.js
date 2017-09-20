@@ -1681,18 +1681,21 @@ module.exports = (dir, services) => {
             var whereFilter = { userid: userid };
             var updateQuery = { "dt": dt };
             var collection = "verifyemailtrigger";
-            //console.log("whereFilter:" + JSON.stringify(whereFilter));
-            //console.log("updateFilter:" + JSON.stringify(updateFilter));
+            console.log("whereFilter:" + JSON.stringify(whereFilter));
+            console.log("updateFilter:" + JSON.stringify(dataCollection));
             services.data
                 .verifyemailtrigger(collection, whereFilter, updateQuery, dataCollection)
                 .then(function(result) {
+                    console.log("12");
                     res.json(result);
                 })
                 .catch(function(error) {
+                    console.log("error 12");
                     var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + error;
                     res.json(_errorMsg);
                 });
         } catch (err) {
+            console.log("error 13");
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.json({ _errorMsg });
         }
