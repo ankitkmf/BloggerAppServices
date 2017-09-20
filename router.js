@@ -1597,12 +1597,12 @@ module.exports = (dir, services) => {
             console.log("updaterecords Step 1,req.body.type:" + req.body.type);
             var whereQuery = {};
             var updateQuery = {};
-            var collectoin = "";
+            var collection = "";
             var type = req.body.type != null ? req.body.type.toLowerCase() : null;
 
             switch (type) {
                 case "mapgoogleaccount":
-                    collectoin = "users";
+                    collection = "users";
                     whereQuery = { "_id": ObjectId(req.body.id) };
                     updateQuery = {
                         "googleemail": req.body.googleemail,
@@ -1613,22 +1613,22 @@ module.exports = (dir, services) => {
                     };
                     break;
                 case "blogs":
-                    collectoin = "blogs";
-                    updateQuery = { "userid": req.body.mapuserid, "createdby": req.body.username };
+                    collection = "blogs";
+                    updateQuery = { "userid": req.body.mapuserid, "createdby": req.body.createdby };
                     whereQuery = { "userid": req.body.userid };
                     break;
                 case "comments":
-                    collectoin = "comments";
+                    collection = "comments";
                     updateQuery = { "userid": req.body.mapuserid, "username": req.body.username };
                     whereQuery = { "userid": req.body.userid };
                     break;
                 case "deactivegoogleuser":
-                    collectoin = "users";
+                    collection = "users";
                     updateQuery = { "active": false };
-                    whereQuery = { "googleemail": req.params.googleemail, "username": req.body.username };
+                    whereQuery = { "googleemail": req.body.googleemail, "username": req.body.username };
                     break;
                 case "blogshistory":
-                    collectoin = "bloghistory";
+                    collection = "bloghistory";
                     updateQuery = { "userid": req.body.mapuserid };
                     whereQuery = { "userid": req.body.userid };
                     break;
@@ -1638,7 +1638,7 @@ module.exports = (dir, services) => {
                     //     whereQuery = { _id: ObjectId(req.params.id) };
                     //     break;
                 case "loginhistory":
-                    collectoin = "userLoginHistory";
+                    collection = "userLoginHistory";
                     updateQuery = { "profileID": req.body.mapuserid, "username": req.body.username };
                     whereQuery = { "profileID": req.body.userid };
                     break;
@@ -1648,7 +1648,7 @@ module.exports = (dir, services) => {
 
             //  console.log("updaterecords for " + collectoin + " ,updateQuery:" + JSON.stringify(updateQuery));
             //console.log("updaterecords for " + collectoin + " ,whereQuery:" + JSON.stringify(whereQuery));
-            var collection = "users";
+            // var collection = "users";
             services.data.updateRecords(collection, whereQuery, updateQuery)
                 .then(function(result) {
                     res.send(result);

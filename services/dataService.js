@@ -238,7 +238,7 @@ module.exports = (cache, logger, config) => {
                     }, { upsert: false }, (err, results) => {
                         if (!err) {
                             console.log("content updated Successfully");
-                            logger.log.info("update method : Updated content successfully");
+                            // logger.log.info("update method : Updated content successfully");
                             resolve(results);
                         } else {
                             logger.log.info("update method : Error in updating content : error " + err);
@@ -252,16 +252,24 @@ module.exports = (cache, logger, config) => {
         }
 
         let updatemultirecord = function(collection, dataCollection, wherefilter) {
+            //  console.log("****2 : updatemultirecord " + collection);
             return new Promise(function(resolve, reject) {
+                //    console.log("****3 : updatemultirecord ");
                 connect().then(function(db) {
+                    console.log("****4 : updatemultirecord dataCollection:" + JSON.stringify(dataCollection));
+                    console.log("****4.1 : updatemultirecord wherefilter:" + JSON.stringify(wherefilter));
+                    console.log("****4.2 : updatemultirecord collection:" + (collection));
                     db.collection(collection).update(wherefilter, {
                         $set: dataCollection
                     }, { upsert: false, multi: true }, (err, results) => {
+                        // console.log("****5 : updatemultirecord ");
                         if (!err) {
-                            console.log("content updated Successfully");
-                            logger.log.info("update method : Updated content successfully");
+                            //   console.log("****6 : updatemultirecord ");
+                            // console.log("content updated Successfully " + JSON.stringify(results));
+                            //   logger.log.info("update method : Updated content successfully ");
                             resolve(results);
                         } else {
+                            //    console.log("****7 : updatemultirecord ");
                             logger.log.info("update method : Error in updating content : error " + err);
                             reject(err);
                         }
@@ -1257,11 +1265,15 @@ module.exports = (cache, logger, config) => {
                 });
             },
             updateRecords: (collection, whereFilter, updateDataCollection) => {
-                console.log("****data updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
-                console.log("****data updateRecords whereFilter:" + JSON.stringify(whereFilter));
+                //    console.log("****data updateRecords updateDataCollection:" + JSON.stringify(updateDataCollection));
+                //    console.log("****data updateRecords whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
+                    //   console.log("****1 : updatemultirecord ");
                     updatemultirecord(collection, updateDataCollection, whereFilter).then(function(results) {
-                        console.log("****updateRecords for " + collection + " successful");
+                        //       console.log("****updateRecords for " + collection + " successful");
+
+                        // console.log("ankit " + JSON.stringify(results));
+
                         cache.clearkey(collection);
                         resolve(results);
                     }).catch(function(err) {
