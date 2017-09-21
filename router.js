@@ -1792,5 +1792,71 @@ module.exports = (dir, services) => {
         }
     });
 
+    /**
+     * @swagger
+     * definition:
+     *   savequery:
+     *     properties:
+     *       name:
+     *         type: string
+     *       email:
+     *         type: string
+     *       mobile:
+     *         type: string
+     *       reqtypekey:
+     *         type: string
+     *       comment:
+     *         type: string 
+     */
+
+    /**
+     * @swagger
+     * /contactus/savequery:
+     *   post:
+     *     tags:
+     *       - Contact us - save query comment
+     *     description: Contact us - save query comment
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: savequery
+     *         description: Contact us - save query object
+     *         in: body
+     *         required: true
+     *         schema:
+     *           $ref: '#/definitions/savequery'
+     *     responses:
+     *       200:
+     *         description: Successfully added the contact us - save query
+     */
+    router.post("/contactus/savequery", function(req, res) {
+        try {
+            //http://localhost:3000/contactus/savequery
+
+            var dataCollection = {};
+            var collection = "contactus";
+
+            dataCollection = {
+                "name": req.body.name,
+                "email": req.body.email,
+                "mobile": req.body.mobile,
+                "reqtypekey": req.body.reqtypekey,
+                "comment": "comment",
+                "creationdate": new Date().toISOString()
+            };
+
+            services.data.savecontactusquery(collection, dataCollection)
+                .then(function(result) {
+                    res.json(result);
+                }).catch(function(err) {
+                    var _errorMsg = "error_code :" + errorMsg.msg_1016.code + " , error_msg:" + errorMsg.msg_1016.msg + " ,error:" + err;
+                    res.json(_errorMsg);
+                });
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.json({ _errorMsg });
+        }
+    });
+
     return router;
 };

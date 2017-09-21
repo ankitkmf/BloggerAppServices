@@ -1600,6 +1600,29 @@ module.exports = (cache, logger, config) => {
                     });
                 });
             },
+
+            savecontactusquery: (collection, dataCollection) => {
+                //var data = dataCollection;
+
+                //console.log(collection + " , " + JSON.stringify(dataCollection));
+
+                return new Promise(function(resolve, reject) {
+                    insert(collection, dataCollection).then(function(result) {
+                        logger.log.info("savecontactusquery method : data added successfully : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));
+
+                        resolve(result);
+
+                    }).catch(function(err) {
+                        logger.log.error("savecontactusquery method : data does not saved : " +
+                            "Collection Name : " + collection +
+                            ", Data " + JSON.stringify(dataCollection));
+
+                        reject(err);
+                    });
+                })
+            },
         }
     } catch (err) {
         var _errorMsg = errorMsg.msg_1013;
