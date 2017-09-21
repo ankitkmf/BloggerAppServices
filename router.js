@@ -112,11 +112,11 @@ module.exports = (dir, services) => {
                     break;
                 case "alluserhistory":
                     whereFilter = {};
-                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    dataFilter = { _id: false, profileID: false, email: false, name: false };
                     break;
                 case "userhistorybyid":
                     whereFilter = { "profileID": req.params.value };
-                    dataFilter = { _id: false, profileID: false, email: false, username: false };
+                    dataFilter = { _id: false, profileID: false, email: false, name: false };
                     break;
                 case "userblogbyid":
                     whereFilter = { "userid": req.params.value };
