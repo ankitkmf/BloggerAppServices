@@ -1553,7 +1553,13 @@ module.exports = (dir, services) => {
             console.log("updatecomment Step 1");
             var filterQuery = { "_id": ObjectId(req.body._id) };
             console.log("updatecomment Step 2:" + JSON.stringify(filterQuery));
-            var updateQuery = { "status": req.body.status };
+
+            var updateQuery = {};
+            if (req.body.comment != undefined && req.body.comment != null) {
+                updateQuery = { "comment": req.body.comment, "status": req.body.status };
+            } else {
+                updateQuery = { "status": req.body.status };;
+            }
             console.log("updatecomment step 2:" + JSON.stringify(updateQuery));
             var collection = "comments";
             services.data.UpdateCommentStatus(collection, filterQuery, updateQuery)
