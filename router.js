@@ -278,7 +278,9 @@ module.exports = (dir, services) => {
             var updateQuery = { "status": req.body.type };
             console.log("UpdateTableRecords step 2:" + JSON.stringify(updateQuery));
             var collection = "blogs";
-            services.data.UpdateUsersRecord(collection, filterQuery, updateQuery)
+            var blogid = req.body.id;
+            var blogtype = req.body.type;
+            services.data.UpdateUsersRecord(collection, filterQuery, updateQuery, blogid, blogtype)
                 .then(function(result) {
                     res.json(result);
                 })
@@ -968,7 +970,13 @@ module.exports = (dir, services) => {
                 "blogtopic": req.body.topic
             }
 
-            services.data.addblog(collection, dataCollection, whereFilter, historycollection)
+            var blogvisitcollection = {
+                "blogtopic": req.body.topic,
+                "visitcount": 0,
+                "status": 0
+            }
+
+            services.data.addblog(collection, dataCollection, whereFilter, historycollection, blogvisitcollection)
                 .then(function(result) {
                     res.json(result);
                 }).catch(function(err) {
@@ -1319,7 +1327,7 @@ module.exports = (dir, services) => {
                 status: false,
                 creationdate: false
             };
-            var whereFilter = { status: { $in: ["0", "1"] } };
+            var whereFilter = { status: { $in: ["1"] } }; //{ status: { $in: ["0", "1"] } };
             var sortfilter = { "creationdate": -1 }; //--- 1 for asc and -1 for desc
             var collection = "blogs";
 
@@ -1330,6 +1338,7 @@ module.exports = (dir, services) => {
             services.data
                 .getmostrecentblogs(collection, whereFilter, dataFilter, sortfilter)
                 .then(function(result) {
+                    console.log("1 getmostrecentblogs");
                     res.send(result);
                 })
                 .catch(function(error) {
@@ -1861,6 +1870,49 @@ module.exports = (dir, services) => {
         } catch (err) {
             var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
             res.json({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /gettopvisitblogs:
+     *   get:
+     *     tags:
+     *       - List of top visit Blogs
+     *     description: Returns list of top visit blogs
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/gettopvisitblogs", (req, res) => {
+        try {
+            //http://localhost:3000/gettopvisitblogs
+            res.header("Access-Control-Allow-Origin", "*");
+
+            //console.log("333");
+
+            var dataFilter = {};
+            var whereFilter = { "status": 0 };
+            var sortfilter = { "visitcount": -1 }; //--- 1 for asc and -1 for desc
+            var collection = "blogvisithistory";
+
+            //var key = "gettopvisitblogs_" + collection + "_top_visit";
+
+            services.data
+                .gettopvisitblogs(collection, whereFilter, dataFilter, sortfilter).then(function(result) {
+                    //console.log("3334");
+                    //console.log("gettopvisitblogs : " + JSON.stringify(result));
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
         }
     });
 
