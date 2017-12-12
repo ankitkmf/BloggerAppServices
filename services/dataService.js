@@ -13,16 +13,16 @@ module.exports = (cache, logger, config) => {
             var url = config.mongoDB.connectString;
             return new Promise(function(resolve, reject) {
                 if (state.db) {
-                    console.log(infoMsg.msg_206.msg);
+                    //console.log(infoMsg.msg_206.msg);
                     resolve(state.db);
                 } else {
                     mongoClient.connect(url, function(err, db) {
                         if (err) {
                             var _errorMsg = "error_code :" + errorMsg.msg_103.code + " , error_msg:" + errorMsg.msg_103.msg + " ,error:" + err;
-                            console.log(_errorMsg);
+                            //console.log(_errorMsg);
                             reject(_errorMsg);
                         } else {
-                            console.log(infoMsg.msg_205.msg);
+                            //console.log(infoMsg.msg_205.msg);
                             state.db = db;
                             resolve(db);
                         }
@@ -49,20 +49,21 @@ module.exports = (cache, logger, config) => {
         }
 
         let findOne = function(collection, whereFilter, dataFilter) {
+            //console.log("171");
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
                     var data = { "result": "", "count": 0 };
                     db.collection(collection)
                         .findOne(whereFilter, dataFilter, (err, results) => {
-                            console.log("step 1");
+                            //console.log("step 1");
                             if (!err && results != null) {
 
                                 data.result = results;
                                 data.count = 1;
-                                console.log("step 2");
+                                //console.log("step 2");
                                 resolve(data);
                             } else {
-                                console.log("444");
+                                //console.log("444");
                                 // console.log("step 3");
                                 // var _errorMsg = "error_code :" + errorMsg.msg_106.code + " , error_msg:" + errorMsg.msg_106.msg + " ,error:" + err;
                                 //results = {};
@@ -82,7 +83,7 @@ module.exports = (cache, logger, config) => {
         let findAll = function(collection, whereFilter, dataFilter) {
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
-                    console.log(JSON.stringify(whereFilter));
+                    //console.log(JSON.stringify(whereFilter));
                     db.collection(collection)
                         .find(whereFilter, dataFilter).toArray(function(err, results) {
                             if (!err) {
@@ -113,50 +114,50 @@ module.exports = (cache, logger, config) => {
         }
 
         let findblogs = function(collection, whereFilter, dataFilter, sortfilter, recordcount) {
-            console.log("whereFilter " + JSON.stringify(whereFilter));
-            console.log("sortfilter " + JSON.stringify(sortfilter));
 
             return new Promise(function(resolve, reject) {
-                console.log("findblogs : findblog");
+                console.log("findblogs collection " + collection);
+                console.log("findblogs whereFilter " + JSON.stringify(whereFilter));
+                console.log("findblogs sortfilter " + JSON.stringify(sortfilter));
                 connect().then(function(db) {
                     db.collection(collection)
                         .find(whereFilter, dataFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                console.log("aaa");
+                                //console.log("aaa");
                                 logger.log.info("findblogs method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
-                                console.log(err);
+                                //console.log(err);
                                 logger.log.error("findblogs method : error : " + err);
                                 reject(err);
                             }
                         });
                 }).catch(function(err) {
-                    console.log(44);
+                    //console.log(44);
                     logger.log.error("findblogs method : connection error : " + err);
                 });
             });
         }
 
         let findcomments = function(collection, whereFilter, sortfilter, recordcount) {
-            console.log(recordcount);
+            //console.log(recordcount);
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
                     db.collection(collection)
                         .find(whereFilter).limit(4).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                console.log(44 + " , " + results.length);
+                                //console.log(44 + " , " + results.length);
 
                                 logger.log.info("findcomments method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
-                                console.log(err);
+                                //console.log(err);
                                 logger.log.error("findcomments method : error : " + err);
                                 reject(err);
                             }
                         });
                 }).catch(function(err) {
-                    console.log(44);
+                    //console.log(44);
                     logger.log.error("findcomments method : connection error : " + err);
                 });
             });
@@ -169,36 +170,36 @@ module.exports = (cache, logger, config) => {
                     db.collection(collection)
                         .find(whereFilter, dataFilter).limit(parseInt(recordcount)).sort(sortfilter).toArray(function(err, results) {
                             if (!err) {
-                                console.log("aaa ");
+                                //console.log("aaa ");
                                 logger.log.info("finddatabyrange method : data retrieve succesfully : results count : " + results.length);
                                 resolve(results);
                             } else {
-                                console.log(err);
+                                //console.log(err);
                                 logger.log.error("finddatabyrange method : error : " + err);
                                 reject(err);
                             }
                         });
 
                 }).catch(function(err) {
-                    console.log(44);
+                    //console.log(44);
                     logger.log.error("finddatabyrange method : connection error : " + err);
                 });
             });
         }
 
         let insert = function(collection, dataCollection) {
-            console.log("9");
+            //console.log("9");
             return new Promise(function(resolve, reject) {
                 connect().then(function(db) {
-                    console.log(JSON.stringify(dataCollection));
+                    //console.log(JSON.stringify(dataCollection));
                     db.collection(collection)
                         .save(dataCollection, (err, result) => {
                             if (!err) {
-                                console.log("10");
+                                //console.log("10");
                                 logger.log.info("record inserted");
                                 resolve(result);
                             } else {
-                                console.log("11");
+                                //console.log("11");
                                 logger.log.error("insert method : error : " + err);
                                 reject(err);
                             }
@@ -216,7 +217,7 @@ module.exports = (cache, logger, config) => {
                         $set: dataCollection
                     }, { upsert: false }, (err, results) => {
                         if (!err) {
-                            console.log("content updated Successfully");
+                            //console.log("content updated Successfully");
                             // logger.log.info("update method : Updated content successfully");
                             resolve(results);
                         } else {
@@ -235,9 +236,9 @@ module.exports = (cache, logger, config) => {
             return new Promise(function(resolve, reject) {
                 //    console.log("****3 : updatemultirecord ");
                 connect().then(function(db) {
-                    console.log("****4 : updatemultirecord dataCollection:" + JSON.stringify(dataCollection));
-                    console.log("****4.1 : updatemultirecord wherefilter:" + JSON.stringify(wherefilter));
-                    console.log("****4.2 : updatemultirecord collection:" + (collection));
+                    //console.log("****4 : updatemultirecord dataCollection:" + JSON.stringify(dataCollection));
+                    //console.log("****4.1 : updatemultirecord wherefilter:" + JSON.stringify(wherefilter));
+                    //console.log("****4.2 : updatemultirecord collection:" + (collection));
                     db.collection(collection).update(wherefilter, {
                         $set: dataCollection
                     }, { upsert: false, multi: true }, (err, results) => {
@@ -265,13 +266,141 @@ module.exports = (cache, logger, config) => {
                     "Collection Name : " + collection +
                     ", Data " + JSON.stringify(dataCollection));
 
-                console.log("addhistory : inserted : Collection Name : " + collection +
-                    ", Data " + JSON.stringify(dataCollection));
+                // console.log("addhistory : inserted : Collection Name : " + collection +
+                //     ", Data " + JSON.stringify(dataCollection));
             }).catch(function(err) {
-                console.log(err);
+                //console.log(err);
                 logger.log.error("addhistory method : data does not saved : " +
                     "Collection Name : " + collection +
                     ", Data " + JSON.stringify(dataCollection));
+            });
+        }
+
+        let addblogvisitinfo = (collection, dataCollection) => {
+            insert(collection, dataCollection).then(function(result) {
+
+                //cache.clearkey(collection);
+
+                logger.log.info("addblogvisitinfo method : data added successfully : " +
+                    "Collection Name : " + collection +
+                    ", Data " + JSON.stringify(dataCollection));
+
+                // console.log("addblogvisitinfo : inserted : Collection Name : " + collection +
+                //     ", Data " + JSON.stringify(dataCollection));
+            }).catch(function(err) {
+                //console.log(err);
+                logger.log.error("addblogvisitinfo method : data does not saved : " +
+                    "Collection Name : " + collection +
+                    ", Data " + JSON.stringify(dataCollection));
+            });
+        }
+
+        let updateblogvisitcount = (_id, bloginfo) => {
+            var collection = "blogvisithistory";
+            var whereFilter = { "blogid": _id };
+            var dataFilter = { "blogtopic": false, "blogid": false };
+
+            findOne(collection, whereFilter, dataFilter).then(function(results) {
+                //console.log("11 " + JSON.stringify(results));
+                if (results != undefined && results.result != undefined && results.result._id != undefined) {
+                    //console.log("2");
+                    whereFilter = { "_id": ObjectId(results.result._id) };
+                    var visitcount = results.result.visitcount;
+                    visitcount += 1;
+                    var updateQuery = { "visitcount": visitcount };
+
+                    logger.log.info("updateblogvisitcount method : call update method : " +
+                        "Collection Name : " + collection +
+                        ", updated query data : " + JSON.stringify(updateQuery) +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    //console.log("updateblogvisitcount method : call update method : " +
+                    // "Collection Name : " + collection +
+                    // ", updated query data : " + JSON.stringify(updateQuery) +
+                    // ", where filter : " + JSON.stringify(whereFilter));
+
+                    update(collection, updateQuery, whereFilter).then(function(results) {
+                        //console.log("3");
+                        if (results != null && results != undefined) {
+                            //console.log("4");
+                            logger.log.info("updateblogvisitcount method : successfully updated blog visit count : " +
+                                "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(results));
+
+                            // console.log("updateblogvisitcount method : successfully updated blog visit count : " +
+                            //     "Collection Name : " + collection +
+                            //     ", updated query data : " + JSON.stringify(results));
+
+                            //cache.clearkey(collection);
+                        }
+                    }).catch(function(err) {
+                        logger.log.error("updateblogvisitcount method : successfully updated blog visit count : " +
+                            "Collection Name : " + collection +
+                            ", Error " + err);
+                        //console.log("error");
+                    });
+                } else {
+                    //console.log("5");
+                    if (bloginfo != null && bloginfo.result != null) {
+                        //console.log("6");
+                        //console.log("vaskar 1: " + JSON.stringify(bloginfo));
+                        var blogvisitcollection = {
+                            "blogtopic": bloginfo.result.topic,
+                            "visitcount": 0,
+                            "status": 0,
+                            "blogid": _id
+                        }
+
+                        //console.log("vaskar 1: " + JSON.stringify(blogvisitcollection));
+
+                        addblogvisitinfo(collection, blogvisitcollection);
+                        //cache.clearkey(collection);
+                    }
+                }
+            }).catch(function(err) {
+                logger.log.info("updateblogvisitcount method : call update method : " +
+                    "Collection Name : " + collection +
+                    ", error : " + err);
+            });
+        }
+
+        let disableblogvisitinfo = (_id) => {
+            var collection = "blogvisithistory";
+            var whereFilter = { "blogid": _id };
+            //var whereFilter = { "blogid": _id, "status": "0" };
+            var dataFilter = { "blogtopic": false, "blogid": false };
+
+            findOne(collection, whereFilter, dataFilter).then(function(results) {
+                console.log("disableblogvisitinfo : " + results.result.visitcount);
+                if (results != undefined && results.result != undefined && results.result.visitcount != undefined) {
+                    whereFilter = { "_id": ObjectId(results.result._id) };
+                    var updateQuery = { "status": 2 };
+
+                    logger.log.info("disableblogvisitinfo method : call update method : " +
+                        "Collection Name : " + collection +
+                        ", updated query data : " + JSON.stringify(updateQuery) +
+                        ", where filter : " + JSON.stringify(whereFilter));
+
+                    update(collection, updateQuery, whereFilter).then(function(results) {
+                        if (results != null && results != undefined) {
+
+                            logger.log.info("disableblogvisitinfo method : successfully updated blog visit status : " +
+                                "Collection Name : " + collection +
+                                ", updated query data : " + JSON.stringify(results));
+
+                            //cache.clearkey(collection);
+                        }
+                    }).catch(function(err) {
+                        logger.log.error("disableblogvisitinfo method : successfully updated blog visit status : " +
+                            "Collection Name : " + collection +
+                            ", Error " + err);
+                        //console.log("error");
+                    });
+                }
+            }).catch(function(err) {
+                logger.log.info("disableblogvisitinfo method : call update method : " +
+                    "Collection Name : " + collection +
+                    ", error : " + err);
             });
         }
 
@@ -281,20 +410,20 @@ module.exports = (cache, logger, config) => {
             findOne: (collection, whereFilter, dataFilter, key) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
-                        console.log("Cache key result:" + results);
+                        //console.log("Cache key result:" + results);
                         if (results != null) {
                             resolve(results);
                         } else {
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                console.log("In find one method");
+                                //console.log("In find one method");
                                 var data = { "result": results };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
-                                console.log("data store in data:" + JSON.stringify(data));
+                                //console.log("data store in data:" + JSON.stringify(data));
                                 resolve(JSON.stringify(data));
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject({ _errorMsg });
                             });
                         }
@@ -307,19 +436,19 @@ module.exports = (cache, logger, config) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
-                            console.log("result found in cache ");
+                            //console.log("result found in cache ");
                             resolve(results);
                         } else {
                             findAll(collection, whereFilter, dataFilter).then(function(results) {
-                                console.log("In getAllData method");
+                                //console.log("In getAllData method");
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
-                                console.log("data store in key:" + key);
+                                //console.log("data store in key:" + key);
                                 resolve(data);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject(_errorMsg);
                             });
                         }
@@ -332,20 +461,20 @@ module.exports = (cache, logger, config) => {
                 return new Promise(function(resolve, reject) {
                     cache.get(key).then(results => {
                         if (results != null) {
-                            console.log("result found in cache ");
+                            //console.log("result found in cache ");
                             resolve(JSON.parse(results));
                         } else {
                             checkUserName(collection, whereFilter).then(function(results) {
-                                console.log("In checkUserName method");
-                                console.log("results:" + results);
+                                //console.log("In checkUserName method");
+                                //console.log("results:" + results);
                                 var data = { "result": (results > 0 ? true : false) };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);
-                                console.log("data store in key:" + key);
+                                //console.log("data store in key:" + key);
                                 resolve(data);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject(_errorMsg);
                             });
                         }
@@ -355,11 +484,11 @@ module.exports = (cache, logger, config) => {
             },
 
             saveSignUP: (collection, dataCollection) => {
-                console.log("inside signup dataCollection:" + JSON.stringify(dataCollection));
+                //console.log("inside signup dataCollection:" + JSON.stringify(dataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         db.collection(collection).save(dataCollection, (err, results) => {
-                            console.log("inside signup 1");
+                            //console.log("inside signup 1");
                             if (!err) {
                                 cache.clearkey(collection);
                                 var data = {
@@ -369,54 +498,54 @@ module.exports = (cache, logger, config) => {
                                 resolve(data);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_108.code + " , error_msg:" + errorMsg.msg_108.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject(err);
                             }
                         });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
             },
 
             saveLoginHistory: (collection, dataCollection) => {
-                console.log("inside saveLoginHistory dataCollection:" + JSON.stringify(dataCollection));
+                //console.log("inside saveLoginHistory dataCollection:" + JSON.stringify(dataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         db.collection(collection).save(dataCollection, (err, results) => {
-                            console.log("inside saveLoginHistory 1");
+                            //console.log("inside saveLoginHistory 1");
                             if (!err) {
                                 cache.clearkey(collection);
                                 resolve(results);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1019.code + " , error_msg:" + errorMsg.msg_1019.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject(err);
                             }
                         });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
             },
 
             validateUserEmail: (collection, whereFilter, dataCollection) => {
-                console.log("1 validateUserEmail");
+                //console.log("1 validateUserEmail");
                 // console.log("inside validateUserEmail dataCollection:" + JSON.stringify(dataCollection));
                 //  console.log("inside validateUserEmail whereFilter:" + JSON.stringify(whereFilter));
                 return new Promise((resolve, reject) => {
 
-                    console.log("2 validateUserEmail");
+                    //console.log("2 validateUserEmail");
 
                     // connect().then((db) => {
                     //db.collection(collection).find(whereFilter, dataCollection).toArray(function(err, results) {
                     findOne(collection, whereFilter, dataCollection).then(function(results) {
 
-                        console.log("3 validateUserEmail");
+                        //console.log("3 validateUserEmail");
 
                         // console.log("inside validateUserEmail 1");
                         // if (!err) {
@@ -432,7 +561,7 @@ module.exports = (cache, logger, config) => {
                         // });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
@@ -449,15 +578,15 @@ module.exports = (cache, logger, config) => {
 
                             var whereFilter = {};
                             if (ct == "all" && lbid == "0")
-                                whereFilter = { status: { $in: ["0", "1"] } };
+                                whereFilter = { status: { $in: ["1"] } };
                             else if (ct == "all" && lbid != "0")
-                                whereFilter = { status: { $in: ["0", "1"] }, _id: { $lt: ObjectId(lbid) } };
+                                whereFilter = { status: { $in: ["1"] }, _id: { $lt: ObjectId(lbid) } };
                             else if (ct != "all" && lbid == "0")
-                                whereFilter = { status: { $in: ["0", "1"] }, categorykey: ct };
+                                whereFilter = { status: { $in: ["1"] }, categorykey: ct };
                             else if (ct != "all" && lbid != "0")
-                                whereFilter = { status: { $in: ["0", "1"] }, _id: { $lt: ObjectId(lbid) }, categorykey: ct };
+                                whereFilter = { status: { $in: ["1"] }, _id: { $lt: ObjectId(lbid) }, categorykey: ct };
 
-                            console.log("getblogs " + JSON.stringify(whereFilter));
+                            //console.log("getblogs " + JSON.stringify(whereFilter));
 
                             findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
                                 var data = { "result": results, "count": results.length };
@@ -535,7 +664,7 @@ module.exports = (cache, logger, config) => {
                                 resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject({ _errorMsg });
                             });
                         }
@@ -561,7 +690,7 @@ module.exports = (cache, logger, config) => {
                                 resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject({ _errorMsg });
                             });
                         }
@@ -570,8 +699,8 @@ module.exports = (cache, logger, config) => {
             },
 
             updatepassword: (collection, whereFilter, updateDataCollection) => {
-                console.log("inside updatepassword dataCollection: " +
-                    collection + " , " + JSON.stringify(whereFilter) + " ," + JSON.stringify(updateDataCollection));
+                //console.log("inside updatepassword dataCollection: " +
+                //collection + " , " + JSON.stringify(whereFilter) + " ," + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         //db.collection(collection).update(whereFilter, { $set: updateDataCollection },
@@ -579,45 +708,52 @@ module.exports = (cache, logger, config) => {
                             $set: updateDataCollection
                         }, { upsert: false }, (err, results) => {
                             //(err, results) => {
-                            console.log("inside updatepassword 1");
+                            //console.log("inside updatepassword 1");
                             if (!err) {
-                                console.log("password updated");
+                                //console.log("password updated");
                                 resolve(results);
                             } else {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject(err);
                             }
                         });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
             },
 
-            UpdateUsersRecord: (collection, whereFilter, updateDataCollection) => {
-                console.log("inside UpdateUsersRecord dataCollection 1:" + JSON.stringify(updateDataCollection));
+            UpdateUsersRecord: (collection, whereFilter, updateDataCollection, blogid, blogtype) => {
+                //console.log("inside UpdateUsersRecord dataCollection 1:" + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         db.collection(collection).update(whereFilter, { $set: updateDataCollection },
                             (err, results) => {
-                                console.log("inside UpdateUsersRecord 2");
+                                //console.log("inside UpdateUsersRecord 2");
                                 if (!err) {
-                                    console.log("success" + results);
+                                    //console.log("success" + results);
                                     cache.clearkey(collection);
+
+                                    if (blogtype == "2") {
+                                        console.log("11");
+                                        //Remove this blog record from Top Visit
+                                        disableblogvisitinfo(blogid);
+                                    }
+
                                     resolve(results);
                                 } else {
                                     var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
-                                    console.log(_errorMsg);
-                                    console.log("Error");
+                                    //console.log(_errorMsg);
+                                    //console.log("Error");
                                     reject(err);
                                 }
                             });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
@@ -846,7 +982,7 @@ module.exports = (cache, logger, config) => {
                                 resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject({ _errorMsg });
                             });
                         }
@@ -887,7 +1023,7 @@ module.exports = (cache, logger, config) => {
                 });
             },
 
-            addblog: (collection, dataCollection, filter, historycollection) => {
+            addblog: (collection, dataCollection, filter, historycollection, blogvisitcollection) => {
                 var whereFilter = filter;
                 var datafilter = {};
                 var data = dataCollection;
@@ -900,10 +1036,13 @@ module.exports = (cache, logger, config) => {
 
 
                         historycollection.blogid = ((result.ops[0])._id).toString();
+                        blogvisitcollection.blogid = ((result.ops[0])._id).toString();
 
                         cache.clearkey(collection);
 
                         addhistory("bloghistory", historycollection);
+
+                        addblogvisitinfo("blogvisithistory", blogvisitcollection);
 
                         resolve(result);
 
@@ -945,6 +1084,7 @@ module.exports = (cache, logger, config) => {
                     cache.get(key).then(results => {
                         if (results != null) {
                             logger.log.info("getblogbyblogid method : data retrieve from cache");
+                            updateblogvisitcount(_id, results);
                             resolve(results);
                         } else {
                             var whereFilter = { "_id": ObjectId(_id) };
@@ -956,10 +1096,11 @@ module.exports = (cache, logger, config) => {
                                 cache.set(key, JSON.stringify(results));
                                 cache.expire(key, redisKeyExpire);
                                 logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
+                                updateblogvisitcount(_id, results);
                                 resolve(results);
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
-                                console.log(_errorMsg);
+                                //console.log(_errorMsg);
                                 reject({ _errorMsg });
                             });
                         }
@@ -975,7 +1116,7 @@ module.exports = (cache, logger, config) => {
                             logger.log.info("getblogcommentbyblogid method : data retrieve from cache");
                             resolve(results);
                         } else {
-                            //console.log("2");
+                            ////console.log("2");
                             var whereFilter = {};
                             if (lastcommentid == "0")
                                 whereFilter = { status: { $in: ["0", "1"] }, "blogid": blogid };
@@ -1003,7 +1144,7 @@ module.exports = (cache, logger, config) => {
 
             deleteblogbyblogid: (collection, _id, filter, historycollection) => {
 
-                console.log(JSON.stringify(filter));
+                //console.log(JSON.stringify(filter));
                 var whereFilter = { "_id": ObjectId(_id) };
                 var datafilter = {};
 
@@ -1028,7 +1169,7 @@ module.exports = (cache, logger, config) => {
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
 
-                                    console.log("3");
+                                    //console.log("3");
 
                                     logger.log.info("deleteblogbyblogid method : successfully disabled a blog : " +
                                         "Collection Name : " + collection +
@@ -1044,25 +1185,28 @@ module.exports = (cache, logger, config) => {
                                     updateQuery = { "status": "2" };
                                     updatemultirecord(collection, updateQuery, whereFilter).then(function(results) {
 
-                                        console.log("1");
+                                        //console.log("1");
                                         logger.log.info("updatecomment method : successfully disabled a blog : " +
                                             "Collection Name : " + collection +
                                             ", updated query data : " + JSON.stringify(results));
 
                                         resolve(results);
                                     }).catch(function(err) {
-                                        console.log("2");
+                                        //console.log("2");
                                         logger.log.error("updatecomment method : Erorr in disabling the blog : " +
                                             "Collection Name : " + collection +
                                             ", Error : " + err);
                                         reject(err);
                                     });
 
+                                    //Remove this blog record from Top Visit
+                                    disableblogvisitinfo(_id);
+
                                     resolve(results);
                                 }
                             }).catch(function(err) {
 
-                                console.log("33333");
+                                //console.log("33333");
                                 logger.log.error("deleteblogbyblogid method : Erorr in disabling the blog : " +
                                     "Collection Name : " + collection +
                                     ", Error : " + err);
@@ -1080,14 +1224,14 @@ module.exports = (cache, logger, config) => {
 
             editblog: (collection, dataCollection, filter, historycollection) => {
 
-                console.log("editblog " + 1); // + " , " + JSON.stringify(dataCollection));
+                //console.log("editblog " + 1); // + " , " + JSON.stringify(dataCollection));
 
                 var whereFilter = { "_id": ObjectId(dataCollection._id) };
                 var datafilter = {};
 
                 return new Promise(function(resolve, reject) {
 
-                    console.log("editblog " + 2);
+                    //console.log("editblog " + 2);
 
                     logger.log.info("editblog method :  call findOne method : " +
                         "Collection Name : " + collection +
@@ -1096,7 +1240,7 @@ module.exports = (cache, logger, config) => {
                     findOne(collection, whereFilter, datafilter).then(function(results) {
                         if (results != undefined && results.result != undefined && results.result._id != undefined) {
 
-                            console.log("editblog " + 3);
+                            //console.log("editblog " + 3);
 
                             whereFilter = { "_id": ObjectId(results.result._id) };
                             var updateQuery = {
@@ -1125,7 +1269,7 @@ module.exports = (cache, logger, config) => {
                                 }
                             }).catch(function(err) {
 
-                                console.log("editblog " + 5);
+                                //console.log("editblog " + 5);
 
                                 logger.log.error("editblog method : Erorr in updating the blog : " +
                                     "Collection Name : " + collection +
@@ -1134,7 +1278,7 @@ module.exports = (cache, logger, config) => {
                             });
                         }
                     }).catch(function(err) {
-                        console.log("editblog " + 6);
+                        //console.log("editblog " + 6);
 
                         logger.log.error("editblog method : Erorr in findOne method : " +
                             "Collection Name : " + collection +
@@ -1220,26 +1364,26 @@ module.exports = (cache, logger, config) => {
             },
 
             UpdateCommentStatus: (collection, whereFilter, updateDataCollection) => {
-                console.log("inside UpdateCommentStatus dataCollection 1:" + JSON.stringify(updateDataCollection));
+                //console.log("inside UpdateCommentStatus dataCollection 1:" + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         db.collection(collection).update(whereFilter, { $set: updateDataCollection },
                             (err, results) => {
-                                console.log("inside UpdateCommentStatus 2");
+                                //console.log("inside UpdateCommentStatus 2");
                                 if (!err) {
-                                    console.log("success" + results);
+                                    //console.log("success" + results);
                                     cache.clearkey(collection);
                                     resolve(results);
                                 } else {
                                     var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
-                                    console.log(_errorMsg);
-                                    console.log("Error");
+                                    //console.log(_errorMsg);
+                                    //console.log("Error");
                                     reject(err);
                                 }
                             });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
@@ -1258,32 +1402,32 @@ module.exports = (cache, logger, config) => {
                         resolve(results);
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
             },
             updateprofilephotopath: (collection, whereFilter, updateDataCollection) => {
-                console.log("inside updateprofilephotopath dataCollection 1:" + JSON.stringify(updateDataCollection));
+                //console.log("inside updateprofilephotopath dataCollection 1:" + JSON.stringify(updateDataCollection));
                 return new Promise((resolve, reject) => {
                     connect().then((db) => {
                         db.collection(collection).update(whereFilter, { $set: updateDataCollection },
                             (err, results) => {
-                                console.log("inside updateprofilephotopath 2");
+                                //console.log("inside updateprofilephotopath 2");
                                 if (!err) {
-                                    console.log("success" + results);
+                                    //console.log("success" + results);
                                     cache.clearkey(collection);
                                     resolve(results);
                                 } else {
                                     var _errorMsg = "error_code :" + errorMsg.msg_1018.code + " , error_msg:" + errorMsg.msg_1018.msg + " ,error:" + err;
-                                    console.log(_errorMsg);
-                                    console.log("Error");
+                                    //console.log(_errorMsg);
+                                    //console.log("Error");
                                     reject(err);
                                 }
                             });
                     }).catch(function(err) {
                         var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
-                        console.log(_errorMsg);
+                        //console.log(_errorMsg);
                         reject(_errorMsg);
                     });
                 });
@@ -1299,9 +1443,9 @@ module.exports = (cache, logger, config) => {
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
 
-                        console.log("findOne whereFilter:" + JSON.stringify(whereFilter));
-                        console.log("findOne updateQuery:" + JSON.stringify(updateQuery));
-                        console.log(JSON.stringify(results));
+                        //console.log("findOne whereFilter:" + JSON.stringify(whereFilter));
+                        //console.log("findOne updateQuery:" + JSON.stringify(updateQuery));
+                        //console.log(JSON.stringify(results));
 
                         if (results != undefined && results.result != undefined && results.count > 0) {
                             whereFilter = { "_id": ObjectId(results.result._id) };
@@ -1311,9 +1455,9 @@ module.exports = (cache, logger, config) => {
                                 ", updated query data : " + JSON.stringify(updateQuery) +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
-                            console.log("findone Collection Name : " + collection +
-                                ", updated query data : " + JSON.stringify(updateQuery) +
-                                ", where filter : " + JSON.stringify(whereFilter));
+                            //console.log("findone Collection Name : " + collection +
+                            // ", updated query data : " + JSON.stringify(updateQuery) +
+                            // ", where filter : " + JSON.stringify(whereFilter));
 
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
@@ -1337,11 +1481,11 @@ module.exports = (cache, logger, config) => {
                                     "Collection Name : " + collection +
                                     ", Data " + JSON.stringify(dataCollection));
 
-                                console.log("11");
+                                //console.log("11");
                                 resolve(result);
                                 //next();
                             }).catch(function(err) {
-                                console.log("111");
+                                //console.log("111");
                                 logger.log.error("verifyemailtrigger method : data does not saved : " +
                                     "Collection Name : " + collection +
                                     ", Data " + JSON.stringify(dataCollection));;
@@ -1350,7 +1494,7 @@ module.exports = (cache, logger, config) => {
                             //})
                         }
                     }).catch(function(err) {
-                        console.log("112");
+                        //console.log("112");
                         logger.log.error("verifyemailtrigger method : Erorr in findOne method : " +
                             "Collection Name : " + collection +
                             ", Error : " + err);
@@ -1372,8 +1516,8 @@ module.exports = (cache, logger, config) => {
 
                     var emailactiveduration;
 
-                    console.log("1 Collection Name : " + collection +
-                        ", where filter : " + JSON.stringify(whereFilter));
+                    // console.log("1 Collection Name : " + collection +
+                    //     ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
 
@@ -1383,8 +1527,8 @@ module.exports = (cache, logger, config) => {
                                 "Collection Name : " + collection +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
-                            console.log("2 Collection Name : " + collection +
-                                ", result : " + JSON.stringify(results));
+                            // console.log("2 Collection Name : " + collection +
+                            //     ", result : " + JSON.stringify(results));
 
                             var currentDT = new Date(new Date().toISOString());
                             var verifedEmailSentDT = new Date(results.result.dt);
@@ -1396,13 +1540,13 @@ module.exports = (cache, logger, config) => {
                                 collection = "users";
                                 whereFilter = { "_id": ObjectId(results.result.userid) };
 
-                                console.log("2 Collection Name : " + collection +
-                                    ", whereFilter : " + JSON.stringify(whereFilter));
+                                // console.log("2 Collection Name : " + collection +
+                                //     ", whereFilter : " + JSON.stringify(whereFilter));
 
                                 findOne(collection, whereFilter, datafilter).then(function(userinfo) {
 
-                                    console.log("2 Collection Name : " + collection +
-                                        ", userinfo : " + JSON.stringify(userinfo));
+                                    // console.log("2 Collection Name : " + collection +
+                                    //     ", userinfo : " + JSON.stringify(userinfo));
 
                                     if (userinfo != undefined && userinfo.result != undefined && userinfo.count > 0) {
 
@@ -1467,12 +1611,12 @@ module.exports = (cache, logger, config) => {
                         "Collection Name : " + collection +
                         ", where filter : " + JSON.stringify(whereFilter));
 
-                    console.log("Collection Name : " + collection +
-                        ", updated query data : " + JSON.stringify(updateQuery) +
-                        ", where filter : " + JSON.stringify(whereFilter));
+                    // console.log("Collection Name : " + collection +
+                    //     ", updated query data : " + JSON.stringify(updateQuery) +
+                    //     ", where filter : " + JSON.stringify(whereFilter));
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
-                        console.log("record found " + JSON.stringify(results.result));
+                        //console.log("record found " + JSON.stringify(results.result));
                         if (results != undefined && results.result != undefined && results.count > 0) {
                             whereFilter = { "_id": ObjectId(results.result._id) };
                             //updateQuery = {};
@@ -1482,17 +1626,16 @@ module.exports = (cache, logger, config) => {
                                 ", updated query data : " + JSON.stringify(updateQuery) +
                                 ", where filter : " + JSON.stringify(whereFilter));
 
-                            console.log("find one Collection Name : " + collection +
-                                ", updated query data : " + JSON.stringify(updateQuery) +
-                                ", where filter : " + JSON.stringify(whereFilter));
+                            // console.log("find one Collection Name : " + collection +
+                            //     ", updated query data : " + JSON.stringify(updateQuery) +
+                            //     ", where filter : " + JSON.stringify(whereFilter));
 
                             update(collection, updateQuery, whereFilter).then(function(results) {
                                 if (results != null && results != undefined) {
 
-
-                                    console.log(" update Collection Name : " + collection +
-                                        ", updated query data : " + JSON.stringify(updateQuery) +
-                                        ", where filter : " + JSON.stringify(whereFilter));
+                                    // console.log(" update Collection Name : " + collection +
+                                    //     ", updated query data : " + JSON.stringify(updateQuery) +
+                                    //     ", where filter : " + JSON.stringify(whereFilter));
 
                                     logger.log.info("triggerfpwdemail method : successfully verify email trigger details : " +
                                         "Collection Name : " + collection +
@@ -1545,11 +1688,11 @@ module.exports = (cache, logger, config) => {
 
                     findOne(collection, whereFilter, datafilter).then(function(results) {
 
-                        console.log("1");
+                        //console.log("1");
 
                         if (results != undefined && results.result != undefined && results.result.count > 0) {
 
-                            console.log("2");
+                            //console.log("2");
 
                             logger.log.info("verifyfpwdemail method : call update method : " +
                                 "Collection Name : " + collection +
@@ -1562,7 +1705,7 @@ module.exports = (cache, logger, config) => {
 
                             if (Math.floor(diffDT / 1e3) < parseInt(emailactiveduration)) {
 
-                                console.log("3");
+                                //console.log("3");
 
                                 collection = "users";
                                 whereFilter = { "_id": ObjectId(results.result.userid) };
@@ -1622,6 +1765,33 @@ module.exports = (cache, logger, config) => {
                         reject(err);
                     });
                 })
+            },
+
+            gettopvisitblogs: (collection, whereFilter, dataFilter, sortfilter) => {
+                return new Promise(function(resolve, reject) {
+                    // cache.get(key).then(results => {
+                    //     if (results != null) {
+                    //         logger.log.info("gettopvisitblogs method : data retrieve from cache");
+                    //         resolve(results);
+                    //     } else {
+                    var resultlimit = 4;
+
+                    //console.log("1");
+
+                    findblogs(collection, whereFilter, dataFilter, sortfilter, resultlimit).then(function(results) {
+                        var data = { "result": results, "count": results.length };
+                        //cache.set(key, JSON.stringify(data));
+                        //cache.expire(key, redisKeyExpire);
+                        //console.log("2 : " + JSON.stringify(data));
+                        logger.log.info("gettopvisitblogs method");
+                        resolve(data);
+                    }).catch(function(err) {
+                        logger.log.error("gettopvisitblogs method : data retrieve error " + err);
+                        reject(err);
+                    });
+                });
+                //});
+                //});
             },
         }
     } catch (err) {
