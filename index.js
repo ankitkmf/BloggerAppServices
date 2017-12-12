@@ -16,7 +16,7 @@ var swaggerDefinition = {
     info: {
         title: 'Blogger Meet API',
         version: '1.0.0',
-        description: 'Validate RESTful API with Swagger',
+        description: 'Validate Restful API with Swagger',
     },
     host: services.config.webserver.host + ":" + services.config.webserver.port,
     basePath: '/',
