@@ -1246,7 +1246,9 @@ module.exports = (cache, logger, config) => {
                             var updateQuery = {
                                 "topic": dataCollection.topic,
                                 "content": dataCollection.content,
-                                "categorykey": dataCollection.categorykey
+                                "categorykey": dataCollection.categorykey,
+                                "prevblogid": dataCollection.prevblogid,
+                                "nextblogid": dataCollection.nextblogid,
                             };
 
                             logger.log.info("editblog method : call update method : " +

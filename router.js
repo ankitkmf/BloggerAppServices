@@ -922,6 +922,10 @@ module.exports = (dir, services) => {
      *         type: string
      *       createdby:
      *         type: string
+     *       prevblogid:
+     *         type: string
+     *       nextblogid:
+     *         type: string
      */
 
     /**
@@ -958,6 +962,8 @@ module.exports = (dir, services) => {
                 "topic": req.body.topic,
                 "content": req.body.content,
                 "categorykey": req.body.category,
+                "prevblogid": req.body.prevblogid,
+                "nextblogid": req.body.nextblogid,
                 "createdby": req.body.createdby,
                 "status": "0",
                 "creationdate": new Date().toISOString()
@@ -1168,6 +1174,10 @@ module.exports = (dir, services) => {
      *         type: string
      *       category:
      *         type: string
+     *       prevblogid:
+     *         type: string
+     *       nextblogid:
+     *         type: string
      *       _id:
      *         type: string
      *       userid:
@@ -1206,6 +1216,8 @@ module.exports = (dir, services) => {
                 "_id": req.body._id,
                 "topic": req.body.topic,
                 "categorykey": req.body.categorykey,
+                "prevblogid": req.body.prevblogid,
+                "nextblogid": req.body.nextblogid,
                 "content": req.body.content
             };
 
@@ -1904,6 +1916,56 @@ module.exports = (dir, services) => {
                 .gettopvisitblogs(collection, whereFilter, dataFilter, sortfilter).then(function(result) {
                     //console.log("3334");
                     //console.log("gettopvisitblogs : " + JSON.stringify(result));
+                    res.send(result);
+                })
+                .catch(function(error) {
+                    res.send("data for key error: " + JSON.stringify(error));
+                });
+
+        } catch (err) {
+            var _errorMsg = "error_code :" + errorMsg.msg_102.code + " , error_msg:" + errorMsg.msg_102.msg + " ,error:" + err;
+            res.send({ _errorMsg });
+        }
+    });
+
+    /**
+     * @swagger
+     * /getblogsnamebyuserid/{userid}:
+     *   get:
+     *     tags:
+     *       - User Id
+     *     description: Returns get blogs name by userid
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: userid
+     *         in: path
+     *         description: user id
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved      
+     */
+    router.get("/getblogsnamebyuserid/:userid", (req, res) => {
+        try {
+            //http://localhost:3000/getblogsnamebyuserid/{userid}
+            res.header("Access-Control-Allow-Origin", "*");
+
+            var userid = req.params.userid;
+            var sortfilter = { "creationdate": -1 }; // Sort --- 1 for asc and -1 for desc
+            var dataFilter = { userid: false, content: false, categorykey: false, createdby: false, creationdate: false };
+            var whereFilter = { "userid": userid, "status": "1" };
+            var collection = "blogs";
+
+            var key = "getblogsnamebyuserid_" + collection + "_" + userid;
+
+            services.data
+                .getbloglistbyuserid(collection, whereFilter, dataFilter, sortfilter, key)
+                .then(function(result) {
+                    var data = {};
+                    data = { "_id": "0", "topic": "Select related blog topic" };
+                    result.result.unshift(data);
                     res.send(result);
                 })
                 .catch(function(error) {
