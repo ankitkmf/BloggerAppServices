@@ -1299,6 +1299,9 @@ module.exports = (cache, logger, config) => {
                             resolve(results);
                         } else {
                             findAllWithSort(collection, whereFilter, dataFilter, sortfilter).then(function(results) {
+                                var firstNode = {};
+                                firstNode = { "_id": "0", "topic": "Select related blog topic" };
+                                results.unshift(firstNode);
                                 var data = { "result": results, "count": results.length };
                                 cache.set(key, JSON.stringify(data));
                                 cache.expire(key, redisKeyExpire);

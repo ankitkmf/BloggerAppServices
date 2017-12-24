@@ -1963,9 +1963,6 @@ module.exports = (dir, services) => {
             services.data
                 .getbloglistbyuserid(collection, whereFilter, dataFilter, sortfilter, key)
                 .then(function(result) {
-                    var data = {};
-                    data = { "_id": "0", "topic": "Select related blog topic" };
-                    result.result.unshift(data);
                     res.send(result);
                 })
                 .catch(function(error) {
