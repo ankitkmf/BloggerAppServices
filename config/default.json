@@ -15,6 +15,7 @@
     },
     "mongoDB": {
         "connectString": "mongodb://vaskar:12345678@ds161001.mlab.com:61001/mytest_mongodb"
+            //"connectString": "mongodb://34.229.77.208:27017/mytestdb"
     },
     "nodeMailer": {
         "service": "gmail",

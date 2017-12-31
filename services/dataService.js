@@ -11,6 +11,13 @@ module.exports = (cache, logger, config) => {
 
         let connect = function() {
             var url = config.mongoDB.connectString;
+
+            // mongoClient.connect(url, function(err, db) {
+            //     if (err) throw err;
+            //     console.log("Database created!");
+            //     db.close();
+            // });
+
             return new Promise(function(resolve, reject) {
                 if (state.db) {
                     //console.log(infoMsg.msg_206.msg);
