@@ -1096,15 +1096,31 @@ module.exports = (cache, logger, config) => {
                         } else {
                             var whereFilter = { "_id": ObjectId(_id) };
                             findOne(collection, whereFilter, dataFilter).then(function(results) {
-                                // var data = { "result": [], "count": 0 };
-                                // if (results != null) {
-                                //     data = { "result": results, "count": 1 };
-                                // }
-                                cache.set(key, JSON.stringify(results));
-                                cache.expire(key, redisKeyExpire);
-                                logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
-                                updateblogvisitcount(_id, results);
-                                resolve(results);
+                                //console.log("vaskar : " + JSON.stringify(results));
+
+                                if (results.result != null && results.result.userid != "") {
+                                    var userid = results.result.userid;
+                                    var whereFilter = { "userid": userid };
+                                    var dataFilter = {};
+                                    var collection = "aboutme";
+
+                                    findOne(collection, whereFilter, dataFilter).then(function(data) {
+                                        if (data.result != null && data.result.content != "") {
+                                            results.result.aboutauthor = data.result.content;
+
+                                            //console.log("about me 1 : " + JSON.stringify(results));
+
+                                            cache.set(key, JSON.stringify(results));
+                                            cache.expire(key, redisKeyExpire);
+                                            logger.log.info("getblogbyblogid method : data retrieved and stored in cache : Cache Key " + key);
+                                            updateblogvisitcount(_id, results);
+                                            resolve(results);
+                                        }
+                                    }).catch(function(err) {
+                                        var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
+                                        reject({ _errorMsg });
+                                    });
+                                }
                             }).catch(function(err) {
                                 var _errorMsg = "error_code :" + errorMsg.msg_1017.code + " , error_msg:" + errorMsg.msg_1017.msg + " ,error:" + err;
                                 //console.log(_errorMsg);
