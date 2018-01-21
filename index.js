@@ -5,8 +5,13 @@ const services = require('./servicelayer')('./services');
 const router = require('./router.js')('./routes/', services);
 const app = express();
 var bodyparser = require("body-parser");
-app.use(bodyparser.urlencoded({ extended: true }));
-app.use(bodyparser.json());
+
+// parse application/json
+app.use(bodyparser.json({limit: '50mb'}));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyparser.urlencoded({limit: '50mb', extended: true}));
+
 app.use(router);
 
 const log = services.logger.log;
